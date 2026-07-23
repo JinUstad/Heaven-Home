@@ -15,6 +15,18 @@ export default function ProductDetailsPage() {
   const [images, setImages] = useState<string[]>([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50, isHovered: false });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x, y, isHovered: true });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomPos({ x: 50, y: 50, isHovered: false });
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -101,39 +113,56 @@ export default function ProductDetailsPage() {
         <span className="text-gray-900 font-medium">{product.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
-        {/* Product Image & Gallery */}
-        <div className="flex flex-col gap-4">
-          <div className="relative aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-8 flex items-center justify-center">
-            <img 
-              src={images[activeImageIndex] || product.image} 
-              alt={product.name} 
-              className="w-full h-full object-contain transition-all duration-300"
-            />
-          </div>
-
-          {/* Thumbnails if multiple images exist */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        
+        {/* Flipkart-Style Multi-Image Gallery (Left Column: Vertical Thumbnails + Magnifier Main Display) */}
+        <div className="lg:col-span-6 flex flex-col-reverse md:flex-row gap-4">
+          
+          {/* Vertical Thumbnail Column (Flipkart style - set active image on HOVER) */}
           {images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[500px] shrink-0 hide-scrollbar">
               {images.map((imgUrl, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 ${
-                    activeImageIndex === idx ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20' : 'border-gray-200 hover:border-gray-300'
+                  onMouseEnter={() => setActiveImageIndex(idx)}
+                  className={`relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 cursor-pointer ${
+                    activeImageIndex === idx 
+                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/30 scale-105' 
+                      : 'border-gray-200 hover:border-[var(--primary)]/50 opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-lg" />
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-xl" />
                 </button>
               ))}
             </div>
           )}
+
+          {/* Main Large Image Box with Flipkart Hover Magnifier Zoom */}
+          <div 
+            className="relative flex-1 aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-6 flex items-center justify-center cursor-zoom-in group"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <img 
+              src={images[activeImageIndex] || product.image} 
+              alt={product.name} 
+              className={`w-full h-full object-contain transition-transform duration-200 ${
+                zoomPos.isHovered ? 'scale-150' : 'scale-100'
+              }`}
+              style={
+                zoomPos.isHovered 
+                  ? { transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` } 
+                  : undefined
+              }
+            />
+          </div>
         </div>
 
-        {/* Product Info */}
-        <div className="flex flex-col justify-center">
-          <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-4">{product.category}</p>
-          <h1 className="text-4xl lg:text-5xl font-serif font-bold text-[#333] mb-6 leading-tight">{product.name}</h1>
+        {/* Product Info (Right Column) */}
+        <div className="lg:col-span-6 flex flex-col justify-center">
+          <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-3">{product.category}</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-6 leading-tight">{product.name}</h1>
           <div className="text-3xl font-bold text-[var(--primary)] mb-8">
             ${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </div>
@@ -144,7 +173,7 @@ export default function ProductDetailsPage() {
 
           <div className="flex items-center gap-6 mb-10 pb-10 border-b border-gray-200">
             {/* Quantity Selector */}
-            <div className="flex items-center border border-gray-300 rounded-full bg-white h-14 w-36">
+            <div className="flex items-center border border-gray-300 rounded-full bg-white h-14 w-36 shadow-sm">
               <button 
                 className="w-12 h-full flex items-center justify-center text-gray-500 hover:text-black text-xl transition-colors"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -185,6 +214,7 @@ export default function ProductDetailsPage() {
             Add to Cart
           </button>
         </div>
+
       </div>
     </div>
   );
