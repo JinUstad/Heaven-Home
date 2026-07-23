@@ -12,6 +12,8 @@ export default function ProductDetailsPage() {
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<Product | null>(null);
+  const [images, setImages] = useState<string[]>([]);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,11 +27,31 @@ export default function ProductDetailsPage() {
           .maybeSingle();
 
         if (data && !error) {
+          let parsedImages: string[] = [];
+          if (data.image_url) {
+            try {
+              if (data.image_url.startsWith("[")) {
+                parsedImages = JSON.parse(data.image_url);
+              } else {
+                parsedImages = [data.image_url];
+              }
+            } catch (e) {
+              parsedImages = [data.image_url];
+            }
+          }
+
+          if (parsedImages.length === 0) {
+            parsedImages = ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80'];
+          }
+
+          setImages(parsedImages);
+          setActiveImageIndex(0);
+
           setProduct({
             id: data.id,
             name: data.title,
             price: data.price,
-            image: data.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
+            image: parsedImages[0],
             category: data.categories?.name?.toUpperCase() || 'FURNITURE',
             description: data.description || 'No description available for this product.'
           });
@@ -80,13 +102,32 @@ export default function ProductDetailsPage() {
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
-        {/* Product Image */}
-        <div className="relative aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-8 flex items-center justify-center">
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            className="w-full h-full object-contain"
-          />
+        {/* Product Image & Gallery */}
+        <div className="flex flex-col gap-4">
+          <div className="relative aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-8 flex items-center justify-center">
+            <img 
+              src={images[activeImageIndex] || product.image} 
+              alt={product.name} 
+              className="w-full h-full object-contain transition-all duration-300"
+            />
+          </div>
+
+          {/* Thumbnails if multiple images exist */}
+          {images.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+              {images.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 ${
+                    activeImageIndex === idx ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20' : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-lg" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Product Info */}
