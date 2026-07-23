@@ -165,14 +165,14 @@ export default function Home() {
                   const bg = bgColors[idx % bgColors.length];
                   const img = fallbackImages[idx % fallbackImages.length];
                   return (
-                    <div 
+                    <Link 
                       key={cat.id} 
-                      onClick={() => setActiveTab(cat.name.toUpperCase())}
-                      className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-shadow`}
+                      href={`/products?category=${encodeURIComponent(cat.name)}`}
+                      className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1 rounded-2xl group border border-black/5`}
                     >
-                      <img src={img} alt={cat.name} className="w-32 h-32 object-contain mix-blend-multiply mb-6" />
-                      <span className="font-bold text-[13px] tracking-wide text-[#333] uppercase">{cat.name}</span>
-                    </div>
+                      <img src={img} alt={cat.name} className="w-32 h-32 object-contain mix-blend-multiply mb-6 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="font-bold text-[14px] tracking-wider text-[#333] uppercase group-hover:text-[var(--primary)] transition-colors">{cat.name}</span>
+                    </Link>
                   );
                 })}
               </div>

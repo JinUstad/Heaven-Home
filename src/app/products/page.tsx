@@ -1,15 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ProductCard } from '@/components/ProductCard';
 import { Product } from '@/hooks/useCart';
 import { supabase } from '@/lib/supabase';
 
-export default function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
+function ProductsContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get('category');
+
+  const [activeCategory, setActiveCategory] = useState(categoryParam ? categoryParam.toUpperCase() : 'All');
   const [categories, setCategories] = useState<string[]>(['All']);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam.toUpperCase());
+    }
+  }, [categoryParam]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +65,9 @@ export default function ProductsPage() {
         
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Our Collection</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+            {activeCategory === 'All' ? 'Our Collection' : `${activeCategory} Collection`}
+          </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore our carefully curated selection of premium furniture and decor, designed to transform your house into a heaven home.
           </p>
@@ -69,7 +81,7 @@ export default function ProductsPage() {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all-200 ${
-                  activeCategory === category 
+                  activeCategory.toUpperCase() === category.toUpperCase() 
                     ? 'bg-[var(--primary)] text-white shadow-md' 
                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                 }`}
@@ -94,11 +106,23 @@ export default function ProductsPage() {
         )}
         
         {!loading && filteredProducts.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            No products found. Add products from the Admin Panel to display them here.
+          <div className="text-center py-20 text-gray-500 font-medium">
+            No products found for "{activeCategory}". Add products to this category from the Admin Panel.
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="text-center py-20 text-gray-500 font-bold text-lg animate-pulse">
+        Loading collection...
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }
