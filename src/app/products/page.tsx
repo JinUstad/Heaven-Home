@@ -3,13 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { Product } from '@/hooks/useCart';
-import { ALL_PRODUCTS } from '@/data/products';
 import { supabase } from '@/lib/supabase';
 
 export default function ProductsPage() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [categories, setCategories] = useState<string[]>(['All']);
-  const [products, setProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export default function ProductsPage() {
           setCategories(catNames);
         }
 
-        if (prodsRes.data && prodsRes.data.length > 0) {
+        if (prodsRes.data) {
           const dbProds: Product[] = prodsRes.data.map((p: any) => ({
             id: p.id,
             name: p.title,
@@ -35,10 +34,7 @@ export default function ProductsPage() {
             category: p.categories?.name?.toUpperCase() || 'FURNITURE',
             description: p.description
           }));
-          // Combine db products and static products (avoiding duplicates)
-          const dbIds = new Set(dbProds.map(p => p.id));
-          const filteredStatic = ALL_PRODUCTS.filter(p => !dbIds.has(p.id));
-          setProducts([...dbProds, ...filteredStatic]);
+          setProducts(dbProds);
         }
       } catch (err) {
         console.error('Error fetching products from Supabase:', err);
@@ -66,21 +62,23 @@ export default function ProductsPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map(category => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all-200 ${
-                activeCategory === category 
-                  ? 'bg-[var(--primary)] text-white shadow-md' 
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        {categories.length > 1 && (
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all-200 ${
+                  activeCategory === category 
+                    ? 'bg-[var(--primary)] text-white shadow-md' 
+                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Product Grid */}
         {loading ? (
@@ -97,7 +95,7 @@ export default function ProductsPage() {
         
         {!loading && filteredProducts.length === 0 && (
           <div className="text-center py-20 text-gray-500">
-            No products found in this category.
+            No products found. Add products from the Admin Panel to display them here.
           </div>
         )}
       </div>
