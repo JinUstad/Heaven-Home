@@ -115,32 +115,12 @@ export default function ProductDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
-        {/* Flipkart-Style Multi-Image Gallery (Left Column: Vertical Thumbnails + Magnifier Main Display) */}
-        <div className="lg:col-span-6 flex flex-col-reverse md:flex-row gap-4">
+        {/* Product Gallery Column: Main Big Image on TOP + Smaller Thumbnails UNDERNEATH IT */}
+        <div className="lg:col-span-6 flex flex-col gap-4">
           
-          {/* Vertical Thumbnail Column (Flipkart style - set active image on HOVER) */}
-          {images.length > 1 && (
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[500px] shrink-0 hide-scrollbar">
-              {images.map((imgUrl, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIndex(idx)}
-                  onMouseEnter={() => setActiveImageIndex(idx)}
-                  className={`relative w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 cursor-pointer ${
-                    activeImageIndex === idx 
-                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/30 scale-105' 
-                      : 'border-gray-200 hover:border-[var(--primary)]/50 opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-xl" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Main Large Image Box with Flipkart Hover Magnifier Zoom */}
+          {/* Main Large Image Display (Top) with Hover Magnifier Zoom */}
           <div 
-            className="relative flex-1 aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-6 flex items-center justify-center cursor-zoom-in group"
+            className="relative w-full aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-6 flex items-center justify-center cursor-zoom-in group"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
@@ -157,6 +137,27 @@ export default function ProductDetailsPage() {
               }
             />
           </div>
+
+          {/* Small Thumbnail Row (Underneath the Main Image) - Changes active image on HOVER */}
+          {images.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto pt-2 pb-1">
+              {images.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImageIndex(idx)}
+                  onMouseEnter={() => setActiveImageIndex(idx)}
+                  onMouseOver={() => setActiveImageIndex(idx)}
+                  className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 cursor-pointer ${
+                    activeImageIndex === idx 
+                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/30 scale-105 shadow-md' 
+                      : 'border-gray-200 hover:border-[var(--primary)]/50 opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-xl" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Product Info (Right Column) */}
