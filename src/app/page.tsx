@@ -3,96 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ProductCard, ExtendedProduct } from '@/components/ProductCard';
-
-// Dummy data for trending products based on Heaven Home theme
-const trendingProducts: ExtendedProduct[] = [
-  {
-    id: '1',
-    name: 'MODERN SOFA',
-    price: 1200.00,
-    oldPrice: 1500.00,
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
-    category: 'LIVING ROOM',
-    discount: '20%',
-    reviews: 12,
-    rating: 5
-  },
-  {
-    id: '2',
-    name: 'DINING TABLE SET',
-    price: 850.00,
-    oldPrice: 1100.00,
-    image: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=400&q=80',
-    category: 'KITCHEN',
-    discount: '22%',
-    reviews: 8,
-    rating: 4
-  },
-  {
-    id: '3',
-    name: 'CERAMIC VASE',
-    price: 45.00,
-    image: 'https://images.unsplash.com/photo-1581783342308-f792dbdd27c5?auto=format&fit=crop&w=400&q=80',
-    category: 'DECOR',
-    reviews: 5,
-    rating: 5
-  },
-  {
-    id: '4',
-    name: 'PENDANT LIGHT',
-    price: 150.00,
-    oldPrice: 200.00,
-    image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=400&q=80',
-    category: 'LIGHTING',
-    discount: '25%',
-    reviews: 3,
-    rating: 4
-  },
-  {
-    id: '5',
-    name: 'WOODEN CABINET',
-    price: 560.00,
-    oldPrice: 750.00,
-    image: 'https://images.unsplash.com/photo-1595514535313-059ab56c1265?auto=format&fit=crop&w=400&q=80',
-    category: 'LIVING ROOM',
-    discount: '25%',
-    reviews: 2,
-    rating: 4
-  },
-  {
-    id: '6',
-    name: 'KITCHEN ISLAND',
-    price: 1950.00,
-    oldPrice: 2500.00,
-    image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80',
-    category: 'KITCHEN',
-    discount: '22%',
-    reviews: 0,
-    rating: 0
-  },
-  {
-    id: '7',
-    name: 'LOUNGE CHAIR',
-    price: 450.00,
-    oldPrice: 600.00,
-    image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=400&q=80',
-    category: 'LIVING ROOM',
-    discount: '25%',
-    reviews: 10,
-    rating: 5
-  },
-  {
-    id: '8',
-    name: 'WALL ART',
-    price: 120.00,
-    oldPrice: 180.00,
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80',
-    category: 'DECOR',
-    discount: '33%',
-    reviews: 4,
-    rating: 4
-  }
-];
+import { supabase } from '@/lib/supabase';
 
 const heroImages = [
   'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80',
@@ -102,18 +13,23 @@ const heroImages = [
   'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=1920&q=80'
 ];
 
-const categories = [
-  { name: 'LIVING ROOM', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=300&q=80', bg: 'bg-[#f4ebd0]' },
-  { name: 'KITCHEN AREA', img: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=300&q=80', bg: 'bg-[#e0e5da]' },
-  { name: 'HOME DECOR', img: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=300&q=80', bg: 'bg-[#d5e1df]' },
-  { name: 'LIGHTING', img: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=300&q=80', bg: 'bg-[#f1e6d3]' },
-  { name: 'OUTDOOR', img: 'https://images.unsplash.com/photo-1533090138073-a6dffc361920?auto=format&fit=crop&w=300&q=80', bg: 'bg-[#e5e9e1]' }
+const bgColors = ['bg-[#f4ebd0]', 'bg-[#e0e5da]', 'bg-[#d5e1df]', 'bg-[#f1e6d3]', 'bg-[#e5e9e1]'];
+const fallbackImages = [
+  'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=300&q=80',
+  'https://images.unsplash.com/photo-1533090138073-a6dffc361920?auto=format&fit=crop&w=300&q=80'
 ];
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('LIVING ROOM');
+  const [activeTab, setActiveTab] = useState<string>('');
   const [currentSlide, setCurrentSlide] = useState(0);
   const categoryScrollRef = React.useRef<HTMLDivElement>(null);
+
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const scrollCategories = (direction: 'left' | 'right') => {
     if (categoryScrollRef.current) {
@@ -122,7 +38,40 @@ export default function Home() {
     }
   };
 
-  const filteredProducts = trendingProducts.filter(p => p.category === activeTab);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const [catsRes, prodsRes] = await Promise.all([
+        supabase.from('categories').select('*').order('name'),
+        supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false })
+      ]);
+
+      if (catsRes.data) {
+        setDbCategories(catsRes.data);
+        if (catsRes.data.length > 0) {
+          setActiveTab(catsRes.data[0].name.toUpperCase());
+        }
+      }
+
+      if (prodsRes.data) {
+        const mappedProducts: ExtendedProduct[] = prodsRes.data.map(p => ({
+          id: p.id,
+          name: p.title,
+          price: p.price,
+          image: p.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
+          category: p.categories?.name?.toUpperCase() || 'UNCATEGORIZED',
+          reviews: p.sold > 0 ? Math.min(p.sold, 50) : 0, // mock reviews based on sold count
+          rating: p.sold > 10 ? 5 : 4
+        }));
+        setDbProducts(mappedProducts);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = dbProducts.filter(p => p.category === activeTab);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -197,31 +146,45 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#333]">TOP CATEGORY</h2>
           
-          <div className="flex items-center justify-between">
-            {/* Left Arrow */}
-            <button onClick={() => scrollCategories('left')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-              </svg>
-            </button>
-            
-            {/* Categories */}
-            <div ref={categoryScrollRef} className="flex-1 flex overflow-x-auto snap-x snap-mandatory gap-6 px-4 pb-4 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {categories.map((cat, idx) => (
-                <div key={idx} className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${cat.bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-shadow`}>
-                  <img src={cat.img} alt={cat.name} className="w-32 h-32 object-contain mix-blend-multiply mb-6" />
-                  <span className="font-bold text-[13px] tracking-wide text-[#333] uppercase">{cat.name}</span>
-                </div>
-              ))}
-            </div>
+          {loading ? (
+            <div className="text-center text-gray-500 py-10">Loading categories...</div>
+          ) : dbCategories.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">No categories found in the database. Add some from the Admin Panel.</div>
+          ) : (
+            <div className="flex items-center justify-between">
+              {/* Left Arrow */}
+              <button onClick={() => scrollCategories('left')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+              </button>
+              
+              {/* Categories */}
+              <div ref={categoryScrollRef} className="flex-1 flex overflow-x-auto snap-x snap-mandatory gap-6 px-4 pb-4 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {dbCategories.map((cat, idx) => {
+                  const bg = bgColors[idx % bgColors.length];
+                  const img = fallbackImages[idx % fallbackImages.length];
+                  return (
+                    <div 
+                      key={cat.id} 
+                      onClick={() => setActiveTab(cat.name.toUpperCase())}
+                      className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-shadow`}
+                    >
+                      <img src={img} alt={cat.name} className="w-32 h-32 object-contain mix-blend-multiply mb-6" />
+                      <span className="font-bold text-[13px] tracking-wide text-[#333] uppercase">{cat.name}</span>
+                    </div>
+                  );
+                })}
+              </div>
 
-            {/* Right Arrow */}
-            <button onClick={() => scrollCategories('right')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </button>
-          </div>
+              {/* Right Arrow */}
+              <button onClick={() => scrollCategories('right')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
+            </div>
+          )}
           
           <style dangerouslySetInnerHTML={{__html: `
             .hide-scrollbar::-webkit-scrollbar {
@@ -306,25 +269,36 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-6 text-[#333]">TRENDING PRODUCT</h2>
           
           <div className="flex justify-center flex-wrap gap-4 md:gap-8 mb-12 border-b border-gray-200">
-            {['LIVING ROOM', 'KITCHEN', 'DECOR', 'LIGHTING'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`pb-4 text-sm font-bold tracking-wide transition-colors ${
-                  activeTab === tab 
-                    ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]' 
-                    : 'text-gray-500 hover:text-gray-800'
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+            {dbCategories.map((cat) => {
+              const tab = cat.name.toUpperCase();
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-4 text-sm font-bold tracking-wide transition-colors ${
+                    activeTab === tab 
+                      ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]' 
+                      : 'text-gray-500 hover:text-gray-800'
+                  }`}
+                >
+                  {tab}
+                </button>
+              );
+            })}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {loading ? (
+              <div className="col-span-full text-center text-gray-500 py-10">Loading products...</div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500 py-10">
+                {activeTab ? `No products found for ${activeTab}.` : 'Select a category to view products.'}
+              </div>
+            ) : (
+              filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </div>
         </div>
         
