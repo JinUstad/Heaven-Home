@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCart, Product } from '@/hooks/useCart';
@@ -8,8 +8,10 @@ import { supabase } from '@/lib/supabase';
 
 export default function ProductDetailsPage() {
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
+
+  const mainImageRef = useRef<HTMLDivElement>(null);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState<Product | null>(null);
   const [images, setImages] = useState<string[]>([]);
@@ -30,6 +32,7 @@ export default function ProductDetailsPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
+      if (!id) return;
       setLoading(true);
       try {
         const { data, error } = await supabase
@@ -76,9 +79,7 @@ export default function ProductDetailsPage() {
       setLoading(false);
     };
 
-    if (id) {
-      fetchProduct();
-    }
+    fetchProduct();
   }, [id]);
 
   if (loading) {
@@ -116,6 +117,7 @@ export default function ProductDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
+        {/* Product Gallery Column */}
         <div className="lg:col-span-6 flex flex-col gap-4">
           <div 
             ref={mainImageRef}
@@ -129,7 +131,7 @@ export default function ProductDetailsPage() {
                 alt={product.name} 
                 className="w-full h-full object-contain mix-blend-multiply transition-transform duration-200 pointer-events-none"
                 style={
-                  zoomPos 
+                  zoomPos.isHovered
                     ? { 
                         transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`, 
                         transform: 'scale(2.2)' 
@@ -167,6 +169,7 @@ export default function ProductDetailsPage() {
           )}
         </div>
 
+        {/* Product Info (Right Column) */}
         <div className="lg:col-span-6 flex flex-col justify-center">
           <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-3">{product.category}</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-4 leading-tight">{product.name}</h1>
