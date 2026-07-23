@@ -7,20 +7,20 @@ export default function ShippingAndReturnsPage() {
   return (
     <div className="flex flex-col w-full bg-white text-[#333] font-sans">
       
-      {/* SECTION 1: HERO HEADER */}
-      <section className="bg-gray-900 text-white py-16 sm:py-20 px-4 relative overflow-hidden">
+      {/* SECTION 1: HERO HEADER (MATCHES HEAVEN HOME DEEP OLIVE GREEN BRAND THEME) */}
+      <section className="bg-[var(--primary)] text-white py-16 sm:py-20 px-4 relative overflow-hidden shadow-md">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-3">
             Policy Guidelines
           </span>
-          <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-4">
+          <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-4 text-white">
             Shipping & Return Policy
           </h1>
-          <p className="text-gray-300 max-w-2xl mx-auto text-sm sm:text-base font-light leading-relaxed">
+          <p className="text-white/90 max-w-2xl mx-auto text-sm sm:text-base font-light leading-relaxed">
             Everything you need to know about order dispatch, delivery timelines, and our strict non-refundable purchase policy.
           </p>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/40 pointer-events-none" />
       </section>
 
 
@@ -35,7 +35,7 @@ export default function ShippingAndReturnsPage() {
               </svg>
             </div>
             <div>
-              <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 01</span>
+              <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider">Section 01</span>
               <h2 className="text-2xl font-serif font-bold text-[#222]">Order Dispatch & Delivery Timelines</h2>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function ShippingAndReturnsPage() {
               </svg>
             </div>
             <div>
-              <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 03</span>
+              <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider">Section 03</span>
               <h2 className="text-2xl font-serif font-bold text-[#222]">Transit Damage & Exchange Exceptions</h2>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function ShippingAndReturnsPage() {
               </svg>
             </div>
             <div>
-              <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 04</span>
+              <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider">Section 04</span>
               <h2 className="text-2xl font-serif font-bold text-[#222]">Delivery Addresses & Re-Routing</h2>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function ShippingAndReturnsPage() {
           </p>
           <div className="pt-2">
             <Link href="/contact">
-              <button className="px-8 py-3.5 bg-[var(--accent)] text-[#1a1a1a] font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors rounded-full shadow-md">
+              <button className="px-8 py-3.5 bg-[#ffcc00] text-[#1a1a1a] font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors rounded-full shadow-md">
                 Contact Logistics Support
               </button>
             </Link>
