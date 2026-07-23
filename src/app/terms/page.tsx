@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { FileText, UserCheck, CreditCard, ShieldCheck, Scale, Mail } from 'lucide-react';
 
 export default function TermsOfServicePage() {
   return (
@@ -32,7 +31,9 @@ export default function TermsOfServicePage() {
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <FileText className="h-6 w-6" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 01</span>
@@ -49,7 +50,9 @@ export default function TermsOfServicePage() {
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <UserCheck className="h-6 w-6" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 02</span>
@@ -66,7 +69,9 @@ export default function TermsOfServicePage() {
         <section className="bg-amber-50/60 border border-amber-200 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--accent)] text-[#1a1a1a] rounded-2xl">
-              <CreditCard className="h-6 w-6" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">Section 03</span>
@@ -88,7 +93,9 @@ export default function TermsOfServicePage() {
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <ShieldCheck className="h-6 w-6" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 04</span>
@@ -105,7 +112,9 @@ export default function TermsOfServicePage() {
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <Scale className="h-6 w-6" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 17.25V6.75A2.25 2.25 0 0018.75 4.5z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider">Section 05</span>
@@ -121,7 +130,9 @@ export default function TermsOfServicePage() {
         {/* SECTION 6: CONTACT & LEGAL INQUIRIES */}
         <section className="bg-[var(--primary)] text-white p-8 sm:p-12 rounded-3xl text-center space-y-6 shadow-xl">
           <div className="inline-flex p-3 bg-white/10 rounded-2xl text-[var(--accent)]">
-            <Mail className="h-8 w-8" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
           </div>
           <h2 className="text-3xl font-serif font-bold">Legal Inquiries & Assistance</h2>
           <p className="text-white/80 max-w-xl mx-auto text-sm leading-relaxed">
