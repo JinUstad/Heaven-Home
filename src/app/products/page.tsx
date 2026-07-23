@@ -36,14 +36,27 @@ function ProductsContent() {
         }
 
         if (prodsRes.data) {
-          const dbProds: Product[] = prodsRes.data.map((p: any) => ({
-            id: p.id,
-            name: p.title,
-            price: p.price,
-            image: p.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
-            category: p.categories?.name?.toUpperCase() || 'FURNITURE',
-            description: p.description
-          }));
+          const dbProds: Product[] = prodsRes.data.map((p: any) => {
+            // Parse image_url: could be a single URL string or a JSON array string like ["url1","url2"]
+            let primaryImage = p.image_url || '';
+            if (primaryImage.startsWith('[')) {
+              try {
+                const parsed = JSON.parse(primaryImage);
+                primaryImage = parsed[0] || '';
+              } catch (e) {}
+            }
+            if (!primaryImage) {
+              primaryImage = 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80';
+            }
+            return {
+              id: p.id,
+              name: p.title,
+              price: p.price,
+              image: primaryImage,
+              category: p.categories?.name?.toUpperCase() || 'FURNITURE',
+              description: p.description
+            };
+          });
           setProducts(dbProds);
         }
       } catch (err) {
