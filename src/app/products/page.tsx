@@ -1,19 +1,57 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { Product } from '@/hooks/useCart';
-
 import { ALL_PRODUCTS } from '@/data/products';
-
-const CATEGORIES = ['All', 'Furniture', 'Lighting', 'Decor'];
+import { supabase } from '@/lib/supabase';
 
 export default function ProductsPage() {
   const [activeCategory, setActiveCategory] = useState('All');
+  const [categories, setCategories] = useState<string[]>(['All']);
+  const [products, setProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [catsRes, prodsRes] = await Promise.all([
+          supabase.from('categories').select('*').order('name'),
+          supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false })
+        ]);
+
+        if (catsRes.data && catsRes.data.length > 0) {
+          const catNames = ['All', ...catsRes.data.map((c: any) => c.name.toUpperCase())];
+          setCategories(catNames);
+        }
+
+        if (prodsRes.data && prodsRes.data.length > 0) {
+          const dbProds: Product[] = prodsRes.data.map((p: any) => ({
+            id: p.id,
+            name: p.title,
+            price: p.price,
+            image: p.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
+            category: p.categories?.name?.toUpperCase() || 'FURNITURE',
+            description: p.description
+          }));
+          // Combine db products and static products (avoiding duplicates)
+          const dbIds = new Set(dbProds.map(p => p.id));
+          const filteredStatic = ALL_PRODUCTS.filter(p => !dbIds.has(p.id));
+          setProducts([...dbProds, ...filteredStatic]);
+        }
+      } catch (err) {
+        console.error('Error fetching products from Supabase:', err);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const filteredProducts = activeCategory === 'All' 
-    ? ALL_PRODUCTS 
-    : ALL_PRODUCTS.filter(p => p.category === activeCategory);
+    ? products 
+    : products.filter(p => p.category?.toUpperCase() === activeCategory.toUpperCase());
 
   return (
     <div className="flex-grow bg-[var(--background)] py-12">
@@ -29,7 +67,7 @@ export default function ProductsPage() {
 
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {CATEGORIES.map(category => (
+          {categories.map(category => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
@@ -45,13 +83,19 @@ export default function ProductsPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="text-center py-20 text-gray-500 font-bold text-lg animate-pulse">
+            Loading products...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {filteredProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
         
-        {filteredProducts.length === 0 && (
+        {!loading && filteredProducts.length === 0 && (
           <div className="text-center py-20 text-gray-500">
             No products found in this category.
           </div>

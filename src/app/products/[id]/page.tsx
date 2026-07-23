@@ -1,17 +1,67 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ALL_PRODUCTS } from '@/data/products';
-import { useCart } from '@/hooks/useCart';
+import { useCart, Product } from '@/hooks/useCart';
+import { supabase } from '@/lib/supabase';
 
 export default function ProductDetailsPage() {
   const params = useParams();
   const id = params.id as string;
-  const product = ALL_PRODUCTS.find(p => p.id === id);
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      // 1. Try static array first
+      const staticProd = ALL_PRODUCTS.find(p => p.id === id);
+      if (staticProd) {
+        setProduct(staticProd);
+        setLoading(false);
+        return;
+      }
+
+      // 2. Fetch from Supabase
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*, categories(name)')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (data && !error) {
+          setProduct({
+            id: data.id,
+            name: data.title,
+            price: data.price,
+            image: data.image_url || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
+            category: data.categories?.name?.toUpperCase() || 'FURNITURE',
+            description: data.description || 'No description available for this product.'
+          });
+        }
+      } catch (err) {
+        console.error('Error fetching product from Supabase:', err);
+      }
+      setLoading(false);
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] py-20 px-4 text-center">
+        <div className="text-gray-500 font-bold text-lg animate-pulse">Loading product details...</div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
