@@ -20,17 +20,20 @@ export function ProductCard({ product }: ProductCardProps) {
   const isWishlisted = isInWishlist(product.id);
 
   return (
-    <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-500 ease-out transform hover:-translate-y-1">
+    <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-500 ease-out transform hover:-translate-y-1 cursor-pointer">
+      
+      {/* Full card clickable link */}
+      <Link href={`/products/${product.id}`} className="absolute inset-0 z-0" aria-label={`View ${product.name}`} />
       
       {/* Discount Badge */}
       {product.discount && (
-        <div className="absolute top-4 left-4 bg-[var(--accent)] text-[#1a1a1a] text-xs font-bold px-3 py-1.5 rounded-full shadow-md z-10 tracking-widest">
+        <div className="absolute top-4 left-4 bg-[var(--accent)] text-[#1a1a1a] text-xs font-bold px-3 py-1.5 rounded-full shadow-md z-10 tracking-widest pointer-events-none">
           {product.discount}
         </div>
       )}
 
       {/* Image Area */}
-      <div className="relative aspect-square overflow-hidden bg-[#f8f9fa] p-8 flex items-center justify-center">
+      <div className="relative aspect-square overflow-hidden bg-[#f8f9fa] p-8 flex items-center justify-center pointer-events-none">
         {product.image && (
           <img 
             src={product.image} 
@@ -40,19 +43,20 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
         
         {/* Hover Action Icons (Top) */}
-        <div className="absolute top-4 right-0 left-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 transition-all duration-300 z-10">
-          <button className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-opacity-90">
+        <div className="absolute top-4 right-0 left-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 transition-all duration-300 z-20 pointer-events-none">
+          <Link href={`/products/${product.id}`} className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-opacity-90 pointer-events-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-          </button>
+          </Link>
           <button 
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               toggleWishlist(product);
             }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors pointer-events-auto ${
               isWishlisted ? 'bg-red-50 text-red-500' : 'bg-[var(--primary)] text-white hover:bg-opacity-90'
             }`}
           >
@@ -65,24 +69,30 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
       
       {/* Product Info */}
-      <div className="p-4 flex flex-col items-center text-center relative bg-white z-20">
+      <div className="p-4 flex flex-col items-center text-center relative bg-white z-10 pointer-events-none">
         
         {/* Hover Add to Cart (Slides up to replace price/stars) */}
-        <div className="absolute inset-0 bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-30">
+        <div className="absolute inset-0 bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-30 pointer-events-none">
           <button 
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               addToCart(product);
             }}
-            className="text-[var(--primary)] font-bold text-sm hover:underline tracking-wider"
+            className="text-[var(--primary)] font-bold text-sm hover:underline tracking-wider pointer-events-auto"
           >
             + ADD TO CART
           </button>
         </div>
 
-        <Link href={`/products/${product.id}`} className="relative z-40">
-          <h3 className="text-[13px] font-bold text-[#333] mb-2 uppercase tracking-wide group-hover:text-[var(--primary)] transition-colors">{product.name}</h3>
-        </Link>
+        {/* Category Detail */}
+        {product.category && (
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 z-20">
+            {product.category}
+          </span>
+        )}
+
+        <h3 className="text-[13px] font-bold text-[#333] mb-2 uppercase tracking-wide group-hover:text-[var(--primary)] transition-colors relative z-20">{product.name}</h3>
         
         {/* These hide on hover when Add to Cart appears */}
         <div className="flex flex-col items-center group-hover:opacity-0 transition-opacity duration-300">
