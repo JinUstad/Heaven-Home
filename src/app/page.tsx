@@ -74,6 +74,8 @@ export default function HomePage() {
             id: p.id,
             name: p.title,
             price: p.price,
+            oldPrice: p.old_price ? parseFloat(p.old_price) : undefined,
+            discount: p.discount || undefined,
             image: primaryImg || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80',
             category: p.categories?.name?.toUpperCase() || 'UNCATEGORIZED',
             reviews: p.stock > 0 ? Math.min(p.stock * 3, 50) : 0,

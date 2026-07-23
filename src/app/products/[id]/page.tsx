@@ -63,6 +63,8 @@ export default function ProductDetailsPage() {
             id: data.id,
             name: data.title,
             price: data.price,
+            oldPrice: data.old_price ? parseFloat(data.old_price) : undefined,
+            discount: data.discount || undefined,
             image: parsedImages[0],
             category: data.categories?.name?.toUpperCase() || 'FURNITURE',
             description: data.description || 'No description available for this product.'
@@ -104,7 +106,6 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      {/* Breadcrumb */}
       <nav className="mb-10 text-sm text-gray-500">
         <Link href="/" className="hover:text-[var(--primary)] transition-colors">Home</Link>
         <span className="mx-2">/</span>
@@ -115,38 +116,44 @@ export default function ProductDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
-        {/* Product Gallery Column: Main Big Image on TOP + Smaller Thumbnails UNDERNEATH IT */}
         <div className="lg:col-span-6 flex flex-col gap-4">
-          
-          {/* Main Large Image Display (Top) with Hover Magnifier Zoom */}
           <div 
-            className="relative w-full aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-100 shadow-sm p-6 flex items-center justify-center cursor-zoom-in group"
+            ref={mainImageRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            className="relative w-full aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-200 shadow-lg flex items-center justify-center p-6 cursor-crosshair group"
           >
-            <img 
-              src={images[activeImageIndex] || product.image} 
-              alt={product.name} 
-              className={`w-full h-full object-contain transition-transform duration-200 ${
-                zoomPos.isHovered ? 'scale-150' : 'scale-100'
-              }`}
-              style={
-                zoomPos.isHovered 
-                  ? { transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` } 
-                  : undefined
-              }
-            />
+            {images.length > 0 && (
+              <img 
+                src={images[activeImageIndex] || images[0]} 
+                alt={product.name} 
+                className="w-full h-full object-contain mix-blend-multiply transition-transform duration-200 pointer-events-none"
+                style={
+                  zoomPos 
+                    ? { 
+                        transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`, 
+                        transform: 'scale(2.2)' 
+                      } 
+                    : { transform: 'scale(1)' }
+                }
+              />
+            )}
+            
+            <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[11px] font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              Hover to zoom
+            </div>
           </div>
 
-          {/* Small Thumbnail Row (Underneath the Main Image) - Changes active image on HOVER */}
           {images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pt-2 pb-1">
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 hide-scrollbar">
               {images.map((imgUrl, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActiveImageIndex(idx)}
                   onMouseEnter={() => setActiveImageIndex(idx)}
-                  onMouseOver={() => setActiveImageIndex(idx)}
+                  onClick={() => setActiveImageIndex(idx)}
                   className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 cursor-pointer ${
                     activeImageIndex === idx 
                       ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/30 scale-105 shadow-md' 
@@ -160,12 +167,24 @@ export default function ProductDetailsPage() {
           )}
         </div>
 
-        {/* Product Info (Right Column) */}
         <div className="lg:col-span-6 flex flex-col justify-center">
           <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-3">{product.category}</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-6 leading-tight">{product.name}</h1>
-          <div className="text-3xl font-bold text-[var(--primary)] mb-8">
-            ${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-4 leading-tight">{product.name}</h1>
+          
+          <div className="flex items-center flex-wrap gap-4 mb-8">
+            <span className="text-3xl sm:text-4xl font-bold text-[var(--primary)]">
+              ${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            </span>
+            {product.oldPrice && (
+              <span className="text-xl sm:text-2xl text-gray-400 line-through font-medium opacity-75">
+                ${product.oldPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              </span>
+            )}
+            {product.discount && (
+              <span className="bg-amber-100 text-amber-800 border border-amber-300 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                {product.discount}
+              </span>
+            )}
           </div>
           
           <div className="prose prose-lg text-gray-600 mb-10 leading-relaxed">

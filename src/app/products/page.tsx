@@ -52,6 +52,8 @@ function ProductsContent() {
               id: p.id,
               name: p.title,
               price: p.price,
+              oldPrice: p.old_price ? parseFloat(p.old_price) : undefined,
+              discount: p.discount || undefined,
               image: primaryImage,
               category: p.categories?.name?.toUpperCase() || 'FURNITURE',
               description: p.description
