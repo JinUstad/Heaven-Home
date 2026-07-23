@@ -13,15 +13,11 @@ export function Navbar() {
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center gap-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="text-[var(--primary)] font-serif text-3xl font-bold tracking-tighter transition-all-200">
-                HEAVEN
-                <span className="text-[var(--accent)] font-serif font-normal ml-1">
-                  HOME
-                </span>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="Heaven Home Logo" className="h-16 w-auto object-contain transition-all-200" />
             </Link>
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-all-200">
               Home
@@ -37,7 +33,7 @@ export function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </Link>
-              
+
               {/* Dropdown Container */}
               <div className="absolute top-full left-1/2 -translate-x-1/2 w-[650px] bg-white shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                 <div className="grid grid-cols-3 gap-8 p-8">
@@ -82,10 +78,8 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <Link href="/login" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-colors">
-              Login
-            </Link>
+          <div className="flex items-center gap-2">
+
             <Link href="/wishlist" className="relative p-2 text-gray-700 hover:text-[var(--primary)] transition-all-200 group">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 group-hover:scale-110 transition-transform">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
@@ -105,6 +99,10 @@ export function Navbar() {
                   {cartCount}
                 </span>
               )}
+            </Link>
+
+            <Link href="/login" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-colors px-2">
+              Login
             </Link>
           </div>
         </div>

@@ -32,19 +32,6 @@
   --accent-foreground: #1a1a1a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #f5f5f5;
-    
-    /* Keep brand colors but slightly muted or same */
-    --primary: #5c732b; 
-    --primary-foreground: #ffffff;
-    
-    --secondary: #dcb845;
-    --secondary-foreground: #121212;
-  }
-}
 
 body {
   background: var(--background);

@@ -20,7 +20,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const isWishlisted = isInWishlist(product.id);
 
   return (
-    <div className="group relative flex flex-col bg-white overflow-hidden rounded-xl border border-gray-50 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.12)] transition-all duration-500 ease-out transform hover:-translate-y-1">
+    <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-500 ease-out transform hover:-translate-y-1">
       
       {/* Discount Badge */}
       {product.discount && (
@@ -80,7 +80,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </button>
         </div>
 
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/products/${product.id}`} className="relative z-40">
           <h3 className="text-[13px] font-bold text-[#333] mb-2 uppercase tracking-wide group-hover:text-[var(--primary)] transition-colors">{product.name}</h3>
         </Link>
         

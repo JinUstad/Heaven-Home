@@ -4,73 +4,7 @@ import React, { useState } from 'react';
 import { ProductCard } from '@/components/ProductCard';
 import { Product } from '@/hooks/useCart';
 
-// Mock product database
-const ALL_PRODUCTS: Product[] = [
-  {
-    id: '1',
-    name: 'Royal Velvet Sofa',
-    price: 1299.99,
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
-    category: 'Furniture',
-    description: 'A luxurious velvet sofa that brings elegance to any living room.'
-  },
-  {
-    id: '2',
-    name: 'Golden Elegance Chandelier',
-    price: 899.00,
-    image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80',
-    category: 'Lighting',
-    description: 'Breathtaking golden chandelier to brighten up your dining area.'
-  },
-  {
-    id: '3',
-    name: 'Olive Grove Armchair',
-    price: 549.50,
-    image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=800&q=80',
-    category: 'Furniture',
-    description: 'Comfortable armchair in deep olive green, perfectly matching your decor.'
-  },
-  {
-    id: '4',
-    name: 'Minimalist Coffee Table',
-    price: 349.99,
-    image: 'https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&w=800&q=80',
-    category: 'Furniture',
-    description: 'Sleek and minimalist coffee table with a gold-accented frame.'
-  },
-  {
-    id: '5',
-    name: 'Botanical Ceramic Vase',
-    price: 85.00,
-    image: 'https://images.unsplash.com/photo-1578500494198-246f612d3b3d?auto=format&fit=crop&w=800&q=80',
-    category: 'Decor',
-    description: 'Handcrafted ceramic vase with elegant botanical motifs.'
-  },
-  {
-    id: '6',
-    name: 'Brass Floor Lamp',
-    price: 245.00,
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
-    category: 'Lighting',
-    description: 'Modern brass floor lamp providing warm ambient lighting.'
-  },
-  {
-    id: '7',
-    name: 'Velvet Throw Pillow',
-    price: 45.00,
-    image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&w=800&q=80',
-    category: 'Decor',
-    description: 'Soft velvet throw pillow in deep olive.'
-  },
-  {
-    id: '8',
-    name: 'Walnut Dining Table',
-    price: 1450.00,
-    image: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80',
-    category: 'Furniture',
-    description: 'Solid walnut dining table seating up to 8.'
-  }
-];
+import { ALL_PRODUCTS } from '@/data/products';
 
 const CATEGORIES = ['All', 'Furniture', 'Lighting', 'Decor'];
 
