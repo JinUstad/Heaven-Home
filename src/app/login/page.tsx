@@ -21,8 +21,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 font-serif">
+        <div className="flex flex-col items-center">
+          {/* Heaven Home Logo */}
+          <Link href="/" className="mb-3 hover:scale-105 transition-transform">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Heaven Home Logo" className="h-16 w-auto object-contain" />
+          </Link>
+          <h2 className="text-center text-3xl font-extrabold text-gray-900 font-serif">
             Welcome Back
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">

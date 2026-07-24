@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "Heaven Home | Premium Furniture & Interior Design",
   description: "Elevate your living spaces with Heaven Home's premium collection of handcrafted furniture, timeless lighting, and luxury home decor. Discover your perfect piece today.",
   keywords: "luxury furniture, interior design, premium decor, modern sofas, luxury lighting, Heaven Home",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "Heaven Home | Premium Furniture & Decor",
     description: "Elevate your living spaces with Heaven Home's premium collection of handcrafted furniture and timeless design.",
