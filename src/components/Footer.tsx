@@ -62,7 +62,17 @@ export function Footer() {
         </div>
         
         <div className="border-t border-white/20 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} Heaven Home. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} Heaven Home. All rights reserved. | Design by{" "}
+            <a
+              href="https://www.devfordevs.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--accent)] hover:underline font-semibold text-white/90"
+            >
+              DevforDevs
+            </a>
+          </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Instagram</a>
             <a href="#" className="hover:text-white transition-colors">Facebook</a>
@@ -73,3 +83,4 @@ export function Footer() {
     </footer>
   );
 }
+
