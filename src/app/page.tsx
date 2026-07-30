@@ -267,7 +267,7 @@ export default function HomePage() {
 
       {/* 3. Promotional Banners */}
       <section className="w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 h-[300px] md:h-[400px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 min-h-[300px] md:h-[400px]">
           {/* Olive Banner */}
           <div className="bg-[var(--primary)] relative overflow-hidden flex items-center p-12">
             <div className="absolute -left-20 bg-[#222] w-64 h-64 rounded-full opacity-20" />

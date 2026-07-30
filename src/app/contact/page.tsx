@@ -8,31 +8,31 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#f8f9fa] py-20">
+    <main className="min-h-screen bg-[#f8f9fa] py-10 sm:py-16 md:py-20">
       <section className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <span className="text-[var(--primary)] font-bold tracking-widest uppercase text-sm mb-4 block">
             We're Here to Help
           </span>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#333] mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-[#333] mb-4">
             Contact Us
           </h1>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <p className="text-gray-500 max-w-2xl mx-auto text-sm sm:text-base">
             Whether you have a question about our premium collections, need design advice, or want to inquire about a custom order, our team is ready to assist you.
           </p>
         </div>
 
         <article className="bg-white shadow-2xl rounded-2xl overflow-hidden flex flex-col lg:flex-row">
 
-          {/* Left Side: Contact Info & Map */}
-          <aside className="lg:w-1/3 bg-[var(--primary)] text-white p-12 flex flex-col justify-between relative overflow-hidden">
+          {/* Left Side: Contact Info */}
+          <aside className="lg:w-1/3 bg-[var(--primary)] text-white p-6 sm:p-10 lg:p-12 flex flex-col justify-between relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-black opacity-10 rounded-full translate-y-1/3 -translate-x-1/4" />
 
             <div className="relative z-10">
-              <h3 className="text-2xl font-serif font-bold mb-8">Contact Information</h3>
+              <h3 className="text-xl sm:text-2xl font-serif font-bold mb-6 sm:mb-8">Contact Information</h3>
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -66,7 +66,7 @@ export default function ContactPage() {
           </aside>
 
           {/* Right Side: Form */}
-          <section className="lg:w-2/3 p-12 lg:p-16 bg-white">
+          <section className="lg:w-2/3 p-6 sm:p-10 lg:p-16 bg-white">
             <h3 className="text-2xl font-serif font-bold text-[#333] mb-8">Send a Message</h3>
 
             <form className="space-y-6">

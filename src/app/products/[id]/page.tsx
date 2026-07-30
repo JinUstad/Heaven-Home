@@ -194,7 +194,7 @@ export default function ProductDetailsPage() {
             <p>{product.description}</p>
           </div>
 
-          <div className="flex items-center gap-6 mb-10 pb-10 border-b border-gray-200">
+          <div className="flex items-center flex-wrap gap-4 sm:gap-6 mb-10 pb-10 border-b border-gray-200">
             {/* Quantity Selector */}
             <div className="flex items-center border border-gray-300 rounded-full bg-white h-14 w-36 shadow-sm">
               <button 
