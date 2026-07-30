@@ -74,10 +74,16 @@ export default function ShippingAndReturnsPage() {
               <span>ALL PURCHASES MADE ON HEAVEN HOME ARE STRICTLY NON-REFUNDABLE.</span>
             </div>
             <p>
-              Due to the bespoke, handcrafted nature of our high-end furniture and decor products, <strong>we do not accept returns, cancellations, or cash refunds</strong> once an order has been dispatched or confirmed.
+              At Heaven Home, we are committed to delivering premium-quality home and kitchen products. To maintain the highest standards of quality and hygiene, all orders are considered <em>final</em> once they are confirmed.
             </p>
             <p>
-              Please inspect all product dimensions, material specifications, and color swatches carefully on the product detail page prior to placing your order.
+              We do not accept returns, cancellations, exchanges, or cash refunds after an order has been confirmed or dispatched, except in cases where the product is received damaged, defective, or incorrect.
+            </p>
+            <p>
+              Before placing your order, please carefully review the product description, dimensions, specifications, color, features, and images to ensure the product meets your requirements.
+            </p>
+            <p className="font-semibold text-gray-800 pt-2 border-t border-gray-100">
+              By completing your purchase, you acknowledge and agree to this Non-Refundable & Final Sale Policy.
             </p>
           </div>
         </section>
