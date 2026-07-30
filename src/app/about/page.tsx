@@ -111,9 +111,9 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l5.653-4.655M18.75 3a3.75 3.75 0 00-3.75 3.75c0 .416.068.816.195 1.192" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-[#222] mb-3">Master Craftsmanship</h3>
+              <h3 className="text-lg font-bold text-[#222] mb-3">Premium Quality</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Hand-cut, hand-joined, and meticulously inspected by master artisans before reaching your doorstep.
+                Every Heaven Home product is thoughtfully designed and carefully quality-checked to deliver durability, functionality, and exceptional performance for everyday use.
               </p>
             </div>
 
@@ -124,9 +124,9 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-[#222] mb-3">Sustainable Sourcing</h3>
+              <h3 className="text-lg font-bold text-[#222] mb-3">Responsible Quality</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                We exclusively source FSC-certified woods, non-toxic finishes, and eco-conscious fabrics.
+                We strive to source quality materials responsibly and design products that are durable, reusable, and made to support a more sustainable everyday lifestyle.
               </p>
             </div>
 
@@ -137,9 +137,9 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-[#222] mb-3">Ergonomic Luxury</h3>
+              <h3 className="text-lg font-bold text-[#222] mb-3">Modern Innovation</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Designed for optimal posture, high-density comfort, and visual harmony in living environments.
+                Designed with precision and purpose, our kitchen essentials deliver effortless functionality, premium quality, and timeless style for modern homes.
               </p>
             </div>
 
@@ -152,7 +152,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-bold text-[#222] mb-3">Dedicated Support</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Our interior design specialists are available around the clock to assist your shopping journey.
+                Our customer support team is committed to providing prompt, reliable assistance before, during, and after your purchase, ensuring a smooth and hassle-free shopping experience.
               </p>
             </div>
 
