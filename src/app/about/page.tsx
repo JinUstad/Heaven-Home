@@ -221,10 +221,10 @@ export default function AboutPage() {
           <div className="bg-amber-50 border border-amber-100 p-10 sm:p-14 rounded-3xl mb-16 text-center max-w-4xl mx-auto relative">
             <div className="text-amber-400 text-4xl mb-4">★★★★★</div>
             <p className="text-lg sm:text-2xl font-serif text-[#222] italic leading-relaxed">
-              "The Royal Velvet Sofa and Brass Lamp completely elevated our living room. The quality is unmatched and the attention to detail is remarkable."
+              "Excellent quality, elegant design, and practical functionality. Heaven Home products have become an essential part of our kitchen. We'll definitely be ordering again!"
             </p>
             <div className="mt-6 font-bold text-[#333] text-sm uppercase tracking-wider">
-              — Victoria & Marcus Chen, Verified Buyers
+              — Verified Customer
             </div>
           </div>
 
@@ -232,10 +232,10 @@ export default function AboutPage() {
           <div className="bg-[var(--primary)] rounded-3xl p-10 sm:p-16 text-center text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10 max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-5xl font-serif font-bold mb-6 leading-tight">
-                Ready to Transform Your Home?
+                Ready to Transform Your Kitchen?
               </h2>
               <p className="text-white/80 text-base sm:text-lg mb-8 font-light">
-                Browse our latest collection of handcrafted furniture and decor pieces designed for modern living.
+                Browse our latest collection of premium kitchen essentials designed for modern homes.
               </p>
               <Link href="/products">
                 <button className="px-10 py-4 bg-[#ffcc00] text-[#222] font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors rounded-full shadow-md">
