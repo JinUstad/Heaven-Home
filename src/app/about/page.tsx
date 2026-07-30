@@ -8,9 +8,9 @@ export default function AboutPage() {
     <div className="flex flex-col w-full bg-white text-[#333] font-sans overflow-hidden">
 
       {/* ================= SECTION 1: HERO BANNER ================= */}
-      <section className="relative h-[65vh] min-h-[480px] flex items-center justify-center bg-cover bg-center overflow-hidden" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80')` }}>
+      <section className="relative min-h-[580px] py-16 sm:py-24 flex items-center justify-center bg-cover bg-center overflow-hidden" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80')` }}>
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/90 via-black/70 to-black/60 z-0" />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white flex flex-col items-center">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white flex flex-col items-center py-6">
           <span className="text-[var(--accent)] font-bold tracking-widest uppercase text-xs sm:text-sm mb-4 animate-fade-in">
             About Heaven Home
           </span>
@@ -18,13 +18,16 @@ export default function AboutPage() {
             Elevating Every Kitchen  <br className="hidden sm:inline" />
             <span className="text-[var(--accent)]">with Style & Innovation</span>
           </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-2xl mb-8 font-light leading-relaxed">
-            Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking and dining more elegant, organized, and effortless. We offer thoughtfully designed, high-quality kitchen products that combine modern functionality with timeless aesthetics. From smart storage solutions to innovative cooking accessories, our mission is to bring style, convenience, and lasting value to every kitchen.          </p>
-          <Link href="/products">
-            <button className="px-8 py-3.5 bg-[var(--accent)] text-white font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all rounded-full shadow-lg">
-              Explore Our Collection
-            </button>
-          </Link>
+          <p className="text-base sm:text-lg text-white/80 max-w-2xl mb-10 font-light leading-relaxed">
+            Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking and dining more elegant, organized, and effortless. We offer thoughtfully designed, high-quality kitchen products that combine modern functionality with timeless aesthetics. From smart storage solutions to innovative cooking accessories, our mission is to bring style, convenience, and lasting value to every kitchen.
+          </p>
+          <div className="pb-4">
+            <Link href="/products">
+              <button className="px-9 py-4 bg-[var(--accent)] text-white font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all rounded-full shadow-xl hover:-translate-y-0.5">
+                Explore Our Collection
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 
