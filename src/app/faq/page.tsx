@@ -8,14 +8,6 @@ export const metadata = {
 
 const faqs = [
   {
-    question: "What materials do you use for your furniture?",
-    answer: "We source only premium, sustainably harvested woods, high-density foam, and top-tier fabrics and leathers for our furniture. Each piece is crafted to ensure durability and timeless elegance."
-  },
-  {
-    question: "Do you offer international shipping?",
-    answer: "Currently, we offer shipping within the domestic US and Canada. We are working on expanding our logistics to support international shipping in the near future."
-  },
-  {
     question: "What is your return policy?",
     answer: "We offer a 30-day hassle-free return policy. If you are not completely satisfied with your purchase, you can return it within 30 days of delivery for a full refund, minus return shipping costs."
   },
