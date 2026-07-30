@@ -81,8 +81,6 @@ export function Footer() {
             >
               Instagram
             </a>
-            <a href="#" className="hover:text-white transition-colors">Facebook</a>
-            <a href="#" className="hover:text-white transition-colors">Pinterest</a>
           </div>
         </div>
       </div>
