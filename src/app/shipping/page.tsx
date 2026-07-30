@@ -39,7 +39,7 @@ export default function ShippingAndReturnsPage() {
               <h2 className="text-2xl font-serif font-bold text-[#222]">Order Dispatch & Delivery Timelines</h2>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600">
             <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
               <h4 className="font-bold text-[#222] mb-2">Order Processing</h4>
               <p>All orders are verified and dispatched within 24 to 48 business hours after payment confirmation.</p>
@@ -47,10 +47,6 @@ export default function ShippingAndReturnsPage() {
             <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
               <h4 className="font-bold text-[#222] mb-2">Standard Delivery</h4>
               <p>Domestic shipments typically arrive within 5 to 7 business days depending on destination logistics.</p>
-            </div>
-            <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-              <h4 className="font-bold text-[#222] mb-2">Freight & Furniture</h4>
-              <p>Large furniture items are handled via specialist white-glove couriers with scheduled delivery appointments.</p>
             </div>
           </div>
         </section>
