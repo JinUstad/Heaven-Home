@@ -89,13 +89,6 @@ export function Navbar() {
 
               {/* Dynamic Dropdown Card */}
               <div className="absolute top-full left-0 w-64 bg-white shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 rounded-2xl overflow-hidden py-3 px-2">
-                <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider px-3 py-1 border-b border-gray-100 mb-1 flex items-center justify-between">
-                  <span>Backend Categories</span>
-                  <span className="bg-[#4A5D23]/10 text-[#4A5D23] px-2 py-0.5 rounded-full text-[10px] font-bold">
-                    {categories.length}
-                  </span>
-                </div>
-
                 <div className="max-h-80 overflow-y-auto space-y-1 custom-scrollbar">
                   {fetchingCategories ? (
                     <div className="px-3 py-3 text-xs text-gray-400 text-center">Loading categories...</div>
@@ -114,7 +107,7 @@ export function Navbar() {
                       {categories.map((cat) => (
                         <Link
                           key={cat.id}
-                          href={`/products?category=${encodeURIComponent(cat.name)}`}
+                          href="/products"
                           className="flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:bg-[#4A5D23]/10 hover:text-[#4A5D23] rounded-xl transition-colors group/item"
                         >
                           <span className="truncate">{cat.name}</span>
@@ -195,7 +188,7 @@ export function Navbar() {
             {categories.map((cat) => (
               <Link
                 key={cat.id}
-                href={`/products?category=${encodeURIComponent(cat.name)}`}
+                href="/products"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-sm font-medium text-gray-700 hover:text-[#4A5D23] pl-4 py-1"
               >

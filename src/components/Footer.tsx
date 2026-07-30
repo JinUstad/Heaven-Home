@@ -26,8 +26,8 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-6 text-white">Shop</h3>
             <ul className="space-y-4 text-sm">
               <li><Link href="/products" className="hover:text-[var(--accent)] transition-colors">All Products</Link></li>
-              <li><Link href="/products?category=furniture" className="hover:text-[var(--accent)] transition-colors">Kitchen Assentials</Link></li>
-              <li><Link href="/products?category=decor" className="hover:text-[var(--accent)] transition-colors">jewelries</Link></li>
+              <li><Link href="/products" className="hover:text-[var(--accent)] transition-colors">Kitchen Assentials</Link></li>
+              <li><Link href="/products" className="hover:text-[var(--accent)] transition-colors">jewelries</Link></li>
             </ul>
           </div>
 

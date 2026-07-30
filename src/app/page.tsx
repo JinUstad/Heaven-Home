@@ -207,7 +207,7 @@ export default function HomePage() {
                   return (
                     <Link
                       key={cat.id}
-                      href={`/products?category=${encodeURIComponent(cat.name)}`}
+                      href="/products"
                       className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1 rounded-2xl group border border-black/5`}
                     >
                       <div className="w-36 h-36 rounded-2xl overflow-hidden mb-6 bg-white/60 p-2 shadow-sm flex items-center justify-center">
