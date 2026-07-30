@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function AboutPage() {
   return (
     <div className="flex flex-col w-full bg-white text-[#333] font-sans overflow-hidden">
-      
+
       {/* ================= SECTION 1: HERO BANNER ================= */}
       <section className="relative h-[65vh] min-h-[480px] flex items-center justify-center bg-cover bg-center overflow-hidden" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1920&q=80')` }}>
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/90 via-black/70 to-black/60 z-0" />
@@ -15,12 +15,11 @@ export default function AboutPage() {
             About Heaven Home
           </span>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold mb-6 leading-tight max-w-4xl">
-            Redefining Comfort & <br className="hidden sm:inline" />
-            <span className="text-[var(--accent)]">Timeless Elegance</span>
+            Elevating Every Kitchen  <br className="hidden sm:inline" />
+            <span className="text-[var(--accent)]">with Style & Innovation</span>
           </h1>
           <p className="text-base sm:text-lg text-white/80 max-w-2xl mb-8 font-light leading-relaxed">
-            Since 2026, Heaven Home has been crafting masterwork furniture and home decor designed to turn everyday living spaces into peaceful sanctuaries.
-          </p>
+            Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking and dining more elegant, organized, and effortless. We offer thoughtfully designed, high-quality kitchen products that combine modern functionality with timeless aesthetics. From smart storage solutions to innovative cooking accessories, our mission is to bring style, convenience, and lasting value to every kitchen.          </p>
           <Link href="/products">
             <button className="px-8 py-3.5 bg-[var(--accent)] text-white font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all rounded-full shadow-lg">
               Explore Our Collection
@@ -34,21 +33,19 @@ export default function AboutPage() {
       <section className="py-20 bg-gray-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
+
             {/* Story Text */}
             <div className="space-y-6">
               <span className="text-[var(--primary)] font-bold text-xs tracking-widest uppercase block">
                 Our Story & Heritage
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] leading-tight">
-                Where Handcrafted Heritage Meets Modern Living
+                Where Innovation Meets Everyday Cooking
               </h2>
               <p className="text-gray-600 leading-relaxed text-base">
-                Heaven Home was founded with a singular, powerful vision: that home should be more than just a place to live—it should be a refuge of beauty, luxury, and warmth. What started as a boutique design studio has grown into a trusted luxury e-commerce destination for homeowners worldwide.
-              </p>
+                Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking simpler, smarter, and more enjoyable. We combine elegant design with practical functionality to create products that enhance every modern kitchen.              </p>
               <p className="text-gray-600 leading-relaxed text-base">
-                Every piece in our catalog is thoughtfully engineered by master craftsmen using sustainably sourced solid woods, rich velvet fabrics, and precision hardware built to last generations.
-              </p>
+                Our carefully curated collection is built with a focus on quality, durability, and innovation, ensuring every product delivers lasting performance while adding style and convenience to your daily routine.              </p>
 
               {/* Stats Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-gray-200">
@@ -74,9 +71,9 @@ export default function AboutPage() {
             {/* Visual Mosaic */}
             <div className="relative">
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white">
-                <img 
-                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80" 
-                  alt="Living Room Craftsmanship" 
+                <img
+                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80"
+                  alt="Living Room Craftsmanship"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -107,7 +104,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            
+
             {/* Card 1 */}
             <div className="bg-gray-50 border border-gray-100 p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all group">
               <div className="w-14 h-14 rounded-2xl bg-[var(--primary)] text-white flex items-center justify-center mb-6 group-hover:bg-[var(--accent)] transition-colors">
@@ -214,81 +211,13 @@ export default function AboutPage() {
       </section>
 
 
-      {/* ================= SECTION 5: MEET OUR LEADERSHIP & DESIGNERS ================= */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-[var(--primary)] font-bold text-xs tracking-widest uppercase block mb-2">
-              The Visionaries Behind Heaven Home
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#222]">
-              Meet Our Design Leaders
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {/* Person 1 */}
-            <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
-              <div className="h-72 bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" 
-                  alt="Sophia Vance" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#222]">Sophia Vance</h3>
-                <p className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider mt-1">Founder & CEO</p>
-                <p className="text-sm text-gray-500 mt-4 leading-relaxed">
-                  "Our goal is to ensure every piece of furniture we make carries a soul and story of its own."
-                </p>
-              </div>
-            </div>
-
-            {/* Person 2 */}
-            <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
-              <div className="h-72 bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" 
-                  alt="Julian Thorne" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#222]">Julian Thorne</h3>
-                <p className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider mt-1">Head Furniture Architect</p>
-                <p className="text-sm text-gray-500 mt-4 leading-relaxed">
-                  "Blending structural strength with graceful curves creates timeless furniture that never ages."
-                </p>
-              </div>
-            </div>
-
-            {/* Person 3 */}
-            <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
-              <div className="h-72 bg-gray-200 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" 
-                  alt="Elena Rostova" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#222]">Elena Rostova</h3>
-                <p className="text-xs font-bold text-[var(--accent)] uppercase tracking-wider mt-1">Director of Textile & Decor</p>
-                <p className="text-sm text-gray-500 mt-4 leading-relaxed">
-                  "Texture and color harmony transform a house from ordinary to an extraordinary sanctuary."
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       {/* ================= SECTION 6: TESTIMONIAL & CALL TO ACTION ================= */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Testimonial Banner */}
           <div className="bg-amber-50 border border-amber-100 p-10 sm:p-14 rounded-3xl mb-16 text-center max-w-4xl mx-auto relative">
             <div className="text-amber-400 text-4xl mb-4">★★★★★</div>
