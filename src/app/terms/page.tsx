@@ -27,7 +27,7 @@ export default function TermsOfServicePage() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
         
-        {/* SECTION 1: ACCEPTANCE & OVERVIEW */}
+        {/* SECTION 1: AGREEMENT TO TERMS */}
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
@@ -40,13 +40,25 @@ export default function TermsOfServicePage() {
               <h2 className="text-2xl font-serif font-bold text-[#222]">Agreement to Terms</h2>
             </div>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            By accessing or placing an order through Heaven Home (accessible via web and mobile platforms), you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree with any portion of these terms, you must refrain from using our services.
-          </p>
+          <div className="text-sm text-gray-600 leading-relaxed space-y-3">
+            <p className="font-medium text-gray-800">Welcome to <em>Heaven Home</em>.</p>
+            <p>
+              These Terms of Service ("Terms") govern your access to and use of the Heaven Home website, mobile website, and any related services, features, or content provided by us.
+            </p>
+            <p>
+              By accessing, browsing, or placing an order through Heaven Home, you confirm that you have read, understood, and agree to be legally bound by these Terms, together with our Privacy Policy, Shipping Policy, Return & Refund Policy, and any other policies published on our website.
+            </p>
+            <p>
+              If you do not agree with any part of these Terms, you must immediately discontinue use of our website and services and refrain from placing any orders.
+            </p>
+            <p>
+              Your continued use of Heaven Home constitutes your acceptance of these Terms and any future updates or modifications posted on our website.
+            </p>
+          </div>
         </section>
 
 
-        {/* SECTION 2: USER ACCOUNTS & ELIGIBILITY */}
+        {/* SECTION 2: USER ACCOUNTS & RESPONSIBILITIES */}
         <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
@@ -59,9 +71,20 @@ export default function TermsOfServicePage() {
               <h2 className="text-2xl font-serif font-bold text-[#222]">User Accounts & Responsibilities</h2>
             </div>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            To make purchases or access administrative portals, you may be required to register an account. You represent that you are at least 18 years of age and that all information provided is accurate and current. You are solely responsible for maintaining the confidentiality of your login credentials.
-          </p>
+          <div className="text-sm text-gray-600 leading-relaxed space-y-3">
+            <p>
+              To access certain features of Heaven Home, including placing orders or managing your account, you may be required to create a user account.
+            </p>
+            <p>
+              By registering an account, you represent and warrant that you are at least <em>18 years of age</em> or are accessing our services under the supervision of a parent or legal guardian, and that all information you provide is accurate, complete, and kept up to date at all times.
+            </p>
+            <p>
+              You are solely responsible for maintaining the confidentiality and security of your account credentials, including your username and password, and for all activities that occur under your account. Heaven Home shall not be liable for any loss, damage, or unauthorized activity resulting from your failure to safeguard your account credentials.
+            </p>
+            <p>
+              You agree to notify Heaven Home immediately of any unauthorized access to or suspected security breach involving your account. We reserve the right to suspend, restrict, or terminate any account that contains false information, violates these Terms, or is used for fraudulent, unlawful, or abusive activities.
+            </p>
+          </div>
         </section>
 
 
@@ -86,44 +109,6 @@ export default function TermsOfServicePage() {
               <strong>Non-Refundable Policy Notice:</strong> All confirmed orders are final sales and strictly non-refundable. Please review our <Link href="/shipping" className="text-[var(--primary)] underline font-bold">Shipping & Return Policy</Link> for transit damage replacement guidelines.
             </div>
           </div>
-        </section>
-
-
-        {/* SECTION 4: INTELLECTUAL PROPERTY */}
-        <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider">Section 04</span>
-              <h2 className="text-2xl font-serif font-bold text-[#222]">Intellectual Property Rights</h2>
-            </div>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            All content on this site—including high-resolution furniture photography, logos, branding elements, product descriptions, and custom code—is the exclusive property of Heaven Home and protected under copyright and trademark laws. Unauthorized reproduction or commercial distribution is prohibited.
-          </p>
-        </section>
-
-
-        {/* SECTION 5: LIMITATION OF LIABILITY */}
-        <section className="bg-gray-50 border border-gray-100 p-8 sm:p-10 rounded-3xl space-y-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-[var(--primary)] text-white rounded-2xl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.5H5.25A2.25 2.25 0 003 6.75v10.5a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 17.25V6.75A2.25 2.25 0 0018.75 4.5z" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider">Section 05</span>
-              <h2 className="text-2xl font-serif font-bold text-[#222]">Limitation of Liability</h2>
-            </div>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Heaven Home shall not be liable for any indirect, incidental, or consequential damages arising out of product usage beyond the purchase price of the specified order. Natural wood variations and artisan fabric textures are characteristics of handcrafted craftsmanship and do not constitute defects.
-          </p>
         </section>
 
 
