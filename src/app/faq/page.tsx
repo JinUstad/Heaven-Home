@@ -9,7 +9,7 @@ export const metadata = {
 const faqs = [
   {
     question: "What is your return policy?",
-    answer: "We offer a 30-day hassle-free return policy. If you are not completely satisfied with your purchase, you can return it within 30 days of delivery for a full refund, minus return shipping costs."
+    answer: "We offer a 7-day hassle-free return policy. If you are not completely satisfied with your purchase, you can return it within 7 days of delivery for a full refund, minus return shipping costs."
   },
   {
     question: "Do you offer interior design services?",
