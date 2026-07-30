@@ -23,12 +23,7 @@ export function Navbar() {
         if (!error && data && data.length > 0) {
           setCategories(data);
         } else {
-          // Fallback if DB empty
-          setCategories([
-            { id: '1', name: 'Living Room' },
-            { id: '2', name: 'Bedroom' },
-            { id: '3', name: 'Dining Room' }
-          ]);
+          setCategories([]);
         }
       } catch (err) {
         console.error('Error fetching backend categories:', err);
