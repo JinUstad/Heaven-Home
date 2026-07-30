@@ -73,7 +73,14 @@ export function Footer() {
             </a>
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">Instagram</a>
+            <a 
+              href="https://www.instagram.com/heaven_home.in?igsh=MWt2NDljaXlxZDk5YQ%3D%3D&utm_source=qr" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-white transition-colors"
+            >
+              Instagram
+            </a>
             <a href="#" className="hover:text-white transition-colors">Facebook</a>
             <a href="#" className="hover:text-white transition-colors">Pinterest</a>
           </div>
