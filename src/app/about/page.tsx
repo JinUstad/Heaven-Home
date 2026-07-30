@@ -232,10 +232,10 @@ export default function AboutPage() {
           <div className="bg-[var(--primary)] rounded-3xl p-10 sm:p-16 text-center text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10 max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-5xl font-serif font-bold mb-6 leading-tight">
-                Ready to Transform Your Kitchen?
+                Elevate Your Everyday Kitchen
               </h2>
               <p className="text-white/80 text-base sm:text-lg mb-8 font-light">
-                Browse our latest collection of premium kitchen essentials designed for modern homes.
+                Explore Heaven Home's collection of premium kitchen essentials, crafted to combine elegant design, innovative functionality, and lasting quality for modern homes.
               </p>
               <Link href="/products">
                 <button className="px-10 py-4 bg-[#ffcc00] text-[#222] font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors rounded-full shadow-md">
