@@ -48,18 +48,14 @@ export default function AboutPage() {
                 Our carefully curated collection is built with a focus on quality, durability, and innovation, ensuring every product delivers lasting performance while adding style and convenience to your daily routine.              </p>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-gray-200">
+              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-gray-200">
                 <div>
                   <div className="text-3xl font-serif font-bold text-[var(--primary)]">10K+</div>
                   <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">Happy Homes</div>
                 </div>
                 <div>
                   <div className="text-3xl font-serif font-bold text-[var(--primary)]">100%</div>
-                  <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">Artisan Made</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-serif font-bold text-[var(--primary)]">15+</div>
-                  <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">Global Outlets</div>
+                  <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">Quality Assured</div>
                 </div>
                 <div>
                   <div className="text-3xl font-serif font-bold text-[var(--primary)]">4.9★</div>
