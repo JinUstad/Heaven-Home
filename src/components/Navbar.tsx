@@ -81,7 +81,7 @@ export function Navbar() {
             {/* Dynamic Backend Category Dropdown */}
             <div className="group relative">
               <Link href="/products" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-colors flex items-center gap-1.5 h-full py-6">
-                Collection
+                Products
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3.5 h-3.5 group-hover:rotate-180 transition-transform duration-200">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -100,7 +100,7 @@ export function Navbar() {
                         href="/products"
                         className="flex items-center justify-between px-3 py-2 text-sm font-semibold text-gray-800 hover:bg-[#4A5D23]/10 hover:text-[#4A5D23] rounded-xl transition-colors"
                       >
-                        <span>All Collections</span>
+                        <span>All Products</span>
                         <span className="text-xs text-gray-400">→</span>
                       </Link>
                       
@@ -177,7 +177,7 @@ export function Navbar() {
           </Link>
           
           <div className="py-2 border-b border-gray-100 space-y-2">
-            <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Our Collections</span>
+            <span className="block text-xs font-bold text-gray-400 uppercase tracking-wider">Our Products</span>
             <Link
               href="/products"
               onClick={() => setMobileMenuOpen(false)}
