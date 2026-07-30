@@ -68,14 +68,14 @@ export default function AboutPage() {
             <div className="relative">
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white">
                 <img
-                  src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=80"
-                  alt="Living Room Craftsmanship"
+                  src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1000&q=80"
+                  alt="Modern Kitchen Elegance"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 hidden sm:block max-w-xs">
-                <p className="text-sm font-serif italic text-gray-700">"Simplicity is the ultimate sophistication in home design."</p>
-                <p className="text-xs font-bold text-[var(--primary)] mt-2 uppercase tracking-wider">— Chief Creative Officer</p>
+              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 hidden sm:block max-w-sm">
+                <p className="text-sm font-serif italic text-gray-700">"Great kitchens aren't defined by size—they're defined by thoughtful design and the tools that make every moment effortless."</p>
+                <p className="text-xs font-bold text-[var(--primary)] mt-2 uppercase tracking-wider">— Heaven Home</p>
               </div>
             </div>
 
