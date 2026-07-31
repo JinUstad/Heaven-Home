@@ -103,7 +103,7 @@ export default function TermsOfServicePage() {
           </div>
           <div className="text-sm text-gray-700 space-y-3 leading-relaxed">
             <p>
-              All prices are listed in USD unless otherwise indicated. Heaven Home reserves the right to correct typographical pricing errors or adjust product availability at any time.
+              All prices are listed in INR (₹) unless otherwise indicated. Heaven Home reserves the right to correct typographical pricing errors or adjust product availability at any time.
             </p>
             <div className="p-4 bg-white rounded-xl border border-amber-200 text-amber-950 font-medium">
               <strong>Non-Refundable Policy Notice:</strong> All confirmed orders are final sales and strictly non-refundable. Please review our <Link href="/shipping" className="text-[var(--primary)] underline font-bold">Shipping & Return Policy</Link> for transit damage replacement guidelines.

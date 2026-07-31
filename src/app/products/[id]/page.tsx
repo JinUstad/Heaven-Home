@@ -174,13 +174,13 @@ export default function ProductDetailsPage() {
           <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-3">{product.category}</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-4 leading-tight">{product.name}</h1>
           
-          <div className="flex items-center flex-wrap gap-4 mb-8">
-            <span className="text-3xl sm:text-4xl font-bold text-[var(--primary)]">
-              ${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+          <div className="flex items-center space-x-4 mb-6">
+            <span className="text-3xl font-bold text-[var(--primary)]">
+              ₹{product.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             </span>
             {product.oldPrice && (
-              <span className="text-xl sm:text-2xl text-gray-400 line-through font-medium opacity-75">
-                ${product.oldPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              <span className="text-xl text-gray-400 line-through">
+                ₹{product.oldPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </span>
             )}
             {product.discount && (

@@ -70,7 +70,7 @@ export default function CartPage() {
                     
                     <div className="w-full sm:col-span-1 flex justify-between sm:justify-center items-center">
                       <span className="sm:hidden text-gray-500">Price:</span>
-                      <span className="font-medium text-gray-900">${item.price.toFixed(2)}</span>
+                      <span className="font-medium text-gray-900">₹{item.price.toFixed(2)}</span>
                     </div>
                     
                     <div className="w-full sm:col-span-1 flex justify-between sm:justify-center items-center">
@@ -95,7 +95,7 @@ export default function CartPage() {
                     
                     <div className="w-full sm:col-span-1 flex justify-between sm:justify-end items-center">
                       <span className="sm:hidden text-gray-500">Total:</span>
-                      <span className="font-bold text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
+                      <span className="font-bold text-gray-900">₹{(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   </li>
                 ))}
@@ -123,7 +123,7 @@ export default function CartPage() {
               <div className="space-y-4 mb-6 text-gray-600">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-medium text-gray-900">${cartTotal.toFixed(2)}</span>
+                  <span className="font-medium text-gray-900">₹{cartTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
@@ -138,7 +138,7 @@ export default function CartPage() {
               <div className="border-t border-gray-100 pt-4 mb-6">
                 <div className="flex justify-between items-center text-lg">
                   <span className="font-bold text-gray-900">Total</span>
-                  <span className="font-bold text-[var(--primary)] text-2xl">${cartTotal.toFixed(2)}</span>
+                  <span className="font-bold text-[var(--primary)] text-2xl">₹{cartTotal.toFixed(2)}</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-1 text-right">Including VAT</p>
               </div>

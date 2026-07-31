@@ -97,9 +97,9 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* These hide on hover when Add to Cart appears */}
         <div className="flex flex-col items-center group-hover:opacity-0 transition-opacity duration-300">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[15px] font-bold text-[var(--primary)]">${product.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span className="text-[15px] font-bold text-[var(--primary)]">₹{product.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             {product.oldPrice && (
-              <span className="text-[13px] text-gray-400 line-through">${product.oldPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+              <span className="text-[13px] text-gray-400 line-through">₹{product.oldPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             )}
           </div>
           
