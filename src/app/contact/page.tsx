@@ -42,7 +42,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold mb-1">Call Us</h4>
                     <p className="text-white/80 text-sm">
-                      +91 9310444850<br />
+                      +91 93104 44850<br />
                       Mon-Fri, 10am - 6pm
                     </p>
                   </div>
@@ -88,7 +88,7 @@ export default function ContactPage() {
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="phone" className="text-sm font-bold text-gray-700 uppercase tracking-wide">Phone Number</label>
-                  <input type="tel" id="phone" className="w-full border-b-2 border-gray-200 bg-transparent py-3 text-gray-800 focus:outline-none focus:border-[var(--primary)] transition-colors" placeholder="+1 (555) 000-0000" />
+                  <input type="tel" id="phone" className="w-full border-b-2 border-gray-200 bg-transparent py-3 text-gray-800 focus:outline-none focus:border-[var(--primary)] transition-colors" placeholder="+9 85122 95869" />
                 </div>
               </div>
 
