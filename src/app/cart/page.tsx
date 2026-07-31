@@ -41,10 +41,9 @@ export default function CartPage() {
         throw new Error("Missing payment session ID from response");
       }
 
-      // 2. Load Cashfree SDK
-      // For production, change NEXT_PUBLIC_CASHFREE_ENVIRONMENT to "PRODUCTION" in Vercel
+      // 2. Load Cashfree SDK matching backend environment
       const cashfree = await load({
-        mode: process.env.NEXT_PUBLIC_CASHFREE_ENVIRONMENT === "PRODUCTION" ? "production" : "sandbox"
+        mode: data.environment || "sandbox"
       });
 
       // 3. Trigger Checkout Popup

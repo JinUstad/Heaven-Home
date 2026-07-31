@@ -8,14 +8,22 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !email || !password) {
+    if (!fullName || !email || !password || !confirmPassword || !address || !phoneNumber) {
       setError("Please fill in all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
@@ -23,20 +31,44 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      // Basic insert for now into the users table since auth isn't fully setup
-      const { error: dbError } = await supabase.from('users').insert([
-        { full_name: fullName, email: email }
-      ]);
+      // 1. Sign up the user with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            address: address,
+            phone_number: phoneNumber,
+          },
+        },
+      });
 
-      if (dbError) {
-        if (dbError.code === '23505') {
-          setError("Email already exists.");
-        } else {
-          setError(dbError.message);
-        }
-      } else {
-        setSuccess(true);
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
       }
+
+      // 2. Insert into the public users table so the admin dashboard can see them
+      if (authData.user) {
+        const { error: dbError } = await supabase.from("users").upsert([
+          { 
+            id: authData.user.id,
+            full_name: fullName, 
+            email: email,
+            address: address,
+            phone_number: phoneNumber,
+            created_at: new Date().toISOString()
+          }
+        ], { onConflict: 'email' });
+
+        if (dbError) {
+          console.error("Error inserting into users table:", dbError);
+        }
+      }
+
+      setSuccess(true);
     } catch (err: any) {
       setError(err.message);
     }
@@ -135,6 +167,38 @@ export default function RegisterPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+              <input
+                type="password"
+                required
+                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+              <textarea
+                required
+                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm resize-none h-24"
+                placeholder="Full Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+              <input
+                type="tel"
+                required
+                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                placeholder="+91 9876543210"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
           </div>

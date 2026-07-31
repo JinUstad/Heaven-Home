@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCart, Product } from '@/hooks/useCart';
 
 export type ExtendedProduct = Product & {
@@ -16,6 +17,7 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const isWishlisted = isInWishlist(product.id);
 
@@ -71,17 +73,29 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Product Info */}
       <div className="p-4 flex flex-col items-center text-center relative bg-white z-10 pointer-events-none">
         
-        {/* Hover Add to Cart (Slides up to replace price/stars) */}
-        <div className="absolute inset-0 bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-30 pointer-events-none">
+        {/* Hover Add to Cart and Buy Now (Slides up to replace price/stars) */}
+        <div className="absolute inset-0 bg-white flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-30 pointer-events-none">
           <button 
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               addToCart(product);
             }}
-            className="text-[var(--primary)] font-bold text-sm hover:underline tracking-wider pointer-events-auto"
+            className="text-[var(--primary)] font-bold text-[12px] hover:underline tracking-wider pointer-events-auto"
           >
-            + ADD TO CART
+            ADD TO CART
+          </button>
+          <div className="w-[1px] h-4 bg-gray-300"></div>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCart(product);
+              router.push('/cart');
+            }}
+            className="text-[#1a1a1a] font-bold text-[12px] hover:underline tracking-wider pointer-events-auto"
+          >
+            BUY NOW
           </button>
         </div>
 

@@ -36,7 +36,10 @@ export async function POST(req: NextRequest) {
 
     // Use the instance method
     const response = await cashfree.PGCreateOrder(request);
-    return NextResponse.json(response.data);
+    return NextResponse.json({
+      ...response.data,
+      environment: process.env.CASHFREE_ENVIRONMENT === "PRODUCTION" ? "production" : "sandbox"
+    });
   } catch (error: any) {
     console.error("Cashfree Order Error:", error);
     return NextResponse.json(

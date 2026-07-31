@@ -17,10 +17,38 @@ export default function LoginPage() {
       return;
     }
     setLoading(true);
-    // Simulate login for now or implement Supabase Email/Password if needed.
-    // Assuming the user just wants standard redirect for demo purpose:
+    // Real Supabase Email/Password login
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setError(authError.message);
+      setLoading(false);
+      return;
+    }
+
+    // Ensure they exist in the users table for the admin dashboard
+    if (authData.user) {
+      const { error: dbError } = await supabase.from("users").upsert([
+        { 
+          id: authData.user.id,
+          email: email,
+          // We might not have the full name here if they just logged in, 
+          // but we can default it or pull it from metadata if present
+          full_name: authData.user.user_metadata?.full_name || email.split('@')[0],
+          created_at: new Date().toISOString()
+        }
+      ], { onConflict: 'email' });
+
+      if (dbError) {
+        console.error("Error inserting into users table:", dbError);
+      }
+    }
+
     window.location.href = "/";
-    setLoading(false);
+    // Not setting loading to false because we are redirecting
   };
 
   const handleGoogleLogin = async () => {

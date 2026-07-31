@@ -23,12 +23,23 @@ export default function AuthCallback() {
       const intent = localStorage.getItem("auth_intent");
       localStorage.removeItem("auth_intent"); // clear it
 
-      // Check if user has a profile
+      // Check if user has a profile in the users table
       const { data: profile } = await supabase
-        .from("profiles")
+        .from("users")
         .select("id")
-        .eq("id", user.id)
+        .eq("email", user.email)
         .single();
+
+      // If they logged in via Google and aren't in the users table, add them
+      if (!profile) {
+        const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || "User";
+        await supabase.from("users").upsert([{
+            id: user.id,
+            email: user.email,
+            full_name: fullName,
+            created_at: new Date().toISOString()
+        }], { onConflict: 'email' });
+      }
 
       if (intent === "login") {
         if (!profile) {

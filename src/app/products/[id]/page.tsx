@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart, Product } from '@/hooks/useCart';
 import { supabase } from '@/lib/supabase';
 
 export default function ProductDetailsPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params?.id as string;
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
 
@@ -225,17 +226,25 @@ export default function ProductDetailsPage() {
             </button>
           </div>
 
-          {/* Add to Cart Action */}
-          <button 
-            onClick={() => addToCart(product, quantity)}
-            className="w-full bg-[#1a1a1a] hover:bg-[var(--primary)] text-white h-16 rounded-full font-bold uppercase tracking-widest text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Add to Cart
-          </button>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <button 
+              onClick={() => addToCart(product, quantity)}
+              className="flex-1 bg-white border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-gray-50 h-16 rounded-full font-bold uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-3"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Add to Cart
+            </button>
+            <button 
+              onClick={() => { addToCart(product, quantity); router.push('/cart'); }}
+              className="flex-1 bg-[#1a1a1a] hover:bg-[var(--primary)] text-white h-16 rounded-full font-bold uppercase tracking-widest text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
 
       </div>
