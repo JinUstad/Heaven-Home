@@ -84,7 +84,7 @@ function ProductsContent() {
             {activeCategory === 'All' ? 'Our Collection' : `${activeCategory} Collection`}
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our carefully curated selection of premium furniture and decor, designed to transform your house into a heaven home.
+            Heaven Home is a premium kitchen essentials brand offering thoughtfully designed products that combine elegant style, modern functionality, and lasting quality to make everyday cooking simpler and more enjoyable.
           </p>
         </div>
 
