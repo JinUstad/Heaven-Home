@@ -1,13 +1,80 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/Button';
+import { load } from '@cashfreepayments/cashfree-js';
+import toast from 'react-hot-toast';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) return;
+    setIsCheckingOut(true);
+    
+    try {
+      // 1. Create order on backend
+      const res = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: cartTotal,
+          customerId: `cust_${Date.now()}`,
+          customerName: "Guest User", // You can update this from user session if logged in
+          customerEmail: "guest@example.com",
+          customerPhone: "9999999999"
+        })
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) {
+        const errorMsg = data.details?.message || (typeof data.details === 'string' ? data.details : data.error) || "Failed to create order";
+        throw new Error(errorMsg);
+      }
+
+      if (!data.payment_session_id) {
+        throw new Error("Missing payment session ID from response");
+      }
+
+      // 2. Load Cashfree SDK
+      // For production, change NEXT_PUBLIC_CASHFREE_ENVIRONMENT to "PRODUCTION" in Vercel
+      const cashfree = await load({
+        mode: process.env.NEXT_PUBLIC_CASHFREE_ENVIRONMENT === "PRODUCTION" ? "production" : "sandbox"
+      });
+
+      // 3. Trigger Checkout Popup
+      const checkoutOptions = {
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_modal" as const
+      };
+
+      cashfree.checkout(checkoutOptions).then((result: any) => {
+        if(result.error){
+          toast(result.error.message || "Payment was cancelled.", { icon: 'ℹ️' });
+          console.log("Payment Info:", result.error.message || result.error);
+        }
+        if(result.redirect){
+          console.log("Payment will be redirected");
+        }
+        if(result.paymentDetails){
+          toast.success("Payment successful!");
+          console.log("Payment Details:", result.paymentDetails);
+          clearCart();
+        }
+        setIsCheckingOut(false);
+      });
+
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong during checkout.");
+      console.error(error);
+      setIsCheckingOut(false);
+    }
+  };
 
   if (cart.length === 0) {
     return (
@@ -138,8 +205,14 @@ export default function CartPage() {
                 </div>
               </div>
               
-              <Button variant="primary" fullWidth size="lg">
-                Proceed to Checkout
+              <Button 
+                variant="primary" 
+                fullWidth 
+                size="lg"
+                onClick={handleCheckout}
+                disabled={isCheckingOut}
+              >
+                {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
               </Button>
               
               <div className="mt-4 text-center">
@@ -147,7 +220,7 @@ export default function CartPage() {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                   </svg>
-                  Secure checkout
+                  Secure Cashfree checkout
                 </p>
               </div>
             </div>

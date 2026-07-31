@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/hooks/useCart";
 import { Navbar } from "@/components/Navbar";
+import { ActiveUserTracker } from "@/components/ActiveUserTracker";
 import { Footer } from "@/components/Footer";
 import { Toaster } from 'react-hot-toast';
 
@@ -61,6 +62,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
         <CartProvider>
+          <ActiveUserTracker />
           <Toaster position="bottom-right" reverseOrder={false} />
           <Navbar />
           <main className="flex-grow flex flex-col">
