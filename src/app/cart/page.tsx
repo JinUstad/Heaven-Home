@@ -125,13 +125,9 @@ export default function CartPage() {
                   <span>Subtotal</span>
                   <span className="font-medium text-gray-900">₹{cartTotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span>Shipping</span>
-                  <span className="font-medium text-gray-900">Calculated at checkout</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span className="font-medium text-gray-900">Calculated at checkout</span>
+                  <span className="font-bold text-xs uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/80">Free</span>
                 </div>
               </div>
               
@@ -140,7 +136,6 @@ export default function CartPage() {
                   <span className="font-bold text-gray-900">Total</span>
                   <span className="font-bold text-[var(--primary)] text-2xl">₹{cartTotal.toFixed(2)}</span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1 text-right">Including VAT</p>
               </div>
               
               <Button variant="primary" fullWidth size="lg">
