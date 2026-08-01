@@ -26,7 +26,10 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Generate recovery link
-    const origin = req.nextUrl.origin;
+    // Vercel sometimes doesn't set nextUrl.origin correctly depending on proxy setup
+    const host = req.headers.get("host") || "localhost:3000";
+    const protocol = req.headers.get("x-forwarded-proto") || "http";
+    const origin = req.headers.get("origin") || `${protocol}://${host}`;
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'recovery',
       email: email.trim(),
