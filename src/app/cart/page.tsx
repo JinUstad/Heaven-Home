@@ -7,16 +7,25 @@ import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/Button';
 import { load } from '@cashfreepayments/cashfree-js';
 import toast from 'react-hot-toast';
+import { supabase } from '@/lib/supabase';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
     setIsCheckingOut(true);
     
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setIsCheckingOut(false);
+        setShowLoginModal(true);
+        return;
+      }
+
       // 1. Create order on backend
       const res = await fetch("/api/create-order", {
         method: "POST",
@@ -52,7 +61,7 @@ export default function CartPage() {
         redirectTarget: "_modal" as const
       };
 
-      cashfree.checkout(checkoutOptions).then((result: any) => {
+      cashfree.checkout(checkoutOptions).then(async (result: any) => {
         if(result.error){
           toast(result.error.message || "Payment was cancelled.", { icon: 'ℹ️' });
           console.log("Payment Info:", result.error.message || result.error);
@@ -63,6 +72,33 @@ export default function CartPage() {
         if(result.paymentDetails){
           toast.success("Payment successful!");
           console.log("Payment Details:", result.paymentDetails);
+          
+          try {
+            // Save order to database
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user?.id) {
+              const { data: order, error: orderError } = await supabase
+                .from('orders')
+                .insert({ user_id: session.user.id, total_amount: cartTotal })
+                .select()
+                .single();
+                
+              if (order && !orderError) {
+                const orderItems = cart.map(item => ({
+                  order_id: order.id,
+                  product_id: item.id,
+                  quantity: item.quantity,
+                  price: item.price
+                }));
+                await supabase.from('order_items').insert(orderItems);
+              } else {
+                console.error("Error saving order:", orderError);
+              }
+            }
+          } catch (e) {
+            console.error("Error finalizing order:", e);
+          }
+          
           clearCart();
         }
         setIsCheckingOut(false);
@@ -226,6 +262,35 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Login Required Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-600">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">Login Required</h3>
+            <p className="text-gray-500 mb-6">You need to log in or sign up to proceed with the checkout process.</p>
+            <div className="flex flex-col gap-3">
+              <Link href="/login" onClick={() => setShowLoginModal(false)}>
+                <Button variant="primary" fullWidth size="lg">Log In</Button>
+              </Link>
+              <Link href="/register" onClick={() => setShowLoginModal(false)}>
+                <Button variant="outline" fullWidth size="lg">Sign Up</Button>
+              </Link>
+              <button 
+                onClick={() => setShowLoginModal(false)}
+                className="mt-2 text-sm text-gray-500 hover:text-gray-900 font-medium"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -10,6 +10,40 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [fetchingCategories, setFetchingCategories] = useState(true);
+  const [session, setSession] = useState<any>(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+
+  const getUserInitials = () => {
+    if (!session || !session.user) return "U";
+    
+    let name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || "";
+    
+    if (!name && session.user.email) {
+      name = session.user.email.split('@')[0];
+    }
+    
+    if (!name) return "U";
+    
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchBackendCategories = async () => {
@@ -146,9 +180,45 @@ export function Navbar() {
               )}
             </Link>
 
-            <Link href="/login" className="hidden sm:inline-block bg-[var(--primary)] text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full hover:bg-opacity-90 transition-colors">
-              Login
-            </Link>
+            {session ? (
+              <div className="relative hidden sm:block">
+                <button 
+                  onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                  className="w-10 h-10 rounded-full bg-[var(--primary)] text-white font-bold flex items-center justify-center hover:bg-opacity-90 transition-colors shadow-sm border-2 border-white ring-1 ring-gray-200"
+                >
+                  {getUserInitials()}
+                </button>
+                
+                {profileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 animate-fade-in">
+                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email || "User"}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {session.user.email}
+                      </p>
+                    </div>
+                    <button 
+                      onClick={async () => {
+                        await supabase.auth.signOut();
+                        setProfileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 font-medium hover:bg-red-50 transition-colors flex items-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                      </svg>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link href="/login" className="hidden sm:inline-block bg-[var(--primary)] text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full hover:bg-opacity-90 transition-colors shadow-sm">
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -199,13 +269,43 @@ export function Navbar() {
           >
             Contact Us
           </Link>
-          <Link 
-            href="/login" 
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-center bg-[var(--primary)] text-white font-bold py-3 rounded-full uppercase tracking-wider text-xs"
-          >
-            Admin Login
-          </Link>
+          {session ? (
+            <div className="py-2 space-y-4">
+              <div className="flex items-center gap-3 px-2">
+                <div className="w-12 h-12 rounded-full bg-[var(--primary)] text-white font-bold flex items-center justify-center text-lg shadow-sm border-2 border-white ring-1 ring-gray-200">
+                  {getUserInitials()}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email || "User"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {session.user.email}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 border border-red-200 font-bold py-3 rounded-full uppercase tracking-wider text-xs transition-colors hover:bg-red-100"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                </svg>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link 
+              href="/login" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center bg-[var(--primary)] text-white font-bold py-3 rounded-full uppercase tracking-wider text-xs hover:bg-opacity-90 transition-colors shadow-sm"
+            >
+              Login
+            </Link>
+          )}
         </div>
       )}
     </nav>
