@@ -179,7 +179,11 @@ export default function CartPage() {
             if (session?.user?.id) {
               const { data: order, error: orderError } = await supabase
                 .from('orders')
-                .insert({ user_id: session.user.id, total_amount: cartTotal })
+                .insert({ 
+                  user_id: session.user.id, 
+                  total_amount: cartTotal,
+                  status: 'pending'
+                })
                 .select()
                 .single();
                 
