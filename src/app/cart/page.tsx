@@ -2,40 +2,136 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/Button';
 import { load } from '@cashfreepayments/cashfree-js';
 import toast from 'react-hot-toast';
 import { supabase } from '@/lib/supabase';
+import { User, Phone, MapPin, Mail, ShieldCheck, X, CreditCard, Loader2 } from 'lucide-react';
+import { generateAndDownloadReceipt } from '@/utils/generateReceipt';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [fetchingProfile, setFetchingProfile] = useState(false);
 
-  const handleCheckout = async () => {
+  // Delivery confirmation form state
+  const [customerDetails, setCustomerDetails] = useState({
+    userId: "",
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    pincode: ""
+  });
+  const [confirmError, setConfirmError] = useState("");
+
+  // When user clicks "Proceed to Checkout" in the cart summary
+  const handleProceedToCheckout = async () => {
     if (cart.length === 0) return;
-    setIsCheckingOut(true);
-    
+
+    setFetchingProfile(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        setIsCheckingOut(false);
+        setFetchingProfile(false);
         setShowLoginModal(true);
         return;
       }
 
-      // 1. Create order on backend
+      // Fetch latest profile from users table
+      const { data: profile } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+      const initialName = profile?.full_name || session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || "";
+      const initialPhone = profile?.phone_number || session.user.user_metadata?.phone_number || "";
+      const initialAddress = profile?.address || session.user.user_metadata?.address || "";
+      const initialPincode = profile?.pincode || session.user.user_metadata?.pincode || "";
+      const initialEmail = profile?.email || session.user.email || "";
+
+      setCustomerDetails({
+        userId: session.user.id,
+        name: initialName,
+        email: initialEmail,
+        phone: initialPhone,
+        address: initialAddress,
+        pincode: initialPincode
+      });
+      setConfirmError("");
+      setShowConfirmModal(true);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to load account details");
+    } finally {
+      setFetchingProfile(false);
+    }
+  };
+
+  // When user confirms details and proceeds to Cashfree
+  const handleConfirmAndPay = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customerDetails.name.trim() || !customerDetails.phone.trim() || !customerDetails.address.trim() || !customerDetails.pincode.trim()) {
+      setConfirmError("Please fill in all delivery details.");
+      return;
+    }
+
+    const cleanPhone = customerDetails.phone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setConfirmError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    const cleanPincode = customerDetails.pincode.replace(/\D/g, "");
+    if (cleanPincode.length !== 6) {
+      setConfirmError("Please enter a valid 6-digit pincode.");
+      return;
+    }
+
+    setIsCheckingOut(true);
+    setConfirmError("");
+
+    try {
+      // 1. Update/Save the latest confirmed details to Supabase users table
+      if (customerDetails.userId) {
+        await supabase
+          .from("users")
+          .upsert([
+            {
+              id: customerDetails.userId,
+              email: customerDetails.email,
+              full_name: customerDetails.name.trim(),
+              phone_number: cleanPhone,
+              address: customerDetails.address.trim(),
+              pincode: cleanPincode,
+              created_at: new Date().toISOString()
+            }
+          ], { onConflict: "id" });
+
+        // Also sync user metadata
+        await supabase.auth.updateUser({
+          data: {
+            full_name: customerDetails.name.trim(),
+            phone_number: cleanPhone,
+            address: customerDetails.address.trim(),
+            pincode: cleanPincode
+          }
+        });
+      }
+
+      // 2. Create Cashfree Order on backend
       const res = await fetch("/api/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           amount: cartTotal,
-          customerId: `cust_${Date.now()}`,
-          customerName: "Guest User", // You can update this from user session if logged in
-          customerEmail: "guest@example.com",
-          customerPhone: "9999999999"
+          customerId: customerDetails.userId || `cust_${Date.now()}`,
+          customerName: customerDetails.name.trim(),
+          customerEmail: customerDetails.email || "customer@heavenhome.com",
+          customerPhone: cleanPhone
         })
       });
 
@@ -50,29 +146,33 @@ export default function CartPage() {
         throw new Error("Missing payment session ID from response");
       }
 
-      // 2. Load Cashfree SDK matching backend environment
+      // Close the confirmation modal so Cashfree modal appears cleanly
+      setShowConfirmModal(false);
+
+      // 3. Load Cashfree SDK
       const cashfree = await load({
         mode: data.environment || "sandbox"
       });
 
-      // 3. Trigger Checkout Popup
+      // 4. Trigger Cashfree Checkout Popup
       const checkoutOptions = {
         paymentSessionId: data.payment_session_id,
         redirectTarget: "_modal" as const
       };
 
       cashfree.checkout(checkoutOptions).then(async (result: any) => {
-        if(result.error){
+        if (result.error) {
           toast(result.error.message || "Payment was cancelled.", { icon: 'ℹ️' });
           console.log("Payment Info:", result.error.message || result.error);
         }
-        if(result.redirect){
+        if (result.redirect) {
           console.log("Payment will be redirected");
         }
-        if(result.paymentDetails){
-          toast.success("Payment successful!");
+        if (result.paymentDetails) {
+          toast.success("Payment successful! Your order has been placed.");
           console.log("Payment Details:", result.paymentDetails);
           
+          let savedOrderId = `ORD_${Date.now()}`;
           try {
             // Save order to database
             const { data: { session } } = await supabase.auth.getSession();
@@ -84,6 +184,7 @@ export default function CartPage() {
                 .single();
                 
               if (order && !orderError) {
+                savedOrderId = order.id;
                 const orderItems = cart.map(item => ({
                   order_id: order.id,
                   product_id: item.id,
@@ -99,6 +200,35 @@ export default function CartPage() {
             console.error("Error finalizing order:", e);
           }
           
+          // Auto-download Receipt PDF using jsPDF AutoTable
+          try {
+            generateAndDownloadReceipt({
+              orderId: savedOrderId,
+              orderDate: new Date().toLocaleString('en-IN', {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+              }),
+              customerName: customerDetails.name.trim(),
+              customerPhone: cleanPhone,
+              customerEmail: customerDetails.email,
+              deliveryAddress: customerDetails.address.trim(),
+              pincode: cleanPincode,
+              items: cart.map(c => ({
+                id: c.id,
+                name: c.name,
+                category: c.category,
+                price: c.price,
+                quantity: c.quantity
+              })),
+              totalAmount: cartTotal,
+              paymentMode: "Cashfree Online (UPI / Card / NetBanking)",
+              paymentId: result.paymentDetails?.payment_id || result.paymentDetails?.cf_payment_id || undefined
+            });
+            toast.success("Receipt downloaded automatically!", { icon: '📄' });
+          } catch (pdfErr) {
+            console.error("Error generating receipt PDF:", pdfErr);
+          }
+
           clearCart();
         }
         setIsCheckingOut(false);
@@ -151,6 +281,7 @@ export default function CartPage() {
                   <li key={item.id} className="p-6 flex flex-col sm:grid sm:grid-cols-6 gap-4 items-center">
                     <div className="w-full sm:col-span-3 flex items-center gap-4">
                       <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex flex-col">
@@ -244,17 +375,15 @@ export default function CartPage() {
                 variant="primary" 
                 fullWidth 
                 size="lg"
-                onClick={handleCheckout}
-                disabled={isCheckingOut}
+                onClick={handleProceedToCheckout}
+                disabled={isCheckingOut || fetchingProfile}
               >
-                {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
+                {fetchingProfile ? "Loading Details..." : isCheckingOut ? "Processing..." : "Proceed to Checkout"}
               </Button>
               
               <div className="mt-4 text-center">
                 <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                  </svg>
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   Secure Cashfree checkout
                 </p>
               </div>
@@ -263,10 +392,167 @@ export default function CartPage() {
         </div>
       </div>
 
+      {/* CONFIRM DELIVERY DETAILS MODAL */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 
+            onClick={() => !isCheckingOut && setShowConfirmModal(false)} 
+          />
+          <div className="relative bg-white border border-gray-200 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden z-10 animate-fade-in flex flex-col max-h-[90vh]">
+            
+            {/* Modal Header */}
+            <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-[var(--primary)]" />
+                  <h3 className="text-xl font-serif font-bold text-gray-900">Confirm Delivery Details</h3>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Please review and edit your contact & shipping address before proceeding.
+                </p>
+              </div>
+              <button 
+                onClick={() => setShowConfirmModal(false)}
+                disabled={isCheckingOut}
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Modal Form Body */}
+            <form onSubmit={handleConfirmAndPay} className="p-6 overflow-y-auto flex-1 space-y-4">
+              {confirmError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg text-center font-medium">
+                  {confirmError}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <User className="h-3.5 w-3.5 text-gray-400" />
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Rahul Sharma"
+                  value={customerDetails.name}
+                  onChange={(e) => setCustomerDetails({ ...customerDetails, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-gray-50/50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Phone className="h-3.5 w-3.5 text-gray-400" />
+                    Phone Number (10 digits)
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    maxLength={10}
+                    placeholder="9876543210"
+                    value={customerDetails.phone}
+                    onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value.replace(/\D/g, "") })}
+                    className="w-full px-3.5 py-2.5 bg-gray-50/50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <Mail className="h-3.5 w-3.5 text-gray-400" />
+                    Email (Receipt)
+                  </label>
+                  <input
+                    type="email"
+                    disabled
+                    value={customerDetails.email}
+                    className="w-full px-3.5 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-gray-400" />
+                  Delivery Address
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  placeholder="House / Flat No., Building, Street, Area, Landmark, City, State..."
+                  value={customerDetails.address}
+                  onChange={(e) => setCustomerDetails({ ...customerDetails, address: e.target.value })}
+                  className="w-full px-3.5 py-2.5 bg-gray-50/50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                  Pincode (6 digits)
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={6}
+                  placeholder="110001"
+                  value={customerDetails.pincode}
+                  onChange={(e) => setCustomerDetails({ ...customerDetails, pincode: e.target.value.replace(/\D/g, "") })}
+                  className="w-full px-3.5 py-2.5 bg-gray-50/50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all font-mono"
+                />
+              </div>
+
+              {/* Order total strip */}
+              <div className="bg-emerald-50 border border-emerald-200/80 rounded-xl p-3.5 flex items-center justify-between mt-2">
+                <div>
+                  <span className="text-xs text-emerald-800 font-medium block">Total Payable Amount</span>
+                  <span className="text-xs text-emerald-600">Free Doorstep Delivery</span>
+                </div>
+                <span className="text-xl font-bold text-emerald-900 font-serif">
+                  ₹{cartTotal.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmModal(false)}
+                  disabled={isCheckingOut}
+                  className="w-full sm:w-1/3 py-3 px-4 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCheckingOut}
+                  className="w-full sm:w-2/3 py-3 px-4 bg-[var(--primary)] hover:bg-opacity-95 text-white rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 uppercase tracking-wider disabled:opacity-70"
+                >
+                  {isCheckingOut ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Connecting to Cashfree...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4" />
+                      Proceed to Pay
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Login Required Modal */}
       {showLoginModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
-          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center animate-fade-in border border-gray-100">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-600">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />

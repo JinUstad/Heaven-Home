@@ -27,6 +27,7 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li><Link href="/products" className="hover:text-[var(--accent)] transition-colors">All Products</Link></li>
               <li><Link href="/products" className="hover:text-[var(--accent)] transition-colors">Kitchen Essentials</Link></li>
+              <li><Link href="/blogs" className="hover:text-[var(--accent)] transition-colors">Blogs & Journal</Link></li>
             </ul>
           </div>
 

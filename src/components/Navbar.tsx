@@ -106,6 +106,9 @@ export function Navbar() {
             <Link href="/about" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-colors">
               About Us
             </Link>
+            <Link href="/blogs" className="text-gray-700 hover:text-[var(--primary)] font-medium transition-colors">
+              Blogs
+            </Link>
             
             {/* Dynamic Backend Category Dropdown */}
             <div className="group relative">
@@ -239,6 +242,14 @@ export function Navbar() {
             className="block text-gray-900 font-bold hover:text-[var(--primary)] py-2 border-b border-gray-100"
           >
             About Us
+          </Link>
+
+          <Link 
+            href="/blogs" 
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-gray-900 font-bold hover:text-[var(--primary)] py-2 border-b border-gray-100"
+          >
+            Blogs
           </Link>
           
           <div className="py-2 border-b border-gray-100 space-y-2">

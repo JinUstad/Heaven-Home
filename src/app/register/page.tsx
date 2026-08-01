@@ -13,19 +13,32 @@ export default function RegisterPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [pincode, setPincode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !email || !password || !confirmPassword || !address || !phoneNumber) {
+    if (!fullName || !email || !password || !confirmPassword || !address || !phoneNumber || !pincode) {
       setError("Please fill in all fields.");
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    const cleanPhone = phoneNumber.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    const cleanPincode = pincode.replace(/\D/g, "");
+    if (cleanPincode.length !== 6) {
+      setError("Please enter a valid 6-digit pincode.");
       return;
     }
 
@@ -41,7 +54,8 @@ export default function RegisterPage() {
           data: {
             full_name: fullName,
             address: address,
-            phone_number: phoneNumber,
+            phone_number: cleanPhone,
+            pincode: cleanPincode,
           },
         },
       });
@@ -60,7 +74,8 @@ export default function RegisterPage() {
             full_name: fullName, 
             email: email,
             address: address,
-            phone_number: phoneNumber,
+            phone_number: cleanPhone,
+            pincode: cleanPincode,
             created_at: new Date().toISOString()
           }
         ], { onConflict: 'email' });
@@ -219,24 +234,37 @@ export default function RegisterPage() {
               </div>
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number (10 digits)</label>
+              <input
+                type="tel"
+                required
+                maxLength={10}
+                className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                placeholder="9876543210"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+              />
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
               <textarea
                 required
                 className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm resize-none h-24"
-                placeholder="Full Address"
+                placeholder="House No, Street, City, State"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Pincode (6 digits)</label>
               <input
-                type="tel"
+                type="text"
                 required
+                maxLength={6}
                 className="appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
-                placeholder="+91 9876543210"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="110001"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value.replace(/\D/g, ""))}
               />
             </div>
           </div>

@@ -30,26 +30,34 @@ export default function LoginPage() {
       return;
     }
 
-    // Ensure they exist in the users table for the admin dashboard
+    // Check user profile in users table
     if (authData.user) {
-      const { error: dbError } = await supabase.from("users").upsert([
-        { 
-          id: authData.user.id,
-          email: email,
-          // We might not have the full name here if they just logged in, 
-          // but we can default it or pull it from metadata if present
-          full_name: authData.user.user_metadata?.full_name || email.split('@')[0],
-          created_at: new Date().toISOString()
-        }
-      ], { onConflict: 'email' });
+      const { data: profile } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", authData.user.id)
+        .maybeSingle();
 
-      if (dbError) {
-        console.error("Error inserting into users table:", dbError);
+      if (!profile) {
+        await supabase.from("users").upsert([
+          { 
+            id: authData.user.id,
+            email: email,
+            full_name: authData.user.user_metadata?.full_name || email.split('@')[0],
+            created_at: new Date().toISOString()
+          }
+        ], { onConflict: 'id' });
+        window.location.href = "/complete-profile";
+        return;
+      }
+
+      if (!profile.phone_number || !profile.address || !profile.pincode) {
+        window.location.href = "/complete-profile";
+        return;
       }
     }
 
     window.location.href = "/";
-    // Not setting loading to false because we are redirecting
   };
 
   const handleGoogleLogin = async () => {

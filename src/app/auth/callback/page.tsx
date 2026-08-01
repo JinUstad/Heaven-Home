@@ -6,11 +6,11 @@ import { supabase } from "@/lib/supabase";
 
 export default function AuthCallback() {
   const router = useRouter();
-  const [status, setStatus] = useState("Authenticating...");
+  const [status, setStatus] = useState("Authenticating with Google...");
 
   useEffect(() => {
     const processAuth = async () => {
-      // Supabase automatically parses the URL hash in the browser
+      // Supabase automatically parses the URL hash/code in the browser
       const { data: { session }, error } = await supabase.auth.getSession();
       
       if (error || !session) {
@@ -20,56 +20,47 @@ export default function AuthCallback() {
       }
 
       const user = session.user;
-      const intent = localStorage.getItem("auth_intent");
-      localStorage.removeItem("auth_intent"); // clear it
+      localStorage.removeItem("auth_intent");
 
-      // Check if user has a profile in the users table
+      // Check if user exists in public.users table and has complete profile
       const { data: profile } = await supabase
         .from("users")
-        .select("id")
-        .eq("email", user.email)
-        .single();
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
 
-      // If they logged in via Google and aren't in the users table, add them
+      const fullName = profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || "User";
+
+      // If user row doesn't exist yet, insert initial record from Google metadata
       if (!profile) {
-        const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || "User";
         await supabase.from("users").upsert([{
-            id: user.id,
-            email: user.email,
-            full_name: fullName,
-            created_at: new Date().toISOString()
-        }], { onConflict: 'email' });
+          id: user.id,
+          email: user.email,
+          full_name: fullName,
+          created_at: new Date().toISOString()
+        }], { onConflict: 'id' });
       }
 
-      if (intent === "login") {
-        if (!profile) {
-          // They tried to login but have no profile
-          setStatus("Account not found. Please sign up first.");
-          await supabase.auth.signOut();
-          setTimeout(() => router.push("/register"), 2000);
-        } else {
-          // Successful login
-          router.push("/");
-        }
-      } else if (intent === "signup") {
-        if (!profile) {
-          // They are signing up and need to complete profile
-          router.push("/complete-profile");
-        } else {
-          // They already have an account, so just log them in
-          router.push("/");
-        }
+      // Check if phone, address, and pincode are present
+      const isComplete = 
+        profile && 
+        profile.phone_number && 
+        profile.phone_number.trim() !== "" &&
+        profile.address && 
+        profile.address.trim() !== "" &&
+        profile.pincode && 
+        profile.pincode.trim() !== "";
+
+      if (isComplete) {
+        setStatus("Welcome back! Redirecting...");
+        router.push("/");
       } else {
-        // Fallback if intent is missing
-        if (!profile) {
-          router.push("/complete-profile");
-        } else {
-          router.push("/");
-        }
+        setStatus("Please complete your profile details...");
+        router.push("/complete-profile");
       }
     };
 
-    // Wait a brief moment to ensure Supabase client has processed the URL
+    // Wait a brief moment to ensure Supabase client has processed the URL tokens
     const timeout = setTimeout(() => {
       processAuth();
     }, 500);
@@ -80,7 +71,7 @@ export default function AuthCallback() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center max-w-md w-full text-center">
-        <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <div className="w-12 h-12 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin mb-4"></div>
         <p className="text-gray-600 font-medium">{status}</p>
       </div>
     </div>
