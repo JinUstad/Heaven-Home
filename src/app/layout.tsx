@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/hooks/useCart";
@@ -16,6 +17,10 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
 
 export const metadata: Metadata = {
   title: "Heaven Home | Premium Furniture & Interior Design",
@@ -70,6 +75,18 @@ export default function RootLayout({
           </main>
           <Footer />
         </CartProvider>
+        <Script id="pwa-register" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(
+                  function(registration) { console.log('ServiceWorker registration successful'); },
+                  function(err) { console.log('ServiceWorker registration failed: ', err); }
+                );
+              });
+            }
+          `}
+        </Script>
       </body>
     </html>
   );

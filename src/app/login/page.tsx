@@ -152,9 +152,9 @@ export default function LoginPage() {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-[var(--primary)] hover:text-opacity-80">
+              <Link href="/forgot-password" className="font-medium text-[var(--primary)] hover:text-opacity-80">
                 Forgot your password?
-              </a>
+              </Link>
             </div>
           </div>
 
