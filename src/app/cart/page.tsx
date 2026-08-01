@@ -206,7 +206,7 @@ export default function CartPage() {
           
           // Auto-download Receipt PDF using jsPDF AutoTable
           try {
-            generateAndDownloadReceipt({
+            await generateAndDownloadReceipt({
               orderId: savedOrderId,
               orderDate: new Date().toLocaleString('en-IN', {
                 dateStyle: 'medium',

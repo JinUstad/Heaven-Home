@@ -23,7 +23,25 @@ export interface ReceiptData {
   paymentId?: string;
 }
 
-export function generateAndDownloadReceipt(data: ReceiptData) {
+// Helper to convert image URL to base64 for jsPDF
+async function getBase64ImageFromUrl(imageUrl: string): Promise<string | null> {
+  try {
+    const res = await fetch(imageUrl);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn("Could not load logo for receipt:", e);
+    return null;
+  }
+}
+
+export async function generateAndDownloadReceipt(data: ReceiptData) {
   try {
     const doc = new jsPDF({
       orientation: "portrait",
@@ -34,39 +52,60 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
 
-    // 1. Top Header Brand Banner
-    doc.setFillColor(18, 24, 38); // Dark luxury navy/slate
-    doc.rect(0, 0, pageWidth, 38, "F");
+    // 1. Top Header Brand Banner (44mm height)
+    doc.setFillColor(15, 23, 42); // Elegant slate-900 dark background
+    doc.rect(0, 0, pageWidth, 44, "F");
+
+    // Try loading and drawing the logo image
+    const logoBase64 = await getBase64ImageFromUrl("/logo.png");
+    let textStartX = 14;
+
+    if (logoBase64) {
+      try {
+        // Draw logo image (20mm x 20mm at x=14, y=12)
+        doc.addImage(logoBase64, "PNG", 14, 11, 22, 22);
+        textStartX = 40; // Indent text next to logo
+      } catch (err) {
+        console.warn("Failed to add image to PDF:", err);
+      }
+    }
 
     // Company Name
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text("HEAVEN HOME", 14, 18);
+    doc.setFontSize(20);
+    doc.text("HEAVEN HOME", textStartX, 19);
 
-    // Brand Tagline
+    // Brand Tagline & Official Website URL
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(156, 163, 175);
-    doc.text("Luxury Home Living & Premium Decor", 14, 25);
-    doc.text("www.heavenhome.com  |  support@heavenhome.com", 14, 30);
+    doc.setFontSize(8.5);
+    doc.setTextColor(203, 213, 225); // Slate 300
+    doc.text("Luxury Home Living & Premium Decor", textStartX, 26);
 
-    // INVOICE / RECEIPT Title on right
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.text("PAYMENT RECEIPT", pageWidth - 14, 18, { align: "right" });
+    doc.setTextColor(52, 211, 153); // Emerald 400
+    doc.text("heavenhome.in", textStartX, 32);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(148, 163, 184); // Slate 400
+    doc.text("  |  support@heavenhome.in", textStartX + 26, 32);
 
-    // Paid Badge
+    // INVOICE / RECEIPT Title on top-right
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(15);
+    doc.setTextColor(255, 255, 255);
+    doc.text("PAYMENT RECEIPT", pageWidth - 14, 19, { align: "right" });
+
+    // Paid Status Badge
     doc.setFillColor(16, 185, 129); // Emerald green
-    doc.roundedRect(pageWidth - 44, 23, 30, 8, 2, 2, "F");
+    doc.roundedRect(pageWidth - 44, 25, 30, 8, 2, 2, "F");
     doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(255, 255, 255);
-    doc.text("PAID", pageWidth - 29, 28.5, { align: "center" });
+    doc.text("PAID", pageWidth - 29, 30.5, { align: "center" });
 
     // 2. Info Cards (Customer Details & Order Details)
-    const startY = 46;
+    const startY = 52;
 
     // Left Column: Customer & Delivery Details
     doc.setFillColor(248, 250, 252);
@@ -74,14 +113,14 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     doc.roundedRect(14, startY, 86, 44, 2, 2, "FD");
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(71, 85, 105);
     doc.text("CUSTOMER & DELIVERY DETAILS", 18, startY + 6);
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
+    doc.setFontSize(9.5);
     doc.setTextColor(15, 23, 42);
-    doc.text(data.customerName || "Customer", 18, startY + 13);
+    doc.text(data.customerName || "Valued Customer", 18, startY + 13);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
@@ -101,7 +140,7 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     doc.roundedRect(pageWidth - 100, startY, 86, 44, 2, 2, "FD");
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(71, 85, 105);
     doc.text("ORDER & TRANSACTION INFO", pageWidth - 96, startY + 6);
 
@@ -121,7 +160,7 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
 
     doc.text("Payment Mode:", pageWidth - 96, startY + 25);
     doc.setFont("helvetica", "bold");
-    doc.text(data.paymentMode || "Cashfree Online (UPI/Card/NetBanking)", pageWidth - 18, startY + 25, { align: "right" });
+    doc.text(data.paymentMode || "Cashfree Online (UPI / Card)", pageWidth - 18, startY + 25, { align: "right" });
 
     if (data.paymentId) {
       doc.setFont("helvetica", "normal");
@@ -130,10 +169,10 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     }
 
     doc.setFont("helvetica", "normal");
-    doc.text("Shipping Mode:", pageWidth - 96, startY + (data.paymentId ? 37 : 31));
+    doc.text("Website:", pageWidth - 96, startY + (data.paymentId ? 37 : 31));
     doc.setFont("helvetica", "bold");
     doc.setTextColor(16, 185, 129);
-    doc.text("Free Doorstep Delivery", pageWidth - 18, startY + (data.paymentId ? 37 : 31), { align: "right" });
+    doc.text("heavenhome.in", pageWidth - 18, startY + (data.paymentId ? 37 : 31), { align: "right" });
 
     // 3. Items Table using autoTable
     const tableBody = data.items.map((item, index) => [
@@ -151,7 +190,7 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
       body: tableBody,
       theme: "striped",
       headStyles: {
-        fillColor: [18, 24, 38],
+        fillColor: [15, 23, 42],
         textColor: [255, 255, 255],
         fontStyle: "bold",
         fontSize: 9,
@@ -210,7 +249,7 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     doc.setFont("helvetica", "bold");
     doc.setTextColor(15, 23, 42);
     doc.text("Total Paid:", summaryBoxX + 6, finalY + 31);
-    doc.setTextColor(18, 24, 38);
+    doc.setTextColor(15, 23, 42);
     doc.text(`Rs. ${Number(data.totalAmount).toFixed(2)}`, pageWidth - 20, finalY + 31, { align: "right" });
 
     // 5. Terms & Customer Support Notice (Left side of totals)
@@ -222,9 +261,9 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(100, 116, 139);
-    doc.text("• This is an electronically generated receipt for your records.", 14, finalY + 18);
-    doc.text("• Keep this receipt for warranty and delivery reference.", 14, finalY + 23);
-    doc.text("• For order support, contact support@heavenhome.com with your Order ID.", 14, finalY + 28);
+    doc.text("• This is an electronically generated official receipt for your purchase.", 14, finalY + 18);
+    doc.text("• Keep this receipt and Order ID for delivery tracking and warranty reference.", 14, finalY + 23);
+    doc.text("• For assistance, visit heavenhome.in or email support@heavenhome.in.", 14, finalY + 28);
 
     // 6. Bottom Footer
     doc.setDrawColor(226, 232, 240);
@@ -233,8 +272,8 @@ export function generateAndDownloadReceipt(data: ReceiptData) {
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(148, 163, 184);
-    doc.text("Thank you for shopping with Heaven Home! We hope you love your new pieces.", pageWidth / 2, pageHeight - 12, { align: "center" });
-    doc.text("Heaven Home Living Pvt Ltd • All Rights Reserved", pageWidth / 2, pageHeight - 7, { align: "center" });
+    doc.text("Thank you for shopping at heavenhome.in! We hope you love your new pieces.", pageWidth / 2, pageHeight - 12, { align: "center" });
+    doc.text("Heaven Home Living • https://heavenhome.in • All Rights Reserved", pageWidth / 2, pageHeight - 7, { align: "center" });
 
     // 7. Save & Auto-Download PDF
     const cleanOrderId = (data.orderId || "receipt").replace(/[^a-zA-Z0-9_-]/g, "_");
