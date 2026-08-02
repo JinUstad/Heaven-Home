@@ -191,8 +191,44 @@ export default function ProductDetailsPage() {
             )}
           </div>
           
-          <div className="prose prose-lg text-gray-600 mb-10 leading-relaxed">
-            <p>{product.description}</p>
+          {/* Rich Description & Specifications */}
+          <div className="prose prose-neutral max-w-none text-gray-700 mb-10 leading-relaxed space-y-2.5">
+            {product.description ? (
+              product.description.split("\n").map((line: string, idx: number) => {
+                const trimmed = line.trim();
+                if (!trimmed) return <div key={idx} className="h-2" />;
+                if (trimmed.startsWith("### ")) {
+                  return <h4 key={idx} className="text-base font-bold text-gray-900 mt-4 mb-1">{trimmed.slice(4)}</h4>;
+                }
+                if (trimmed.startsWith("## ")) {
+                  return <h3 key={idx} className="text-lg font-bold text-[var(--primary)] mt-5 mb-1.5">{trimmed.slice(3)}</h3>;
+                }
+                if (trimmed.startsWith("# ")) {
+                  return <h2 key={idx} className="text-xl font-serif font-bold text-gray-900 mt-6 mb-2">{trimmed.slice(2)}</h2>;
+                }
+                if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+                  return (
+                    <li key={idx} className="ml-5 list-disc text-gray-700 my-1">
+                      {trimmed.slice(2)}
+                    </li>
+                  );
+                }
+                if (trimmed.startsWith("> ")) {
+                  return (
+                    <blockquote key={idx} className="border-l-4 border-[var(--primary)] pl-4 py-1.5 my-2.5 italic text-gray-600 bg-gray-50 rounded-r">
+                      {trimmed.slice(2)}
+                    </blockquote>
+                  );
+                }
+                return (
+                  <p key={idx} className="text-gray-600 text-sm sm:text-base leading-relaxed my-1">
+                    {line}
+                  </p>
+                );
+              })
+            ) : (
+              <p className="text-gray-400 italic">No description available for this product.</p>
+            )}
           </div>
 
           <div className="flex items-center flex-wrap gap-4 sm:gap-6 mb-10 pb-10 border-b border-gray-200">
