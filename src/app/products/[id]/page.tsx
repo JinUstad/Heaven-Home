@@ -5,6 +5,22 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart, Product } from '@/hooks/useCart';
 import { supabase } from '@/lib/supabase';
+import { 
+  ShoppingCart, 
+  Zap, 
+  Heart, 
+  Truck, 
+  RotateCcw, 
+  ShieldCheck, 
+  CreditCard,
+  Share2, 
+  Check, 
+  Star,
+  ChevronRight,
+  ZoomIn
+} from 'lucide-react';
+import toast from 'react-hot-toast';
+import { renderRichMarkdown } from '@/utils/markdown';
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -19,6 +35,7 @@ export default function ProductDetailsPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50, isHovered: false });
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -29,6 +46,40 @@ export default function ProductDetailsPage() {
 
   const handleMouseLeave = () => {
     setZoomPos({ x: 50, y: 50, isHovered: false });
+  };
+
+  const handleShare = async () => {
+    if (navigator.share && product) {
+      try {
+        await navigator.share({
+          title: product.name,
+          text: `Check out ${product.name} on Heaven Home!`,
+          url: window.location.href,
+        });
+        return;
+      } catch (err) {
+        // Fallback to clipboard
+      }
+    }
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedLink(true);
+    toast.success("Link copied to clipboard!");
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
+  const handleAddToCartAction = () => {
+    if (!product) return;
+    addToCart(product, quantity);
+    toast.success(`Added ${quantity} × ${product.name} to cart!`, {
+      icon: '🛒',
+      duration: 2500
+    });
+  };
+
+  const handleBuyNowAction = () => {
+    if (!product) return;
+    addToCart(product, quantity);
+    router.push('/cart');
   };
 
   useEffect(() => {
@@ -86,7 +137,8 @@ export default function ProductDetailsPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] py-20 px-4 text-center">
-        <div className="text-gray-500 font-bold text-lg animate-pulse">Loading product details...</div>
+        <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-[var(--primary)] mb-4" />
+        <div className="text-gray-600 font-medium text-base">Loading product details...</div>
       </div>
     );
   }
@@ -94,10 +146,10 @@ export default function ProductDetailsPage() {
   if (!product) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] py-20 px-4 text-center">
-        <h1 className="text-6xl font-bold text-gray-200 mb-6">404</h1>
-        <h2 className="text-2xl font-serif text-[#333] mb-4">Product Not Found</h2>
-        <p className="text-gray-500 mb-8 max-w-md">We couldn't find the product you're looking for. It might have been removed or the link is incorrect.</p>
-        <Link href="/products" className="inline-block bg-[var(--primary)] text-white px-8 py-3 font-bold uppercase tracking-widest hover:bg-opacity-90 transition-colors shadow-md">
+        <h1 className="text-6xl font-bold text-gray-200 mb-4">404</h1>
+        <h2 className="text-2xl font-serif text-[#333] mb-3">Product Not Found</h2>
+        <p className="text-gray-500 mb-6 max-w-md text-sm">We couldn't find the product you're looking for. It might have been removed or the link is incorrect.</p>
+        <Link href="/products" className="inline-block bg-[var(--primary)] text-white px-6 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs hover:bg-opacity-90 transition-colors shadow-md">
           Back to Collection
         </Link>
       </div>
@@ -107,25 +159,49 @@ export default function ProductDetailsPage() {
   const isWishlisted = isInWishlist(product.id);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <nav className="mb-10 text-sm text-gray-500">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 md:py-14 pb-28 md:pb-16 animate-fade-in">
+      
+      {/* Breadcrumb Navigation */}
+      <nav className="mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500 flex items-center flex-wrap gap-1.5">
         <Link href="/" className="hover:text-[var(--primary)] transition-colors">Home</Link>
-        <span className="mx-2">/</span>
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
         <Link href="/products" className="hover:text-[var(--primary)] transition-colors">Collection</Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-900 font-medium">{product.name}</span>
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+        <span className="text-gray-900 font-semibold truncate max-w-[200px] sm:max-w-xs">{product.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
-        {/* Product Gallery Column */}
-        <div className="lg:col-span-6 flex flex-col gap-4">
+        {/* LEFT COLUMN: Product Gallery & Desktop Flipkart-Style Action Buttons */}
+        <div className="lg:col-span-6 flex flex-col gap-4 lg:sticky lg:top-24">
+          
+          {/* Main Image Frame */}
           <div 
             ref={mainImageRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative w-full aspect-square bg-[#f8f9fa] rounded-3xl overflow-hidden border border-gray-200 shadow-lg flex items-center justify-center p-6 cursor-crosshair group"
+            className="relative w-full aspect-square bg-[#fbfbfb] rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-200/80 shadow-sm flex items-center justify-center p-4 sm:p-8 cursor-crosshair group"
           >
+            {/* Discount Badge */}
+            {product.discount && (
+              <div className="absolute top-3.5 left-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md z-10 uppercase tracking-wider pointer-events-none">
+                {product.discount}
+              </div>
+            )}
+
+            {/* Wishlist Button (Top Right of Image) */}
+            <button 
+              onClick={() => toggleWishlist(product)}
+              className={`absolute top-3.5 right-3.5 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md z-10 cursor-pointer ${
+                isWishlisted 
+                  ? 'bg-red-50 text-red-500 border border-red-200' 
+                  : 'bg-white/90 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:bg-white border border-gray-100'
+              }`}
+              title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
+            </button>
+
             {images.length > 0 && (
               <img 
                 src={images[activeImageIndex] || images[0]} 
@@ -135,155 +211,189 @@ export default function ProductDetailsPage() {
                   zoomPos.isHovered
                     ? { 
                         transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`, 
-                        transform: 'scale(2.2)' 
+                        transform: 'scale(2.1)' 
                       } 
                     : { transform: 'scale(1)' }
                 }
               />
             )}
             
-            <div className="absolute bottom-4 right-4 bg-black/60 text-white text-[11px] font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-              </svg>
+            {/* Zoom Hint Indicator */}
+            <div className="absolute bottom-3 right-3 bg-black/65 text-white text-[11px] font-medium px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none hidden sm:flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
+              <ZoomIn className="w-3.5 h-3.5" />
               Hover to zoom
             </div>
           </div>
 
+          {/* Thumbnail Strip */}
           {images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 hide-scrollbar">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 custom-scrollbar">
               {images.map((imgUrl, idx) => (
                 <button
                   key={idx}
                   onMouseEnter={() => setActiveImageIndex(idx)}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-[#f8f9fa] shrink-0 cursor-pointer ${
+                  className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-all p-1 bg-[#fbfbfb] shrink-0 cursor-pointer ${
                     activeImageIndex === idx 
-                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/30 scale-105 shadow-md' 
-                      : 'border-gray-200 hover:border-[var(--primary)]/50 opacity-70 hover:opacity-100'
+                      ? 'border-[var(--primary)] ring-2 ring-[var(--primary)]/20 scale-105 shadow-sm' 
+                      : 'border-gray-200 hover:border-gray-300 opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-xl" />
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain rounded-lg" />
                 </button>
               ))}
             </div>
           )}
+
+          {/* FLIPKART STYLE ACTION BUTTONS (DESKTOP / LAPTOP) */}
+          <div className="hidden lg:grid grid-cols-2 gap-3.5 pt-2 w-full">
+            <button 
+              onClick={handleAddToCartAction}
+              className="bg-[#ff9f00] hover:bg-[#e68f00] text-white h-12 rounded-xl font-bold uppercase tracking-wider text-xs sm:text-sm transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Add to Cart
+            </button>
+            <button 
+              onClick={handleBuyNowAction}
+              className="bg-[var(--primary)] hover:bg-[#3b4b1a] text-white h-12 rounded-xl font-bold uppercase tracking-wider text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
+            >
+              <Zap className="w-4 h-4 fill-current" />
+              Buy Now
+            </button>
+          </div>
+
         </div>
 
-        {/* Product Info (Right Column) */}
-        <div className="lg:col-span-6 flex flex-col justify-center">
-          <p className="text-[var(--accent)] font-bold tracking-widest uppercase text-sm mb-3">{product.category}</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#222] mb-4 leading-tight">{product.name}</h1>
+        {/* RIGHT COLUMN: Product Info, Pricing, Rich Details & Badges */}
+        <div className="lg:col-span-6 flex flex-col">
           
-          <div className="flex items-center space-x-4 mb-6">
-            <span className="text-3xl font-bold text-[var(--primary)]">
+          {/* Header Row: Category Tag & Share Action */}
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <span className="text-[var(--primary)] bg-[var(--primary)]/10 px-3 py-1 rounded-full font-bold tracking-widest uppercase text-xs">
+              {product.category}
+            </span>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors cursor-pointer"
+            >
+              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+              <span>{copiedLink ? "Copied" : "Share"}</span>
+            </button>
+          </div>
+
+          {/* Product Title */}
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#1f1f1f] mb-3 leading-snug">
+            {product.name}
+          </h1>
+
+          {/* Rating Badge */}
+          <div className="flex items-center gap-2 mb-4">
+            <span className="bg-emerald-600 text-white text-xs font-bold px-2 py-0.5 rounded flex items-center gap-1">
+              4.8 <Star className="w-3 h-3 fill-current" />
+            </span>
+            <span className="text-xs text-gray-500 font-medium">Ratings & Reviews Verified</span>
+          </div>
+          
+          {/* Flipkart Style Price Display */}
+          <div className="flex items-baseline flex-wrap gap-3 mb-6 p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
+            <span className="text-3xl sm:text-4xl font-bold text-gray-900">
               ₹{product.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             </span>
             {product.oldPrice && (
-              <span className="text-xl text-gray-400 line-through">
+              <span className="text-base sm:text-lg text-gray-400 line-through font-medium">
                 ₹{product.oldPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </span>
             )}
             {product.discount && (
-              <span className="bg-amber-100 text-amber-800 border border-amber-300 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="text-emerald-700 font-bold text-sm tracking-wide">
                 {product.discount}
               </span>
             )}
-          </div>
-          
-          {/* Rich Description & Specifications */}
-          <div className="prose prose-neutral max-w-none text-gray-700 mb-10 leading-relaxed space-y-2.5">
-            {product.description ? (
-              product.description.split("\n").map((line: string, idx: number) => {
-                const trimmed = line.trim();
-                if (!trimmed) return <div key={idx} className="h-2" />;
-                if (trimmed.startsWith("### ")) {
-                  return <h4 key={idx} className="text-base font-bold text-gray-900 mt-4 mb-1">{trimmed.slice(4)}</h4>;
-                }
-                if (trimmed.startsWith("## ")) {
-                  return <h3 key={idx} className="text-lg font-bold text-[var(--primary)] mt-5 mb-1.5">{trimmed.slice(3)}</h3>;
-                }
-                if (trimmed.startsWith("# ")) {
-                  return <h2 key={idx} className="text-xl font-serif font-bold text-gray-900 mt-6 mb-2">{trimmed.slice(2)}</h2>;
-                }
-                if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-                  return (
-                    <li key={idx} className="ml-5 list-disc text-gray-700 my-1">
-                      {trimmed.slice(2)}
-                    </li>
-                  );
-                }
-                if (trimmed.startsWith("> ")) {
-                  return (
-                    <blockquote key={idx} className="border-l-4 border-[var(--primary)] pl-4 py-1.5 my-2.5 italic text-gray-600 bg-gray-50 rounded-r">
-                      {trimmed.slice(2)}
-                    </blockquote>
-                  );
-                }
-                return (
-                  <p key={idx} className="text-gray-600 text-sm sm:text-base leading-relaxed my-1">
-                    {line}
-                  </p>
-                );
-              })
-            ) : (
-              <p className="text-gray-400 italic">No description available for this product.</p>
-            )}
+            <span className="text-xs text-gray-400 w-full mt-0.5">Inclusive of all taxes</span>
           </div>
 
-          <div className="flex items-center flex-wrap gap-4 sm:gap-6 mb-10 pb-10 border-b border-gray-200">
-            {/* Quantity Selector */}
-            <div className="flex items-center border border-gray-300 rounded-full bg-white h-14 w-36 shadow-sm">
+          {/* Quantity Stepper (Tablet / Laptop) */}
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Quantity:</span>
+            <div className="flex items-center border border-gray-200 rounded-xl bg-white h-11 w-32 shadow-sm overflow-hidden">
               <button 
-                className="w-12 h-full flex items-center justify-center text-gray-500 hover:text-black text-xl transition-colors"
+                className="w-10 h-full flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-100 text-lg transition-colors cursor-pointer"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
               >
                 −
               </button>
-              <span className="flex-1 text-center font-bold text-[#333]">{quantity}</span>
+              <span className="flex-1 text-center font-bold text-gray-900 text-sm">{quantity}</span>
               <button 
-                className="w-12 h-full flex items-center justify-center text-gray-500 hover:text-black text-xl transition-colors"
+                className="w-10 h-full flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-100 text-lg transition-colors cursor-pointer"
                 onClick={() => setQuantity(quantity + 1)}
               >
                 +
               </button>
             </div>
-            
-            {/* Wishlist Button */}
-            <button 
-              onClick={() => toggleWishlist(product)}
-              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-sm border ${
-                isWishlisted ? 'bg-red-50 border-red-100 text-red-500' : 'bg-white border-gray-200 text-gray-400 hover:text-[var(--primary)] hover:border-[var(--primary)]'
-              }`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill={isWishlisted ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-              </svg>
-            </button>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
-            <button 
-              onClick={() => addToCart(product, quantity)}
-              className="flex-1 bg-white border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-gray-50 h-16 rounded-full font-bold uppercase tracking-widest text-sm transition-colors flex items-center justify-center gap-3"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Add to Cart
-            </button>
-            <button 
-              onClick={() => { addToCart(product, quantity); router.push('/cart'); }}
-              className="flex-1 bg-[#1a1a1a] hover:bg-[var(--primary)] text-white h-16 rounded-full font-bold uppercase tracking-widest text-sm transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
-            >
-              Buy Now
-            </button>
+          {/* FLIPKART STYLE TRUST BADGES */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+            <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">
+              <Truck className="w-5 h-5 text-[var(--primary)] mb-1.5" />
+              <span className="text-[11px] font-bold text-gray-800">Free Delivery</span>
+              <span className="text-[10px] text-gray-500">All India</span>
+            </div>
+            <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">
+              <RotateCcw className="w-5 h-5 text-[var(--primary)] mb-1.5" />
+              <span className="text-[11px] font-bold text-gray-800">7 Days</span>
+              <span className="text-[10px] text-gray-500">Replacement</span>
+            </div>
+            <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">
+              <ShieldCheck className="w-5 h-5 text-[var(--primary)] mb-1.5" />
+              <span className="text-[11px] font-bold text-gray-800">100% Genuine</span>
+              <span className="text-[10px] text-gray-500">Premium Quality</span>
+            </div>
+            <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">
+              <CreditCard className="w-5 h-5 text-[var(--primary)] mb-1.5" />
+              <span className="text-[11px] font-bold text-gray-800">Secure Pay</span>
+              <span className="text-[10px] text-gray-500">UPI / Card / Net</span>
+            </div>
           </div>
+          
+          {/* Rich Description & Specifications */}
+          <div className="space-y-4">
+            <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
+              Product Overview & Specifications
+            </h3>
+            
+            <div className="prose prose-neutral max-w-none text-gray-700 leading-relaxed text-sm sm:text-base space-y-2.5">
+              {product.description ? (
+                renderRichMarkdown(product.description)
+              ) : (
+                <p className="text-gray-400 italic text-sm">No description available for this product.</p>
+              )}
+            </div>
+          </div>
+
         </div>
 
       </div>
+
+      {/* MOBILE FIXED BOTTOM ACTION BAR (FLIPKART STYLE STICKY FOOTER) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-4 py-3 flex items-center gap-3 shadow-2xl">
+        <button 
+          onClick={handleAddToCartAction}
+          className="flex-1 bg-[#ff9f00] hover:bg-[#e68f00] text-white h-12 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Add to Cart
+        </button>
+        <button 
+          onClick={handleBuyNowAction}
+          className="flex-1 bg-[var(--primary)] hover:bg-[#3b4b1a] text-white h-12 rounded-xl font-bold uppercase tracking-wider text-xs transition-all shadow-md flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer"
+        >
+          <Zap className="w-4 h-4 fill-current" />
+          Buy Now
+        </button>
+      </div>
+
     </div>
   );
 }

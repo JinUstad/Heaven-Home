@@ -14,6 +14,7 @@ import {
   Share2
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { renderRichMarkdown } from "@/utils/markdown";
 
 interface Blog {
   id: string;
@@ -85,87 +86,7 @@ export default function BlogDetailPage() {
   // Markdown renderer for rich formatted blog content
   const renderFormattedContent = (text: string) => {
     if (!text) return "";
-
-    const lines = text.split("\n");
-    const elements: React.ReactNode[] = [];
-
-    lines.forEach((line, idx) => {
-      const trimmed = line.trim();
-
-      if (!trimmed) {
-        elements.push(<div key={idx} className="h-4" />);
-        return;
-      }
-
-      // Heading 1
-      if (trimmed.startsWith("# ")) {
-        elements.push(
-          <h1 key={idx} className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mt-8 mb-4">
-            {trimmed.slice(2)}
-          </h1>
-        );
-        return;
-      }
-
-      // Heading 2
-      if (trimmed.startsWith("## ")) {
-        elements.push(
-          <h2 key={idx} className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 mt-8 mb-3 text-[var(--primary)]">
-            {trimmed.slice(3)}
-          </h2>
-        );
-        return;
-      }
-
-      // Heading 3
-      if (trimmed.startsWith("### ")) {
-        elements.push(
-          <h3 key={idx} className="text-xl font-serif font-bold text-gray-800 mt-6 mb-2">
-            {trimmed.slice(4)}
-          </h3>
-        );
-        return;
-      }
-
-      // Blockquote
-      if (trimmed.startsWith("> ")) {
-        elements.push(
-          <blockquote key={idx} className="border-l-4 border-[var(--primary)] pl-5 py-2 my-6 bg-emerald-50/50 rounded-r-xl italic text-gray-700 font-serif text-lg">
-            {trimmed.slice(2)}
-          </blockquote>
-        );
-        return;
-      }
-
-      // Bulleted list item
-      if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-        elements.push(
-          <li key={idx} className="ml-6 list-disc text-gray-700 my-1 leading-relaxed">
-            {trimmed.slice(2)}
-          </li>
-        );
-        return;
-      }
-
-      // Numbered list item
-      if (/^\d+\.\s/.test(trimmed)) {
-        elements.push(
-          <li key={idx} className="ml-6 list-decimal text-gray-700 my-1.5 leading-relaxed font-medium">
-            {trimmed.replace(/^\d+\.\s/, '')}
-          </li>
-        );
-        return;
-      }
-
-      // Regular paragraph
-      elements.push(
-        <p key={idx} className="text-gray-700 text-base sm:text-lg leading-relaxed my-3 font-normal">
-          {trimmed}
-        </p>
-      );
-    });
-
-    return elements;
+    return renderRichMarkdown(text, { isBlog: true });
   };
 
   if (loading) {

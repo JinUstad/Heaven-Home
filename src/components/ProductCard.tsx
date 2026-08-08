@@ -4,6 +4,8 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart, Product } from '@/hooks/useCart';
+import { Heart, ShoppingBag, Eye, Star } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export type ExtendedProduct = Product & {
   discount?: string;
@@ -21,115 +23,118 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const isWishlisted = isInWishlist(product.id);
 
+  const handleQuickAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product);
+    toast.success(`Added ${product.name} to cart!`, { icon: '🛒', duration: 2000 });
+  };
+
+  const handleQuickBuy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product);
+    router.push('/cart');
+  };
+
   return (
-    <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transition-all duration-500 ease-out transform hover:-translate-y-1 cursor-pointer">
+    <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl border border-gray-200 shadow-xs hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       
       {/* Full card clickable link */}
       <Link href={`/products/${product.id}`} className="absolute inset-0 z-0" aria-label={`View ${product.name}`} />
       
       {/* Discount Badge */}
       {product.discount && (
-        <div className="absolute top-4 left-4 bg-[var(--accent)] text-[#1a1a1a] text-xs font-bold px-3 py-1.5 rounded-full shadow-md z-10 tracking-widest pointer-events-none">
+        <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md z-10 uppercase tracking-wider pointer-events-none">
           {product.discount}
         </div>
       )}
 
+      {/* Wishlist Button (Always accessible on Mobile & Desktop) */}
+      <button 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleWishlist(product);
+        }}
+        className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all z-20 shadow-sm cursor-pointer ${
+          isWishlisted 
+            ? 'bg-red-50 text-red-500 border border-red-200' 
+            : 'bg-white/90 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:bg-white border border-gray-200/60'
+        }`}
+        title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+      >
+        <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
+      </button>
+
       {/* Image Area */}
-      <div className="relative aspect-square overflow-hidden bg-[#f8f9fa] p-8 flex items-center justify-center pointer-events-none">
+      <div className="relative aspect-square overflow-hidden bg-[#fafafa] p-6 flex items-center justify-center pointer-events-none">
         {product.image && (
           <img 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ease-in-out" 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-in-out mix-blend-multiply" 
           />
         )}
         
-        {/* Hover Action Icons (Top) */}
-        <div className="absolute top-4 right-0 left-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 transition-all duration-300 z-20 pointer-events-none">
-          <Link href={`/products/${product.id}`} className="w-8 h-8 rounded-full bg-[var(--primary)] text-white flex items-center justify-center hover:bg-opacity-90 pointer-events-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </Link>
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleWishlist(product);
-            }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors pointer-events-auto ${
-              isWishlisted ? 'bg-red-50 text-red-500' : 'bg-[var(--primary)] text-white hover:bg-opacity-90'
-            }`}
+        {/* Quick View Floating Button */}
+        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 pointer-events-none hidden sm:block">
+          <Link 
+            href={`/products/${product.id}`} 
+            className="w-8 h-8 rounded-full bg-white/95 text-gray-700 shadow-md flex items-center justify-center hover:bg-[var(--primary)] hover:text-white pointer-events-auto transition-colors"
+            title="View details"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill={isWishlisted ? "currentColor" : "none"} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-            </svg>
-          </button>
+            <Eye className="w-4 h-4" />
+          </Link>
         </div>
-
       </div>
       
       {/* Product Info */}
-      <div className="p-4 flex flex-col items-center text-center relative bg-white z-10 pointer-events-none">
-        
-        {/* Hover Add to Cart and Buy Now (Slides up to replace price/stars) */}
-        <div className="absolute inset-0 bg-white flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-30 pointer-events-none">
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCart(product);
-            }}
-            className="text-[var(--primary)] font-bold text-[12px] hover:underline tracking-wider pointer-events-auto"
-          >
-            ADD TO CART
-          </button>
-          <div className="w-[1px] h-4 bg-gray-300"></div>
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCart(product);
-              router.push('/cart');
-            }}
-            className="text-[#1a1a1a] font-bold text-[12px] hover:underline tracking-wider pointer-events-auto"
-          >
-            BUY NOW
-          </button>
+      <div className="p-4 flex flex-col flex-1 justify-between bg-white relative z-10">
+        <div>
+          {/* Category Detail */}
+          {product.category && product.category.toUpperCase() !== product.name.toUpperCase() && (
+            <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-wider block mb-1">
+              {product.category}
+            </span>
+          )}
+
+          <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2 group-hover:text-[var(--primary)] transition-colors">
+            {product.name}
+          </h3>
         </div>
-
-        {/* Category Detail */}
-        {product.category && product.category.toUpperCase() !== product.name.toUpperCase() && (
-          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-1 z-20">
-            {product.category}
-          </span>
-        )}
-
-        <h3 className="text-[13px] font-bold text-[#333] mb-2 uppercase tracking-wide group-hover:text-[var(--primary)] transition-colors relative z-20">{product.name}</h3>
         
-        {/* These hide on hover when Add to Cart appears */}
-        <div className="flex flex-col items-center group-hover:opacity-0 transition-opacity duration-300">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[15px] font-bold text-[var(--primary)]">₹{product.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+        <div>
+          {/* Pricing Row */}
+          <div className="flex items-baseline gap-2 mb-3">
+            <span className="text-base font-bold text-gray-900">
+              ₹{product.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            </span>
             {product.oldPrice && (
-              <span className="text-[13px] text-gray-400 line-through">₹{product.oldPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+              <span className="text-xs text-gray-400 line-through">
+                ₹{product.oldPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+              </span>
             )}
           </div>
           
-          {product.reviews && product.reviews > 0 ? (
-            <div className="flex items-center gap-1">
-              <div className="flex text-[#ffb800]">
-                {[1,2,3,4,5].map(star => (
-                  <svg key={star} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={star <= (product.rating || 5) ? "currentColor" : "none"} stroke="currentColor" className="w-3 h-3 border-none">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={star <= (product.rating || 5) ? 0 : 1} d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                  </svg>
-                ))}
-              </div>
-              <span className="text-[11px] text-gray-500 ml-1">{product.reviews} review{product.reviews === 1 ? '' : 's'}</span>
-            </div>
-          ) : null}
+          {/* Action Buttons: 2 Compact Buttons */}
+          <div className="grid grid-cols-2 gap-2 pt-1 border-t border-gray-100">
+            <button 
+              onClick={handleQuickAdd}
+              className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 font-bold text-[11px] py-2 rounded-xl transition-all flex items-center justify-center gap-1 active:scale-[0.97] cursor-pointer"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              Add
+            </button>
+            <button 
+              onClick={handleQuickBuy}
+              className="bg-[var(--primary)] hover:bg-[#3b4b1a] text-white font-bold text-[11px] py-2 rounded-xl transition-all shadow-xs flex items-center justify-center gap-1 active:scale-[0.97] cursor-pointer"
+            >
+              Buy Now
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   );

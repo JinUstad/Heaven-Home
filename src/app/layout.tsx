@@ -7,6 +7,8 @@ import { Navbar } from "@/components/Navbar";
 import { ActiveUserTracker } from "@/components/ActiveUserTracker";
 import { Footer } from "@/components/Footer";
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -75,6 +77,8 @@ export default function RootLayout({
           </main>
           <Footer />
         </CartProvider>
+        <Analytics />
+        <SpeedInsights />
         <Script id="pwa-register" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {
