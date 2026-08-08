@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Parses inline markdown tokens:
+ * Normalizes unclosed formatting tags and parses inline markdown tokens:
  * - ***bold italic***
  * - **bold** or __bold__
  * - *italic* or _italic_
@@ -11,15 +11,23 @@ import React from 'react';
 export function parseInlineMarkdown(text: string): React.ReactNode {
   if (!text) return text;
 
-  // Match markdown tokens:
-  // 1: ***text***
-  // 2: **text** or __text__
-  // 3: *text* or _text_
-  // 4: `code`
-  // 5: [link](url)
+  // Auto-balance single unclosed ** markers so **text becomes **text**
+  let processed = text;
+  const boldPairs = (processed.match(/\*\*/g) || []).length;
+  if (boldPairs % 2 !== 0) {
+    processed = processed + '**';
+  }
+
+  // Auto-balance single unclosed __ markers
+  const underPairs = (processed.match(/__/g) || []).length;
+  if (underPairs % 2 !== 0) {
+    processed = processed + '__';
+  }
+
+  // Match markdown tokens
   const regex = /(\*\*\*[^*]+\*\*\*|\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|_[^_]+_|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
 
-  const parts = text.split(regex);
+  const parts = processed.split(regex);
 
   return parts.map((part, index) => {
     if (!part) return null;
@@ -138,7 +146,7 @@ export function renderRichMarkdown(text: string, options?: { isBlog?: boolean })
           className={
             options?.isBlog
               ? "text-xl sm:text-2xl font-serif font-bold text-[var(--primary)] mt-5 mb-2.5"
-              : "text-base sm:text-lg font-bold text-[var(--primary)] mt-4 mb-1.5"
+              : "text-base sm:text-lg font-serif font-bold text-[var(--primary)] mt-4 mb-1.5"
           }
         >
           {parseInlineMarkdown(trimmed.slice(3))}
@@ -155,11 +163,30 @@ export function renderRichMarkdown(text: string, options?: { isBlog?: boolean })
           className={
             options?.isBlog
               ? "text-lg font-serif font-bold text-gray-800 mt-4 mb-2"
-              : "text-sm sm:text-base font-bold text-gray-900 mt-3 mb-1"
+              : "text-sm sm:text-base font-serif font-bold text-gray-900 mt-3 mb-1"
           }
         >
           {parseInlineMarkdown(trimmed.slice(4))}
         </h4>
+      );
+      return;
+    }
+
+    // Standalone Bold Heading line (e.g., "**One Dispenser, Two Convenient Functions**" or "**One Dispenser, Two Convenient Functions")
+    const boldHeadingMatch = trimmed.match(/^\*\*([^*]+)\*\*?$/);
+    if (boldHeadingMatch) {
+      const headingContent = boldHeadingMatch[1].trim();
+      elements.push(
+        <h3
+          key={idx}
+          className={
+            options?.isBlog
+              ? "text-xl sm:text-2xl font-serif font-bold text-gray-900 mt-6 mb-3"
+              : "text-base sm:text-lg font-serif font-bold text-gray-900 mt-4 mb-1.5"
+          }
+        >
+          {parseInlineMarkdown(headingContent)}
+        </h3>
       );
       return;
     }
@@ -169,7 +196,7 @@ export function renderRichMarkdown(text: string, options?: { isBlog?: boolean })
       elements.push(
         <blockquote
           key={idx}
-          className="border-l-4 border-[var(--primary)] pl-4 py-2 my-3 italic text-gray-700 bg-gray-50 rounded-r-lg text-sm sm:text-base"
+          className="border-l-4 border-[var(--primary)] pl-4 py-2 my-3 italic text-gray-700 bg-gray-50 rounded-r-lg text-sm sm:text-base font-serif"
         >
           {parseInlineMarkdown(trimmed.slice(2))}
         </blockquote>
