@@ -278,9 +278,6 @@ export default function HomePage() {
                 className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
               />
               <div className="flex flex-col items-start">
-                <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-1">
-                  Wear Your Elegance
-                </span>
                 <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
                   Timeless<br />Jewellery
                 </h3>
@@ -304,9 +301,6 @@ export default function HomePage() {
                 className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
               />
               <div className="flex flex-col items-start">
-                <span className="text-white/90 font-bold text-xs uppercase tracking-widest block mb-1">
-                  Elevate Every Culinary Moment
-                </span>
                 <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight text-[#222]">
                   Premium Kitchen<br />Essentials
                 </h3>
@@ -330,9 +324,6 @@ export default function HomePage() {
                 className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
               />
               <div className="flex flex-col items-start">
-                <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-1">
-                  Style That Complements Your Home
-                </span>
                 <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
                   Elegant Home<br />Essentials
                 </h3>
