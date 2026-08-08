@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { renderRichMarkdown } from "@/utils/markdown";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 interface Blog {
   id: string;
@@ -116,6 +117,22 @@ export default function BlogDetailPage() {
 
   return (
     <article className="min-h-screen bg-[var(--background)] py-10 px-4 sm:px-6 lg:px-8">
+      <ArticleJsonLd
+        id={blog.id}
+        title={blog.title}
+        excerpt={blog.excerpt}
+        content={blog.content}
+        imageUrl={blog.image_url}
+        author={blog.author}
+        publishedAt={blog.published_at || blog.created_at || new Date().toISOString()}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Journal', url: '/blogs' },
+          { name: blog.title, url: `/blogs/${blog.id}` }
+        ]}
+      />
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Navigation Breadcrumb */}

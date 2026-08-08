@@ -268,45 +268,78 @@ export default function HomePage() {
       {/* 3. Promotional Banners */}
       <section className="w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 min-h-[300px] md:h-[400px]">
-          {/* Olive Banner */}
-          <div className="bg-[var(--primary)] relative overflow-hidden flex items-center p-12">
+          {/* Banner 1: Timeless Jewellery */}
+          <div className="bg-[var(--primary)] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
             <div className="absolute -left-20 bg-[#222] w-64 h-64 rounded-full opacity-20" />
-            <div className="relative z-10 text-white w-full">
-              <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=200&q=80" alt="Lounge Chair" className="absolute -left-10 top-1/2 -translate-y-1/2 w-48 object-cover drop-shadow-2xl mix-blend-multiply rounded-xl" />
-              <div className="ml-44">
-                <h3 className="text-3xl md:text-4xl font-bold mb-6">Premium<br />Lounge</h3>
+            <div className="relative z-10 text-white w-full flex items-center gap-4 sm:gap-6">
+              <img 
+                src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" 
+                alt="Timeless Jewellery" 
+                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
+              />
+              <div className="flex flex-col items-start">
+                <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-1">
+                  Wear Your Elegance
+                </span>
+                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
+                  Timeless<br />Jewellery
+                </h3>
                 <Link href="/products">
-                  <button className="bg-[var(--accent)] text-white px-8 py-3 font-bold text-sm hover:opacity-90 transition-opacity">SHOP NOW</button>
+                  <button className="bg-[var(--accent)] text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity shadow-md">
+                    SHOP NOW
+                  </button>
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Accent Banner */}
-          <div className="bg-[#e6a15c] relative overflow-hidden flex items-center p-12">
+          {/* Banner 2: Premium Kitchen Essentials */}
+          <div className="bg-[#e6a15c] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
             <div className="absolute -bottom-10 -left-10 bg-white w-48 h-48 rounded-full opacity-20" />
             <div className="absolute top-10 right-10 bg-white w-20 h-20 rounded-full opacity-20" />
-            <div className="relative z-10 text-white flex items-center justify-center w-full">
-              <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=200&q=80" alt="Kitchen" className="w-48 h-48 object-cover mr-8 drop-shadow-2xl rounded-lg" />
-              <div>
-                <h3 className="text-3xl md:text-4xl font-bold mb-6">Modern<br />Kitchen<br />Set</h3>
+            <div className="relative z-10 text-white flex items-center gap-4 sm:gap-6 w-full">
+              <img 
+                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80" 
+                alt="Premium Kitchen Essentials" 
+                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
+              />
+              <div className="flex flex-col items-start">
+                <span className="text-white/90 font-bold text-xs uppercase tracking-widest block mb-1">
+                  Elevate Every Culinary Moment
+                </span>
+                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight text-[#222]">
+                  Premium Kitchen<br />Essentials
+                </h3>
                 <Link href="/products">
-                  <button className="bg-[#333] text-white px-8 py-3 font-bold text-sm hover:bg-black transition-colors">SHOP NOW</button>
+                  <button className="bg-[#222] text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors shadow-md">
+                    SHOP NOW
+                  </button>
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Dark Banner */}
-          <div className="bg-[#2c3e2e] relative overflow-hidden flex items-center p-12">
+          {/* Banner 3: Elegant Home Essentials */}
+          <div className="bg-[#2c3e2e] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
             <div className="absolute -top-10 -left-10 bg-[var(--accent)] w-48 h-48 rounded-full opacity-30" />
             <div className="absolute top-10 right-10 border-4 border-white w-16 h-16 rounded-full opacity-20" />
-            <div className="relative z-10 text-white flex items-center justify-center w-full">
-              <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=200&q=80" alt="Decor" className="w-48 h-48 object-cover mr-8 drop-shadow-2xl rounded-lg" />
-              <div>
-                <h3 className="text-3xl md:text-4xl font-bold mb-6">Elegant<br />Wall Decor</h3>
+            <div className="relative z-10 text-white flex items-center gap-4 sm:gap-6 w-full">
+              <img 
+                src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=400&q=80" 
+                alt="Elegant Home Essentials" 
+                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
+              />
+              <div className="flex flex-col items-start">
+                <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-1">
+                  Style That Complements Your Home
+                </span>
+                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
+                  Elegant Home<br />Essentials
+                </h3>
                 <Link href="/products">
-                  <button className="bg-white text-[var(--primary)] px-8 py-3 font-bold text-sm hover:bg-gray-100 transition-colors">SHOP NOW</button>
+                  <button className="bg-white text-[var(--primary)] px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition-colors shadow-md">
+                    SHOP NOW
+                  </button>
                 </Link>
               </div>
             </div>

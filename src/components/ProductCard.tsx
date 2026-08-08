@@ -72,7 +72,9 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.image && (
           <img 
             src={product.image} 
-            alt={product.name} 
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-in-out mix-blend-multiply" 
           />
         )}

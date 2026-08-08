@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { renderRichMarkdown } from '@/utils/markdown';
+import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 export default function ProductDetailsPage() {
   const params = useParams();
@@ -160,9 +161,25 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 md:py-14 pb-28 md:pb-16 animate-fade-in">
+      <ProductJsonLd
+        id={product.id}
+        name={product.name}
+        description={product.description || ''}
+        images={images}
+        price={product.price}
+        oldPrice={product.old_price}
+        category={product.category}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Collection', url: '/products' },
+          { name: product.name, url: `/products/${product.id}` }
+        ]}
+      />
       
       {/* Breadcrumb Navigation */}
-      <nav className="mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500 flex items-center flex-wrap gap-1.5">
+      <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500 flex items-center flex-wrap gap-1.5">
         <Link href="/" className="hover:text-[var(--primary)] transition-colors">Home</Link>
         <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
         <Link href="/products" className="hover:text-[var(--primary)] transition-colors">Collection</Link>
