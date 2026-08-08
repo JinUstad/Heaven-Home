@@ -63,7 +63,7 @@ export default function BlogsPage() {
   }, []);
 
   // Compute available categories dynamically from real blogs
-  const categories = ["All", ...Array.from(new Set(blogs.map(b => b.category || "Interior Design").filter(Boolean)))];
+  const categories = ["All", ...Array.from(new Set(blogs.map(b => b.category || "Kitchen Essentials").filter(Boolean)))];
 
   // Filtered blogs based on search and category
   const filteredBlogs = blogs.filter((blog) => {
