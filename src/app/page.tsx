@@ -245,7 +245,7 @@ export default function HomePage() {
               <span className="text-[var(--primary)] font-bold text-sm tracking-wider uppercase block mb-4">
                 HEAVEN HOME PREMIUM
               </span>
-              <h2 className="text-4xl md:text-5xl font-black text-[#333] leading-tight">
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#222] leading-tight">
                 HOME DESIGN <br />
                 COVERS THE REQUIRED <br />
                 FOR YOUR COMFORT.
@@ -256,7 +256,7 @@ export default function HomePage() {
                 Our experts cover the full spectrum of home and kitchen areas, ensuring your spaces are both beautiful and highly functional.
               </p>
               <Link href="/about">
-                <button className="px-8 py-3 border border-[var(--primary)] text-[var(--primary)] font-bold text-sm uppercase tracking-wider hover:bg-[var(--primary)] hover:text-white transition-colors">
+                <button className="px-8 py-3 border border-[var(--primary)] text-[var(--primary)] font-bold text-sm uppercase tracking-wider hover:bg-[var(--primary)] hover:text-white transition-colors rounded-lg shadow-sm">
                   ABOUT STORY
                 </button>
               </Link>
@@ -301,11 +301,11 @@ export default function HomePage() {
                 className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
               />
               <div className="flex flex-col items-start">
-                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight text-[#222]">
+                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight text-white">
                   Premium Kitchen<br />Essentials
                 </h3>
                 <Link href="/products">
-                  <button className="bg-[#222] text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-black transition-colors shadow-md">
+                  <button className="bg-white text-[#1a1a1a] px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition-colors shadow-md">
                     SHOP NOW
                   </button>
                 </Link>
