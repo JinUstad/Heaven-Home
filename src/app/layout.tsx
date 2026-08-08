@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { OrganizationJsonLd } from "@/components/seo/JsonLd";
+import { IosPwaPrompt } from "@/components/IosPwaPrompt";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://heavenhome.vercel.app";
 
@@ -70,7 +71,16 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", type: "image/x-icon" }
     ],
     shortcut: "/logo.png",
-    apple: "/logo.png",
+    apple: [
+      { url: "/logo.png", sizes: "180x180", type: "image/png" },
+      { url: "/logo.png", sizes: "152x152", type: "image/png" },
+      { url: "/logo.png", sizes: "120x120", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Heaven Home",
   },
   openGraph: {
     title: "Heaven Home | Premium Kitchen Essentials",
@@ -121,7 +131,17 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" type="image/png" />
         <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        {/* Apple iOS PWA Support */}
         <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/logo.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/logo.png" />
+        <link rel="apple-touch-icon-precomposed" href="/logo.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Heaven Home" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Heaven Home" />
         <OrganizationJsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
@@ -133,6 +153,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <IosPwaPrompt />
         </CartProvider>
         <Analytics />
         <SpeedInsights />

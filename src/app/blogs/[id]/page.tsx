@@ -219,7 +219,7 @@ export default function BlogDetailPage() {
         {/* Excerpt Lead */}
         {blog.excerpt && (
           <div className="bg-white border-l-4 border-[var(--primary)] rounded-r-2xl p-6 shadow-sm">
-            <p className="text-lg text-gray-700 font-serif italic leading-relaxed">
+            <p className="text-lg sm:text-xl text-gray-900 font-serif font-bold italic leading-relaxed">
               "{blog.excerpt}"
             </p>
           </div>
