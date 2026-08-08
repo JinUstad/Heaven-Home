@@ -74,22 +74,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [...prev, { ...product, quantity }];
     });
     toast.success(`${product.name} added to cart!`, {
+      id: 'cart-toast',
       style: {
-        background: '#333',
+        background: '#1d3227',
         color: '#fff',
-        borderRadius: '8px',
+        borderRadius: '12px',
         fontWeight: 'bold',
       },
       iconTheme: {
-        primary: 'var(--primary)',
-        secondary: '#fff',
+        primary: '#4ade80',
+        secondary: '#1d3227',
       },
     });
   };
 
   const removeFromCart = (productId: string) => {
     setCart((prev) => prev.filter((item) => item.id !== productId));
-    toast.success(`Item removed from cart`);
+    toast.success(`Item removed from cart`, { id: 'cart-toast' });
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -102,7 +103,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => {
     setCart([]);
-    toast.success(`Cart cleared`);
+    toast.success(`Cart cleared`, { id: 'cart-toast' });
   };
 
   const toggleWishlist = (product: Product) => {

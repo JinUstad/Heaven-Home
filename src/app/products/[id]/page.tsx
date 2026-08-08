@@ -71,10 +71,6 @@ export default function ProductDetailsPage() {
   const handleAddToCartAction = () => {
     if (!product) return;
     addToCart(product, quantity);
-    toast.success(`Added ${quantity} × ${product.name} to cart!`, {
-      icon: '🛒',
-      duration: 2500
-    });
   };
 
   const handleBuyNowAction = () => {

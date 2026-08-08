@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart, Product } from '@/hooks/useCart';
 import { Heart, ShoppingBag, Eye, Star } from 'lucide-react';
-import toast from 'react-hot-toast';
 
 export type ExtendedProduct = Product & {
   discount?: string;
@@ -27,7 +26,6 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
-    toast.success(`Added ${product.name} to cart!`, { icon: '🛒', duration: 2000 });
   };
 
   const handleQuickBuy = (e: React.MouseEvent) => {
