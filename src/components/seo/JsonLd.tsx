@@ -76,13 +76,14 @@ export function ProductJsonLd({
   name: string;
   description: string;
   images: string[];
-  price: number;
-  oldPrice?: number;
+  price: number | string;
+  oldPrice?: number | string;
   category?: string;
   sku?: string;
 }) {
   const productUrl = `${SITE_URL}/products/${id}`;
   const cleanDescription = (description || name).replace(/[#*`_>\[\]]/g, '').slice(0, 300);
+  const numericPrice = typeof price === 'string' ? parseFloat(price) || 0 : price;
 
   const schema = {
     '@context': 'https://schema.org',
@@ -101,7 +102,7 @@ export function ProductJsonLd({
       '@type': 'Offer',
       url: productUrl,
       priceCurrency: 'INR',
-      price: price,
+      price: numericPrice,
       priceValidUntil: '2028-12-31',
       itemCondition: 'https://schema.org/NewCondition',
       availability: 'https://schema.org/InStock',

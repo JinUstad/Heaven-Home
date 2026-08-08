@@ -163,7 +163,7 @@ export default function ProductDetailsPage() {
         description={product.description || ''}
         images={images}
         price={product.price}
-        oldPrice={product.old_price}
+        oldPrice={product.oldPrice}
         category={product.category}
       />
       <BreadcrumbJsonLd
