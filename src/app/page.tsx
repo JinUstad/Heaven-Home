@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ProductCard, ExtendedProduct } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ThumbsUp, Search, Award, Shield, Gem, Plus, Minus } from 'lucide-react';
 
 const heroImage = "/hero_banner_1787207503393.jpg";
 
@@ -29,10 +29,27 @@ const testimonials = [
   { text: "Finding authentic and beautiful jewelry online can be daunting, but Heaven Jewels exceeded all my expectations. Fast shipping, beautiful packaging, and absolutely stunning pieces. Highly recommended!", name: "Riya Sharma", role: "Entrepreneur", image: "/testimonial_avatar.jpg" }
 ];
 
+const faqs = [
+  { question: "What types of materials and gemstones do you use?", answer: "We use premium-quality gold (22K/18K), silver, platinum & ethically sourced, certified gemstones. Each material is carefully selected to ensure durability, brilliance, and long-lasting beauty." },
+  { question: "Are your jewellery pieces certified and authentic?", answer: "Yes, all our jewellery pieces come with a certificate of authenticity and hallmark guaranteeing their purity and quality." },
+  { question: "Do you offer customization or personalized jewellery?", answer: "Absolutely! We offer bespoke jewellery design services. Our expert craftsmen will work with you to bring your unique vision to life." },
+  { question: "How do I choose the right jewellery for an occasion?", answer: "Consider the event's formality, your outfit's neckline, and your personal style. Our style consultants are always available to help you make the perfect choice." },
+  { question: "What is your return, exchange, and refund policy?", answer: "We offer a hassle-free 14-day return and exchange policy on all unworn items in their original condition and packaging." }
+];
+
+const latestBlogs = [
+  { title: "Bridal Jewellery Guide Complete Your Wedding Look", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80", link: "/blogs/1" },
+  { title: "How to Choose the Perfect Diamond Engagement Ring", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80", link: "/blogs/2" },
+  { title: "Caring for Your Jewellery Tips to Keep It Shining", image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80", link: "/blogs/3" }
+];
+
 export default function HomePage() {
   const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const toggleFaq = (idx: number) => setOpenFaq(openFaq === idx ? null : idx);
 
   const nextTestimonial = () => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
   const prevTestimonial = () => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
@@ -126,6 +143,53 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 1.5. The Promise of Perfection (Features) */}
+      <section className="py-20 w-full bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16 flex flex-col items-center">
+            <div className="flex items-center gap-2 mb-6 border border-gray-200 rounded-full px-4 py-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+              <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Our Promise</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#222]">The Promise of Perfection</h2>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-b border-gray-100 py-12">
+            <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
+              <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
+                <ThumbsUp className="w-8 h-8 text-gray-700 stroke-[1.5]" />
+              </div>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Assured Fair Price<br/>Policy</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
+              <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
+                <Search className="w-8 h-8 text-gray-700 stroke-[1.5]" />
+              </div>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Absolute<br/>Transparency</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0 relative">
+              <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
+                <Award className="w-8 h-8 text-gray-700 stroke-[1.5]" />
+              </div>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Certified 916 Gold<br/>Purity</p>
+              <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gray-800 hidden md:block"></div>
+            </div>
+            <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
+              <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
+                <Shield className="w-8 h-8 text-gray-700 stroke-[1.5]" />
+              </div>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Safe Jewellery<br/>Purchase Scheme</p>
+            </div>
+            <div className="flex flex-col items-center text-center gap-6 px-4">
+              <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
+                <Gem className="w-8 h-8 text-gray-700 stroke-[1.5]" />
+              </div>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Karat Purity<br/>Analyser</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 2. Top Selling Jewelry Collection */}
       <section className="py-24 max-w-7xl mx-auto px-4 w-full">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
@@ -157,23 +221,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Promotional Banners */}
-      <section className="py-12 max-w-7xl mx-auto px-4 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {promoBanners.map((promo, idx) => (
-            <div key={idx} className="bg-[#f9f9f9] flex items-center p-6 md:p-8 overflow-hidden group border border-gray-100">
-              <div className="flex-1 flex flex-col z-10 relative">
-                <span className="text-[10px] font-bold tracking-widest text-gray-500 mb-4">{promo.discount}</span>
-                <h3 className="text-xl md:text-2xl font-serif leading-tight mb-8 max-w-[150px]">{promo.title}</h3>
-                <Link href="/products" className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 hover:text-[var(--primary)] transition-colors">
-                  View Collection <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-              <div className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] -mr-8 -my-8 z-0 relative flex-shrink-0 mix-blend-multiply">
-                <img src={promo.image} alt={promo.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
-              </div>
+      {/* 3. Promo Banners */}
+      <section className="py-16 max-w-7xl mx-auto px-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Flat 30% Off Banner */}
+          <div className="relative h-[350px] md:h-[450px] w-full overflow-hidden group">
+            <img 
+              src="https://images.unsplash.com/photo-1599643478524-fb66f456c1f1?auto=format&fit=crop&w=800&q=80" 
+              alt="Flat 30% Off On Premium Collection" 
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
+            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center p-8 text-white">
+              <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-white/90">Limited Time Offer</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif mb-8 max-w-sm leading-tight">Flat 30% Off On Premium Collection</h2>
+              <Link href="/products">
+                <button className="px-8 py-3 bg-transparent border border-white text-xs font-semibold tracking-widest hover:bg-white hover:text-black transition-all uppercase">
+                  Explore Collection
+                </button>
+              </Link>
             </div>
-          ))}
+          </div>
+
+          {/* 40% Off Banner */}
+          <div className="relative h-[350px] md:h-[450px] w-full overflow-hidden group">
+            <img 
+              src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80" 
+              alt="Celebrate With 40% Off Collection" 
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
+            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center p-8 text-white">
+              <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-white/90">Hurry! Offer Ends Soon</span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif mb-8 max-w-sm leading-tight">Celebrate With 40% Off Collection</h2>
+              <Link href="/products">
+                <button className="px-8 py-3 bg-transparent border border-white text-xs font-semibold tracking-widest hover:bg-white hover:text-black transition-all uppercase">
+                  Explore Collection
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -285,6 +372,87 @@ export default function HomePage() {
               <img src="/new_coll_women_1787207961263.jpg" alt="Women's Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 7. FAQ Section */}
+      <section className="py-24 max-w-7xl mx-auto px-4 w-full">
+        <div className="flex flex-col md:flex-row gap-16 md:gap-24">
+          <div className="w-full md:w-1/3">
+            <div className="flex items-center gap-2 mb-6 border border-gray-200 rounded-full px-4 py-1 w-max">
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+              <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Frequently Asked Questions</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#222] mb-8 leading-tight">Common Questions About Our Collection</h2>
+            <p className="text-sm text-gray-500 leading-relaxed mb-10">Find clear answers to the most common questions about our fashion and jewelry collection, helping you shop.</p>
+            <Link href="/faq">
+              <button className="px-8 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
+                View All FAQ'S
+              </button>
+            </Link>
+          </div>
+          
+          <div className="w-full md:w-2/3 flex flex-col">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="border-b border-gray-200 py-6 first:pt-0">
+                <button 
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full flex justify-between items-center text-left focus:outline-none group"
+                >
+                  <h3 className="font-serif text-xl md:text-2xl text-[#333] group-hover:text-[var(--primary)] transition-colors pr-8">
+                    {faq.question}
+                  </h3>
+                  <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center border border-gray-300 rounded-sm">
+                    {openFaq === idx ? (
+                      <Minus className="w-4 h-4 text-gray-500" />
+                    ) : (
+                      <Plus className="w-4 h-4 text-gray-500" />
+                    )}
+                  </div>
+                </button>
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    openFaq === idx ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"
+                  }`}
+                >
+                  <p className="text-sm text-gray-500 leading-relaxed max-w-2xl">{faq.answer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Latest Fashion Blogs */}
+      <section className="py-24 max-w-7xl mx-auto px-4 w-full border-t border-gray-100">
+        <div className="text-center mb-16 flex flex-col items-center">
+          <div className="flex items-center gap-2 mb-6 border border-gray-200 rounded-full px-4 py-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+            <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Latest Blog</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#222]">Explore Our Latest Fashion Blogs</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestBlogs.map((blog, idx) => (
+            <div key={idx} className="group cursor-pointer flex flex-col gap-6">
+              <div className="w-full h-[300px] sm:h-[400px] overflow-hidden rounded-sm relative">
+                <img 
+                  src={blog.image} 
+                  alt={blog.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl text-[#222] mb-4 group-hover:text-[var(--primary)] transition-colors line-clamp-2">
+                  {blog.title}
+                </h3>
+                <Link href={blog.link} className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors flex items-center gap-2">
+                  Read More <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

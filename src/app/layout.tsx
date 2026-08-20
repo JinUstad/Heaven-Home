@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Jost, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/hooks/useCart";
 import { Navbar } from "@/components/Navbar";
@@ -14,19 +14,15 @@ import { IosPwaPrompt } from "@/components/IosPwaPrompt";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://heavenhome.vercel.app";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jost = Jost({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -40,19 +36,18 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Heaven Jewels | Premium Kitchen Essentials",
+    default: "Heaven Jewels | Premium Jewellery Collection",
     template: "%s | Heaven Jewels",
   },
-  description: "Discover Heaven Jewels's premium kitchenware, elegant organizers, smart kitchen dispensers, and modern essentials designed to elevate every culinary moment.",
+  description: "Discover Heaven Jewels's premium luxury jewellery, elegant diamond necklaces, statement rings, and modern fashion essentials designed to elevate your style.",
   keywords: [
     "Heaven Jewels",
-    "kitchen essentials",
-    "premium kitchenware",
-    "smart kitchen tools",
-    "oil spray dispenser",
-    "spice organizer",
-    "buy kitchen products online",
-    "modern kitchen organizers India",
+    "premium jewellery",
+    "luxury necklaces",
+    "diamond rings",
+    "gold bracelets",
+    "buy jewellery online",
+    "modern fashion accessories India",
   ],
   authors: [{ name: "Heaven Jewels", url: SITE_URL }],
   creator: "Heaven Jewels",
@@ -67,14 +62,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/heavenjewels.PNG", type: "image/png" },
-      { url: "/favicon.ico", type: "image/x-icon" }
+      { url: "/favicon.jpg", type: "image/jpeg" },
     ],
-    shortcut: "/heavenjewels.PNG",
+    shortcut: "/favicon.jpg",
     apple: [
-      { url: "/heavenjewels.PNG", sizes: "180x180", type: "image/png" },
-      { url: "/heavenjewels.PNG", sizes: "152x152", type: "image/png" },
-      { url: "/heavenjewels.PNG", sizes: "120x120", type: "image/png" },
+      { url: "/favicon.jpg", sizes: "180x180", type: "image/jpeg" },
     ],
   },
   appleWebApp: {
@@ -83,8 +75,8 @@ export const metadata: Metadata = {
     title: "Heaven Jewels",
   },
   openGraph: {
-    title: "Heaven Jewels | Premium Kitchen Essentials",
-    description: "Elevate every culinary moment with Heaven Jewels's thoughtfully designed kitchenware and organizers.",
+    title: "Heaven Jewels | Premium Jewellery Collection",
+    description: "Discover Heaven Jewels's premium luxury jewellery, elegant diamond necklaces, statement rings, and modern fashion essentials designed to elevate your style.",
     url: SITE_URL,
     siteName: "Heaven Jewels",
     images: [
@@ -126,17 +118,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${jost.variable} ${cormorant.variable} h-full antialiased`}
     >
       <head>
-        <link rel="icon" href="/heavenjewels.PNG" type="image/png" />
-        <link rel="shortcut icon" href="/heavenjewels.PNG" type="image/png" />
+        <link rel="icon" href="/favicon.jpg" type="image/jpeg" />
+        <link rel="shortcut icon" href="/favicon.jpg" type="image/jpeg" />
         {/* Apple iOS PWA Support */}
-        <link rel="apple-touch-icon" href="/heavenjewels.PNG" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/heavenjewels.PNG" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/heavenjewels.PNG" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/heavenjewels.PNG" />
-        <link rel="apple-touch-icon-precomposed" href="/heavenjewels.PNG" />
+        <link rel="apple-touch-icon" href="/favicon.jpg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.jpg" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicon.jpg" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/favicon.jpg" />
+        <link rel="apple-touch-icon-precomposed" href="/favicon.jpg" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Heaven Jewels" />
@@ -144,7 +136,7 @@ export default function RootLayout({
         <meta name="application-name" content="Heaven Jewels" />
         <OrganizationJsonLd />
       </head>
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] font-sans">
         <CartProvider>
           <ActiveUserTracker />
           <Toaster position="bottom-right" reverseOrder={false} />
