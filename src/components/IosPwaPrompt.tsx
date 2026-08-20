@@ -55,8 +55,8 @@ export function IosPwaPrompt() {
         <div className="flex items-start gap-3.5 pr-6">
           <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex-shrink-0 shadow-md flex items-center justify-center">
             <Image
-              src="/logo.png"
-              alt="Heaven Home"
+              src="/heavenjewels.PNG"
+              alt="Heaven Jewels"
               width={40}
               height={40}
               className="object-contain"
@@ -65,7 +65,7 @@ export function IosPwaPrompt() {
 
           <div className="space-y-1">
             <h3 className="font-serif font-bold text-sm text-white tracking-wide">
-              Install Heaven Home on iPhone
+              Install Heaven Jewels on iPhone
             </h3>
             <p className="text-xs text-gray-200 leading-relaxed">
               Install as an app for faster shopping & instant checkout:

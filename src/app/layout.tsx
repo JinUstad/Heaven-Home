@@ -40,12 +40,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Heaven Home | Premium Kitchen Essentials",
-    template: "%s | Heaven Home",
+    default: "Heaven Jewels | Premium Kitchen Essentials",
+    template: "%s | Heaven Jewels",
   },
-  description: "Discover Heaven Home's premium kitchenware, elegant organizers, smart kitchen dispensers, and modern essentials designed to elevate every culinary moment.",
+  description: "Discover Heaven Jewels's premium kitchenware, elegant organizers, smart kitchen dispensers, and modern essentials designed to elevate every culinary moment.",
   keywords: [
-    "Heaven Home",
+    "Heaven Jewels",
     "kitchen essentials",
     "premium kitchenware",
     "smart kitchen tools",
@@ -54,9 +54,9 @@ export const metadata: Metadata = {
     "buy kitchen products online",
     "modern kitchen organizers India",
   ],
-  authors: [{ name: "Heaven Home", url: SITE_URL }],
-  creator: "Heaven Home",
-  publisher: "Heaven Home",
+  authors: [{ name: "Heaven Jewels", url: SITE_URL }],
+  creator: "Heaven Jewels",
+  publisher: "Heaven Jewels",
   formatDetection: {
     email: false,
     address: false,
@@ -67,32 +67,32 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
+      { url: "/heavenjewels.PNG", type: "image/png" },
       { url: "/favicon.ico", type: "image/x-icon" }
     ],
-    shortcut: "/logo.png",
+    shortcut: "/heavenjewels.PNG",
     apple: [
-      { url: "/logo.png", sizes: "180x180", type: "image/png" },
-      { url: "/logo.png", sizes: "152x152", type: "image/png" },
-      { url: "/logo.png", sizes: "120x120", type: "image/png" },
+      { url: "/heavenjewels.PNG", sizes: "180x180", type: "image/png" },
+      { url: "/heavenjewels.PNG", sizes: "152x152", type: "image/png" },
+      { url: "/heavenjewels.PNG", sizes: "120x120", type: "image/png" },
     ],
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Heaven Home",
+    title: "Heaven Jewels",
   },
   openGraph: {
-    title: "Heaven Home | Premium Kitchen Essentials",
-    description: "Elevate every culinary moment with Heaven Home's thoughtfully designed kitchenware and organizers.",
+    title: "Heaven Jewels | Premium Kitchen Essentials",
+    description: "Elevate every culinary moment with Heaven Jewels's thoughtfully designed kitchenware and organizers.",
     url: SITE_URL,
-    siteName: "Heaven Home",
+    siteName: "Heaven Jewels",
     images: [
       {
         url: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=630&fit=crop",
         width: 1200,
         height: 630,
-        alt: "Heaven Home Premium Kitchen Essentials",
+        alt: "Heaven Jewels Premium Kitchen Essentials",
       }
     ],
     locale: "en_IN",
@@ -100,8 +100,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Heaven Home | Premium Kitchen Essentials",
-    description: "Elevate every culinary moment with Heaven Home's premium kitchenware.",
+    title: "Heaven Jewels | Premium Kitchen Essentials",
+    description: "Elevate every culinary moment with Heaven Jewels's premium kitchenware.",
     images: ["https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=630&fit=crop"],
     creator: "@heavenhome",
   },
@@ -129,19 +129,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
       <head>
-        <link rel="icon" href="/logo.png" type="image/png" />
-        <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        <link rel="icon" href="/heavenjewels.PNG" type="image/png" />
+        <link rel="shortcut icon" href="/heavenjewels.PNG" type="image/png" />
         {/* Apple iOS PWA Support */}
-        <link rel="apple-touch-icon" href="/logo.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/logo.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/logo.png" />
-        <link rel="apple-touch-icon-precomposed" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/heavenjewels.PNG" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/heavenjewels.PNG" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/heavenjewels.PNG" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/heavenjewels.PNG" />
+        <link rel="apple-touch-icon-precomposed" href="/heavenjewels.PNG" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Heaven Home" />
+        <meta name="apple-mobile-web-app-title" content="Heaven Jewels" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="application-name" content="Heaven Home" />
+        <meta name="application-name" content="Heaven Jewels" />
         <OrganizationJsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">

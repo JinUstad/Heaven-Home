@@ -19,8 +19,8 @@ export async function generateMetadata({
 
     if (!product) {
       return {
-        title: 'Product Details | Heaven Home',
-        description: 'Explore premium home & kitchen essentials at Heaven Home.',
+        title: 'Product Details | Heaven Jewels',
+        description: 'Explore premium home & kitchen essentials at Heaven Jewels.',
       };
     }
 
@@ -39,17 +39,17 @@ export async function generateMetadata({
       }
     }
 
-    const mainImage = images[0] || `${SITE_URL}/logo.png`;
+    const mainImage = images[0] || `${SITE_URL}/heavenjewels.PNG`;
     const cleanDesc = (
       product.description ||
-      `Buy ${product.name} at best price online in India. Premium kitchenware, high quality finish & fast shipping from Heaven Home.`
+      `Buy ${product.name} at best price online in India. Premium kitchenware, high quality finish & fast shipping from Heaven Jewels.`
     )
       .replace(/[#*`_>\[\]]/g, '')
       .replace(/\s+/g, ' ')
       .trim()
       .slice(0, 160);
 
-    const title = `${product.name} | Buy Online | Heaven Home`;
+    const title = `${product.name} | Buy Online | Heaven Jewels`;
 
     return {
       title,
@@ -58,17 +58,17 @@ export async function generateMetadata({
         product.name,
         product.categories?.name || 'Kitchen Essentials',
         'buy online India',
-        'Heaven Home products',
+        'Heaven Jewels products',
         'premium kitchen tools',
       ],
       alternates: {
         canonical: `/products/${id}`,
       },
       openGraph: {
-        title: `${product.name} - ₹${product.price} | Heaven Home`,
+        title: `${product.name} - ₹${product.price} | Heaven Jewels`,
         description: cleanDesc,
         url: `${SITE_URL}/products/${id}`,
-        siteName: 'Heaven Home',
+        siteName: 'Heaven Jewels',
         images: [
           {
             url: mainImage,
@@ -81,14 +81,14 @@ export async function generateMetadata({
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${product.name} - ₹${product.price} | Heaven Home`,
+        title: `${product.name} - ₹${product.price} | Heaven Jewels`,
         description: cleanDesc,
         images: [mainImage],
       },
     };
   } catch {
     return {
-      title: 'Product Details | Heaven Home',
+      title: 'Product Details | Heaven Jewels',
       description: 'Explore handcrafted luxury furniture and modern kitchenware.',
     };
   }

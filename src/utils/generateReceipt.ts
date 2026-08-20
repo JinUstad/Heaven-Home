@@ -57,7 +57,7 @@ export async function generateAndDownloadReceipt(data: ReceiptData) {
     doc.rect(0, 0, pageWidth, 44, "F");
 
     // Try loading and drawing the logo image
-    const logoBase64 = await getBase64ImageFromUrl("/logo.png");
+    const logoBase64 = await getBase64ImageFromUrl("/heavenjewels.PNG");
     let textStartX = 14;
 
     if (logoBase64) {
@@ -74,7 +74,7 @@ export async function generateAndDownloadReceipt(data: ReceiptData) {
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
-    doc.text("HEAVEN HOME", textStartX, 19);
+    doc.text("Heaven Jewels", textStartX, 19);
 
     // Brand Tagline & Official Website URL
     doc.setFont("helvetica", "normal");
@@ -273,7 +273,7 @@ export async function generateAndDownloadReceipt(data: ReceiptData) {
     doc.setFont("helvetica", "normal");
     doc.setTextColor(148, 163, 184);
     doc.text("Thank you for shopping at heavenhome.in! We hope you love your new pieces.", pageWidth / 2, pageHeight - 12, { align: "center" });
-    doc.text("Heaven Home Living • https://heavenhome.in • All Rights Reserved", pageWidth / 2, pageHeight - 7, { align: "center" });
+    doc.text("Heaven Jewels Living • https://heavenhome.in • All Rights Reserved", pageWidth / 2, pageHeight - 7, { align: "center" });
 
     // 7. Save & Auto-Download PDF
     const cleanOrderId = (data.orderId || "receipt").replace(/[^a-zA-Z0-9_-]/g, "_");

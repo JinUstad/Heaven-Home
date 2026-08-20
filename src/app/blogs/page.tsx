@@ -101,13 +101,13 @@ export default function BlogsPage() {
         <div className="text-center max-w-3xl mx-auto space-y-4 pt-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
-            Heaven Home Journal
+            Heaven Jewels Journal
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-gray-900 tracking-tight leading-tight">
             Inspiration, Design & Modern Living
           </h1>
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-            Explore expert styling guides, decor inspiration, and curated lifestyle articles by the Heaven Home design team.
+            Explore expert styling guides, decor inspiration, and curated lifestyle articles by the Heaven Jewels design team.
           </p>
         </div>
 
@@ -230,7 +230,7 @@ export default function BlogsPage() {
                         {(blog.author || "H")[0].toUpperCase()}
                       </div>
                       <span className="text-xs font-semibold text-gray-700 truncate max-w-[110px]">
-                        {blog.author || "Heaven Home"}
+                        {blog.author || "Heaven Jewels"}
                       </span>
                     </div>
 

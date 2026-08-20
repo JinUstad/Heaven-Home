@@ -94,7 +94,7 @@ export function Navbar() {
 
             <Link href="/" className="flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="Heaven Home Logo" className="h-14 sm:h-16 w-auto object-contain transition-all" />
+              <img src="/heavenjewels.PNG" alt="Heaven Jewels Logo" className="h-14 sm:h-16 w-auto object-contain transition-all" />
             </Link>
           </div>
 

@@ -12,14 +12,14 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/90 via-black/70 to-black/60 z-0" />
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white flex flex-col items-center py-6">
           <span className="text-[var(--accent)] font-bold tracking-widest uppercase text-xs sm:text-sm mb-4 animate-fade-in">
-            About Heaven Home
+            About Heaven Jewels
           </span>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif font-bold mb-6 leading-tight max-w-4xl">
             Elevating Every Kitchen  <br className="hidden sm:inline" />
             <span className="text-[var(--accent)]">with Style & Innovation</span>
           </h1>
           <p className="text-base sm:text-lg text-white/80 max-w-2xl mb-10 font-light leading-relaxed">
-            Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking and dining more elegant, organized, and effortless. We offer thoughtfully designed, high-quality kitchen products that combine modern functionality with timeless aesthetics. From smart storage solutions to innovative cooking accessories, our mission is to bring style, convenience, and lasting value to every kitchen.
+            Heaven Jewels is a premium kitchen essentials brand dedicated to making everyday cooking and dining more elegant, organized, and effortless. We offer thoughtfully designed, high-quality kitchen products that combine modern functionality with timeless aesthetics. From smart storage solutions to innovative cooking accessories, our mission is to bring style, convenience, and lasting value to every kitchen.
           </p>
           <div className="pb-4">
             <Link href="/products">
@@ -46,7 +46,7 @@ export default function AboutPage() {
                 Where Innovation Meets Everyday Cooking
               </h2>
               <p className="text-gray-600 leading-relaxed text-base">
-                Heaven Home is a premium kitchen essentials brand dedicated to making everyday cooking simpler, smarter, and more enjoyable. We combine elegant design with practical functionality to create products that enhance every modern kitchen.              </p>
+                Heaven Jewels is a premium kitchen essentials brand dedicated to making everyday cooking simpler, smarter, and more enjoyable. We combine elegant design with practical functionality to create products that enhance every modern kitchen.              </p>
               <p className="text-gray-600 leading-relaxed text-base">
                 Our carefully curated collection is built with a focus on quality, durability, and innovation, ensuring every product delivers lasting performance while adding style and convenience to your daily routine.              </p>
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
               </div>
               <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 hidden sm:block max-w-sm">
                 <p className="text-sm font-serif italic text-gray-700">"Great kitchens aren't defined by size—they're defined by thoughtful design and the tools that make every moment effortless."</p>
-                <p className="text-xs font-bold text-[var(--primary)] mt-2 uppercase tracking-wider">— Heaven Home</p>
+                <p className="text-xs font-bold text-[var(--primary)] mt-2 uppercase tracking-wider">— Heaven Jewels</p>
               </div>
             </div>
 
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-[var(--accent)] font-bold text-xs tracking-widest uppercase block mb-2">
-              Why Choose Heaven Home
+              Why Choose Heaven Jewels
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#222]">
               Our Guiding Principles
@@ -113,7 +113,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-bold text-[#222] mb-3">Premium Quality</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Every Heaven Home product is thoughtfully designed and carefully quality-checked to deliver durability, functionality, and exceptional performance for everyday use.
+                Every Heaven Jewels product is thoughtfully designed and carefully quality-checked to deliver durability, functionality, and exceptional performance for everyday use.
               </p>
             </div>
 
@@ -221,7 +221,7 @@ export default function AboutPage() {
           <div className="bg-amber-50 border border-amber-100 p-10 sm:p-14 rounded-3xl mb-16 text-center max-w-4xl mx-auto relative">
             <div className="text-amber-400 text-4xl mb-4">★★★★★</div>
             <p className="text-lg sm:text-2xl font-serif text-[#222] italic leading-relaxed">
-              "Excellent quality, elegant design, and practical functionality. Heaven Home products have become an essential part of our kitchen. We'll definitely be ordering again!"
+              "Excellent quality, elegant design, and practical functionality. Heaven Jewels products have become an essential part of our kitchen. We'll definitely be ordering again!"
             </p>
             <div className="mt-6 font-bold text-[#333] text-sm uppercase tracking-wider">
               — Verified Customer
@@ -235,7 +235,7 @@ export default function AboutPage() {
                 Elevate Your Everyday Kitchen
               </h2>
               <p className="text-white/80 text-base sm:text-lg mb-8 font-light">
-                Explore Heaven Home's collection of premium kitchen essentials, crafted to combine elegant design, innovative functionality, and lasting quality for modern homes.
+                Explore Heaven Jewels's collection of premium kitchen essentials, crafted to combine elegant design, innovative functionality, and lasting quality for modern homes.
               </p>
               <Link href="/products">
                 <button className="px-10 py-4 bg-[#ffcc00] text-[#222] font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors rounded-full shadow-md">

@@ -40,8 +40,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("heaven-home-cart");
-    const savedWishlist = localStorage.getItem("heaven-home-wishlist");
+    const savedCart = localStorage.getItem("Heaven-Jewels-cart");
+    const savedWishlist = localStorage.getItem("Heaven-Jewels-wishlist");
     
     if (savedCart) {
       try { setCart(JSON.parse(savedCart)); } catch (e) { console.error("Failed to parse cart"); }
@@ -56,8 +56,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("heaven-home-cart", JSON.stringify(cart));
-      localStorage.setItem("heaven-home-wishlist", JSON.stringify(wishlist));
+      localStorage.setItem("Heaven-Jewels-cart", JSON.stringify(cart));
+      localStorage.setItem("Heaven-Jewels-wishlist", JSON.stringify(wishlist));
     }
   }, [cart, wishlist, isLoaded]);
 

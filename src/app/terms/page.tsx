@@ -7,7 +7,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="flex flex-col w-full bg-white text-[#333] font-sans">
       
-      {/* SECTION 1: HERO HEADER (MATCHES HEAVEN HOME DEEP OLIVE GREEN BRAND THEME) */}
+      {/* SECTION 1: HERO HEADER (MATCHES Heaven Jewels DEEP OLIVE GREEN BRAND THEME) */}
       <section className="bg-[var(--primary)] text-white py-16 sm:py-20 px-4 relative overflow-hidden shadow-md">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-3">
@@ -17,7 +17,7 @@ export default function TermsOfServicePage() {
             Terms of Service
           </h1>
           <p className="text-white/90 max-w-2xl mx-auto text-sm sm:text-base font-light leading-relaxed">
-            Please read these terms and conditions carefully before placing orders or utilizing the Heaven Home platform.
+            Please read these terms and conditions carefully before placing orders or utilizing the Heaven Jewels platform.
           </p>
           <p className="text-xs text-white/70 mt-4">Last Updated: July 2026</p>
         </div>
@@ -41,18 +41,18 @@ export default function TermsOfServicePage() {
             </div>
           </div>
           <div className="text-sm text-gray-600 leading-relaxed space-y-3">
-            <p className="font-medium text-gray-800">Welcome to <em>Heaven Home</em>.</p>
+            <p className="font-medium text-gray-800">Welcome to <em>Heaven Jewels</em>.</p>
             <p>
-              These Terms of Service ("Terms") govern your access to and use of the Heaven Home website, mobile website, and any related services, features, or content provided by us.
+              These Terms of Service ("Terms") govern your access to and use of the Heaven Jewels website, mobile website, and any related services, features, or content provided by us.
             </p>
             <p>
-              By accessing, browsing, or placing an order through Heaven Home, you confirm that you have read, understood, and agree to be legally bound by these Terms, together with our Privacy Policy, Shipping Policy, Return & Refund Policy, and any other policies published on our website.
+              By accessing, browsing, or placing an order through Heaven Jewels, you confirm that you have read, understood, and agree to be legally bound by these Terms, together with our Privacy Policy, Shipping Policy, Return & Refund Policy, and any other policies published on our website.
             </p>
             <p>
               If you do not agree with any part of these Terms, you must immediately discontinue use of our website and services and refrain from placing any orders.
             </p>
             <p>
-              Your continued use of Heaven Home constitutes your acceptance of these Terms and any future updates or modifications posted on our website.
+              Your continued use of Heaven Jewels constitutes your acceptance of these Terms and any future updates or modifications posted on our website.
             </p>
           </div>
         </section>
@@ -73,16 +73,16 @@ export default function TermsOfServicePage() {
           </div>
           <div className="text-sm text-gray-600 leading-relaxed space-y-3">
             <p>
-              To access certain features of Heaven Home, including placing orders or managing your account, you may be required to create a user account.
+              To access certain features of Heaven Jewels, including placing orders or managing your account, you may be required to create a user account.
             </p>
             <p>
               By registering an account, you represent and warrant that you are at least <em>18 years of age</em> or are accessing our services under the supervision of a parent or legal guardian, and that all information you provide is accurate, complete, and kept up to date at all times.
             </p>
             <p>
-              You are solely responsible for maintaining the confidentiality and security of your account credentials, including your username and password, and for all activities that occur under your account. Heaven Home shall not be liable for any loss, damage, or unauthorized activity resulting from your failure to safeguard your account credentials.
+              You are solely responsible for maintaining the confidentiality and security of your account credentials, including your username and password, and for all activities that occur under your account. Heaven Jewels shall not be liable for any loss, damage, or unauthorized activity resulting from your failure to safeguard your account credentials.
             </p>
             <p>
-              You agree to notify Heaven Home immediately of any unauthorized access to or suspected security breach involving your account. We reserve the right to suspend, restrict, or terminate any account that contains false information, violates these Terms, or is used for fraudulent, unlawful, or abusive activities.
+              You agree to notify Heaven Jewels immediately of any unauthorized access to or suspected security breach involving your account. We reserve the right to suspend, restrict, or terminate any account that contains false information, violates these Terms, or is used for fraudulent, unlawful, or abusive activities.
             </p>
           </div>
         </section>
@@ -103,7 +103,7 @@ export default function TermsOfServicePage() {
           </div>
           <div className="text-sm text-gray-700 space-y-3 leading-relaxed">
             <p>
-              All prices are listed in INR (₹) unless otherwise indicated. Heaven Home reserves the right to correct typographical pricing errors or adjust product availability at any time.
+              All prices are listed in INR (₹) unless otherwise indicated. Heaven Jewels reserves the right to correct typographical pricing errors or adjust product availability at any time.
             </p>
             <div className="p-4 bg-white rounded-xl border border-amber-200 text-amber-950 font-medium">
               <strong>Non-Refundable Policy Notice:</strong> All confirmed orders are final sales and strictly non-refundable. Please review our <Link href="/shipping" className="text-[var(--primary)] underline font-bold">Shipping & Return Policy</Link> for transit damage replacement guidelines.

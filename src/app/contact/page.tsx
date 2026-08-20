@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import ContactClient from './ContactClient';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Heaven Home',
-  description: 'Get in touch with Heaven Home experts. We are here to help you design your perfect living space.',
+  title: 'Contact Us | Heaven Jewels',
+  description: 'Get in touch with Heaven Jewels experts. We are here to help you design your perfect living space.',
 };
 
 export default function ContactPage() {

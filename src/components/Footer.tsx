@@ -75,7 +75,7 @@ export function Footer() {
 
         <div className="border-t border-white/20 pt-8 mt-8 text-center text-sm text-white/50">
           <p>
-            &copy; {new Date().getFullYear()} Heaven Home. All rights reserved. | Design by{" "}
+            &copy; {new Date().getFullYear()} Heaven Jewels. All rights reserved. | Design by{" "}
             <a
               href="https://www.devfordevs.in"
               target="_blank"

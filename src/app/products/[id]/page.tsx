@@ -54,7 +54,7 @@ export default function ProductDetailsPage() {
       try {
         await navigator.share({
           title: product.name,
-          text: `Check out ${product.name} on Heaven Home!`,
+          text: `Check out ${product.name} on Heaven Jewels!`,
           url: window.location.href,
         });
         return;

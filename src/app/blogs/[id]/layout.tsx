@@ -19,19 +19,19 @@ export async function generateMetadata({
 
     if (!blog) {
       return {
-        title: 'Blog Article | Heaven Home',
-        description: 'Read insightful home design, kitchen organizing, and lifestyle articles on Heaven Home.',
+        title: 'Blog Article | Heaven Jewels',
+        description: 'Read insightful home design, kitchen organizing, and lifestyle articles on Heaven Jewels.',
       };
     }
 
-    const mainImage = blog.image_url || `${SITE_URL}/logo.png`;
-    const cleanDesc = (blog.excerpt || blog.content || 'Discover modern home decor and kitchen organizing inspirations from Heaven Home.')
+    const mainImage = blog.image_url || `${SITE_URL}/heavenjewels.PNG`;
+    const cleanDesc = (blog.excerpt || blog.content || 'Discover modern home decor and kitchen organizing inspirations from Heaven Jewels.')
       .replace(/[#*`_>\[\]]/g, '')
       .replace(/\s+/g, ' ')
       .trim()
       .slice(0, 160);
 
-    const title = `${blog.title} | Heaven Home Blog`;
+    const title = `${blog.title} | Heaven Jewels Blog`;
 
     return {
       title,
@@ -39,7 +39,7 @@ export async function generateMetadata({
       keywords: [
         blog.title,
         blog.category || 'Kitchen & Home',
-        blog.author || 'Heaven Home',
+        blog.author || 'Heaven Jewels',
         'home styling tips',
         'kitchen organization ideas',
         'interior design blog India',
@@ -48,10 +48,10 @@ export async function generateMetadata({
         canonical: `/blogs/${id}`,
       },
       openGraph: {
-        title: `${blog.title} | Heaven Home`,
+        title: `${blog.title} | Heaven Jewels`,
         description: cleanDesc,
         url: `${SITE_URL}/blogs/${id}`,
-        siteName: 'Heaven Home',
+        siteName: 'Heaven Jewels',
         images: [
           {
             url: mainImage,
@@ -62,18 +62,18 @@ export async function generateMetadata({
         ],
         type: 'article',
         publishedTime: blog.published_at || blog.created_at,
-        authors: [blog.author || 'Heaven Home'],
+        authors: [blog.author || 'Heaven Jewels'],
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${blog.title} | Heaven Home`,
+        title: `${blog.title} | Heaven Jewels`,
         description: cleanDesc,
         images: [mainImage],
       },
     };
   } catch {
     return {
-      title: 'Blog Article | Heaven Home',
+      title: 'Blog Article | Heaven Jewels',
       description: 'Explore kitchen decor guides and tips.',
     };
   }

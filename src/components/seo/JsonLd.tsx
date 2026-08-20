@@ -12,14 +12,14 @@ export function OrganizationJsonLd() {
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
-        name: 'Heaven Home',
+        name: 'Heaven Jewels',
         url: SITE_URL,
         logo: {
           '@type': 'ImageObject',
-          url: `${SITE_URL}/logo.png`,
-          caption: 'Heaven Home Logo'
+          url: `${SITE_URL}/heavenjewels.PNG`,
+          caption: 'Heaven Jewels Logo'
         },
-        description: 'Heaven Home offers handcrafted luxury furniture, modern kitchenware, timeless lighting, and premium interior decor across India.',
+        description: 'Heaven Jewels offers handcrafted luxury furniture, modern kitchenware, timeless lighting, and premium interior decor across India.',
         sameAs: [
           'https://www.instagram.com',
           'https://www.facebook.com',
@@ -37,7 +37,7 @@ export function OrganizationJsonLd() {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
-        name: 'Heaven Home',
+        name: 'Heaven Jewels',
         description: 'Elevate your living spaces with handcrafted furniture and kitchenware.',
         publisher: {
           '@id': `${SITE_URL}/#organization`
@@ -89,13 +89,13 @@ export function ProductJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: name,
-    image: images.length > 0 ? images : [`${SITE_URL}/logo.png`],
+    image: images.length > 0 ? images : [`${SITE_URL}/heavenjewels.PNG`],
     description: cleanDescription,
     sku: sku || id,
     mpn: id,
     brand: {
       '@type': 'Brand',
-      name: 'Heaven Home'
+      name: 'Heaven Jewels'
     },
     category: category || 'Home & Kitchen',
     offers: {
@@ -108,7 +108,7 @@ export function ProductJsonLd({
       availability: 'https://schema.org/InStock',
       seller: {
         '@type': 'Organization',
-        name: 'Heaven Home'
+        name: 'Heaven Jewels'
       }
     },
     aggregateRating: {
@@ -154,19 +154,19 @@ export function ArticleJsonLd({
     '@type': 'BlogPosting',
     headline: title,
     description: cleanDescription,
-    image: imageUrl ? [imageUrl] : [`${SITE_URL}/logo.png`],
+    image: imageUrl ? [imageUrl] : [`${SITE_URL}/heavenjewels.PNG`],
     datePublished: publishedAt || new Date().toISOString(),
     dateModified: publishedAt || new Date().toISOString(),
     author: {
       '@type': 'Person',
-      name: author || 'Heaven Home Editorial Team'
+      name: author || 'Heaven Jewels Editorial Team'
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Heaven Home',
+      name: 'Heaven Jewels',
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/logo.png`
+        url: `${SITE_URL}/heavenjewels.PNG`
       }
     },
     mainEntityOfPage: {

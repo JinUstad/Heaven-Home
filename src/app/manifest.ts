@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Heaven Home | Premium Kitchen Essentials',
-    short_name: 'Heaven Home',
-    description: 'Discover Heaven Home\'s premium kitchenware, elegant organizers, smart kitchen dispensers, and modern essentials.',
+    name: 'Heaven Jewels | Premium Kitchen Essentials',
+    short_name: 'Heaven Jewels',
+    description: 'Discover Heaven Jewels\'s premium kitchenware, elegant organizers, smart kitchen dispensers, and modern essentials.',
     start_url: '/',
     scope: '/',
     display: 'standalone',
@@ -14,25 +14,25 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ['shopping', 'lifestyle', 'home', 'kitchen'],
     icons: [
       {
-        src: '/logo.png',
+        src: '/heavenjewels.PNG',
         sizes: '192x192',
         type: 'image/png',
         purpose: 'any',
       },
       {
-        src: '/logo.png',
+        src: '/heavenjewels.PNG',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable',
       },
       {
-        src: '/logo.png',
+        src: '/heavenjewels.PNG',
         sizes: '180x180',
         type: 'image/png',
         purpose: 'any',
       },
       {
-        src: '/logo.png',
+        src: '/heavenjewels.PNG',
         sizes: '120x120',
         type: 'image/png',
         purpose: 'any',

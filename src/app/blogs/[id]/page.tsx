@@ -197,7 +197,7 @@ export default function BlogDetailPage() {
             </div>
             <div>
               <p className="text-sm font-bold text-gray-900 leading-tight">
-                {blog.author || "Heaven Home Team"}
+                {blog.author || "Heaven Jewels Team"}
               </p>
               <p className="text-xs text-gray-500">Design & Lifestyle Contributor</p>
             </div>

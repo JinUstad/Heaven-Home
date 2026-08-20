@@ -7,13 +7,13 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://heavenhome.vercel.
 
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions (FAQ)',
-  description: 'Find answers to common questions regarding Heaven Home orders, delivery times, return policies, product materials, and support.',
+  description: 'Find answers to common questions regarding Heaven Jewels orders, delivery times, return policies, product materials, and support.',
   alternates: {
     canonical: '/faq',
   },
   openGraph: {
-    title: 'FAQ - Frequently Asked Questions | Heaven Home',
-    description: 'Find answers to common questions regarding Heaven Home orders, delivery times, and returns.',
+    title: 'FAQ - Frequently Asked Questions | Heaven Jewels',
+    description: 'Find answers to common questions regarding Heaven Jewels orders, delivery times, and returns.',
     url: `${SITE_URL}/faq`,
   },
 };
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     question: "Are your kitchenware products food-safe and BPA-free?",
-    answer: "Yes, all Heaven Home kitchen products, including our oil spray dispensers, spice containers, and organizers, are crafted from 100% food-grade, BPA-free, premium materials."
+    answer: "Yes, all Heaven Jewels kitchen products, including our oil spray dispensers, spice containers, and organizers, are crafted from 100% food-grade, BPA-free, premium materials."
   },
   {
     question: "How can I track my order in real-time?",

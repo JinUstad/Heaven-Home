@@ -243,7 +243,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="flex-1">
               <span className="text-[var(--primary)] font-bold text-sm tracking-wider uppercase block mb-4">
-                HEAVEN HOME PREMIUM
+                Heaven Jewels PREMIUM
               </span>
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#222] leading-tight">
                 HOME DESIGN <br />

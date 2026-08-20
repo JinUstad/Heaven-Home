@@ -7,7 +7,7 @@ export default function ShippingAndReturnsPage() {
   return (
     <div className="flex flex-col w-full bg-white text-[#333] font-sans">
       
-      {/* SECTION 1: HERO HEADER (MATCHES HEAVEN HOME DEEP OLIVE GREEN BRAND THEME) */}
+      {/* SECTION 1: HERO HEADER (MATCHES Heaven Jewels DEEP OLIVE GREEN BRAND THEME) */}
       <section className="bg-[var(--primary)] text-white py-16 sm:py-20 px-4 relative overflow-hidden shadow-md">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <span className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest block mb-3">
@@ -71,10 +71,10 @@ export default function ShippingAndReturnsPage() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 shrink-0 mt-0.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
               </svg>
-              <span>ALL PURCHASES MADE ON HEAVEN HOME ARE STRICTLY NON-REFUNDABLE.</span>
+              <span>ALL PURCHASES MADE ON Heaven Jewels ARE STRICTLY NON-REFUNDABLE.</span>
             </div>
             <p>
-              At Heaven Home, we are committed to delivering premium-quality home and kitchen products. To maintain the highest standards of quality and hygiene, all orders are considered <em>final</em> once they are confirmed.
+              At Heaven Jewels, we are committed to delivering premium-quality home and kitchen products. To maintain the highest standards of quality and hygiene, all orders are considered <em>final</em> once they are confirmed.
             </p>
             <p>
               We do not accept returns, cancellations, exchanges, or cash refunds after an order has been confirmed or dispatched, except in cases where the product is received damaged, defective, or incorrect.
@@ -109,7 +109,7 @@ export default function ShippingAndReturnsPage() {
             <ul className="list-disc pl-5 space-y-2 text-gray-700">
               <li>You must notify our support team within <strong>48 hours of delivery</strong>.</li>
               <li>Provide clear unboxing photographs and video showing the shipping label and damaged area.</li>
-              <li>Once verified, Heaven Home will issue a <strong>free product replacement</strong> or repair at zero extra cost.</li>
+              <li>Once verified, Heaven Jewels will issue a <strong>free product replacement</strong> or repair at zero extra cost.</li>
             </ul>
           </div>
         </section>
