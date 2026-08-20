@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ProductCard, ExtendedProduct } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 const heroImage = "/hero_banner_1787207503393.jpg";
 
@@ -23,9 +23,19 @@ const promoBanners = [
   { title: "Chic Necklaces for Her", discount: "FLAT 15% OFF", image: "/promo_necklace_1787207552876.jpg" }
 ];
 
+const testimonials = [
+  { text: "Absolutely loved the quality and design! The jewellery looks even more stunning in real life. I've received so many compliments. Premium quality at a great price. I keep coming back for more because the collection is always fresh and stylish!", name: "Kavya Shah", role: "Working Professional", image: "/testimonial_avatar.jpg" },
+  { text: "The craftsmanship is unparalleled. Each piece tells a story of elegance. I am truly mesmerized by the intricate details and the exceptional customer service. Heaven Jewels is my go-to for all special occasions.", name: "Aisha Patel", role: "Fashion Blogger", image: "/testimonial_avatar.jpg" },
+  { text: "Finding authentic and beautiful jewelry online can be daunting, but Heaven Jewels exceeded all my expectations. Fast shipping, beautiful packaging, and absolutely stunning pieces. Highly recommended!", name: "Riya Sharma", role: "Entrepreneur", image: "/testimonial_avatar.jpg" }
+];
+
 export default function HomePage() {
   const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const nextTestimonial = () => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  const prevTestimonial = () => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -188,7 +198,56 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* 5. Discover Our Jewellery Collections (New Collections) */}
+      {/* 5. Testimonials */}
+      <section className="relative py-24 w-full flex items-center overflow-hidden bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url("/testimonial_bg.jpg")' }}>
+        <div className="absolute inset-0 bg-black/60 z-0" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-12">
+          
+          <div className="w-full md:w-1/2 text-white text-left">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c69c6d]"></span>
+              <span className="text-[10px] font-bold tracking-widest text-gray-300 uppercase">Testimonials</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif mb-12 leading-tight">
+              Trusted Reviews From Jewellery<br className="hidden lg:block" /> Style Enthusiasts
+            </h2>
+            
+            {/* Slider Content */}
+            <div className="min-h-[220px] flex flex-col justify-between">
+              <div>
+                <div className="flex gap-1 text-white mb-6">
+                  {"★★★★★".split('').map((star, i) => <span key={i} className="text-lg">{star}</span>)}
+                </div>
+                <p className="text-base sm:text-lg text-white/90 font-light leading-relaxed mb-10 max-w-xl animate-fade-in" key={currentTestimonial}>
+                  {testimonials[currentTestimonial].text}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-white/20 pt-8 animate-fade-in" key={`author-${currentTestimonial}`}>
+                <div className="flex items-center gap-4">
+                  <img src={testimonials[currentTestimonial].image} alt={testimonials[currentTestimonial].name} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover" />
+                  <div>
+                    <h4 className="font-serif text-base sm:text-lg">{testimonials[currentTestimonial].name}</h4>
+                    <span className="text-xs text-white/70">{testimonials[currentTestimonial].role}</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={prevTestimonial} className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer text-white">
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+                  <button onClick={nextTestimonial} className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer text-white">
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="hidden md:block md:w-1/2"></div>
+        </div>
+      </section>
+
+      {/* 6. Discover Our Jewellery Collections (New Collections) */}
       <section className="py-16 max-w-7xl mx-auto px-4 w-full border-t border-gray-100">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-serif text-[#222]">Discover Our Jewellery Collections</h2>
