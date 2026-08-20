@@ -1,72 +1,44 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ProductCard } from '@/components/ProductCard';
-import { Product } from '@/hooks/useCart';
+import { ProductCard, ExtendedProduct } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
+import { ArrowRight } from 'lucide-react';
 
-interface ExtendedProduct extends Product {
-  reviews?: number;
-  rating?: number;
-}
+const heroImage = "/hero_banner_1787207503393.jpg";
 
-const heroImages = [
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1920&q=80"
+const categories = [
+  { name: 'Earrings', image: '/cat_earrings_1787207766448.jpg' },
+  { name: 'Necklaces', image: '/cat_necklace_1787207779203.jpg' },
+  { name: 'Pendants', image: '/cat_necklace_1787207779203.jpg' }, 
+  { name: 'Bracelets', image: '/cat_bracelet_1787207794703.jpg' },
+  { name: 'Rings', image: '/cat_ring_1787207915244.jpg' },
+  { name: 'Chains', image: '/cat_necklace_1787207779203.jpg' }, 
 ];
 
-const bgColors = [
-  'bg-[#f6f0e6]',
-  'bg-[#e3e8e1]',
-  'bg-[#e5eef0]',
-  'bg-[#f4e6e6]',
-  'bg-[#ede9f2]'
+const promoBanners = [
+  { title: "Brilliant Gold Ring Collection", discount: "FLAT 15% OFF", image: "/promo_ring_1787207518511.jpg" },
+  { title: "Golden Elegance Bracelet", discount: "FLAT 15% OFF", image: "/promo_bracelet_1787207535528.jpg" },
+  { title: "Chic Necklaces for Her", discount: "FLAT 15% OFF", image: "/promo_necklace_1787207552876.jpg" }
 ];
 
 export default function HomePage() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState('');
-  const categoryScrollRef = useRef<HTMLDivElement>(null);
-
-  const [dbCategories, setDbCategories] = useState<any[]>([]);
-  const [rawProducts, setRawProducts] = useState<any[]>([]);
   const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const scrollCategories = (direction: 'left' | 'right') => {
-    if (categoryScrollRef.current) {
-      const scrollAmount = 300;
-      categoryScrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const [catsRes, prodsRes] = await Promise.all([
-        supabase.from('categories').select('*').order('name'),
-        supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false })
-      ]);
-
-      if (catsRes.data) {
-        setDbCategories(catsRes.data);
-        if (catsRes.data.length > 0) {
-          setActiveTab(catsRes.data[0].name.toUpperCase());
-        }
-      }
+      const prodsRes = await supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false }).limit(8);
 
       if (prodsRes.data) {
-        setRawProducts(prodsRes.data);
-
         const mappedProducts: ExtendedProduct[] = prodsRes.data.map(p => {
           let primaryImg = p.image_url;
           if (primaryImg) {
             try {
               if (primaryImg.startsWith("[")) {
-                const parsed = JSON.parse(primaryImg);
-                primaryImg = parsed[0];
+                primaryImg = JSON.parse(primaryImg)[0];
               }
             } catch (e) { }
           }
@@ -90,303 +62,179 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  const filteredProducts = dbProducts.filter(p => p.category === activeTab);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <div className="flex flex-col w-full bg-white font-sans text-[#333]">
+      {/* 1. Hero Section */}
+      <section className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url("${heroImage}")` }}
+        />
+        <div className="absolute inset-0 bg-black/40 z-0" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left text-white w-full">
+          <div className="max-w-2xl">
+            <div className="inline-block border border-white/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+              <span className="text-[11px] font-semibold tracking-widest uppercase flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                Where Fashion Meets Elegance
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif mb-6 leading-[1.1]">
+              Elevate Your Style With<br />Timeless Fashion
+            </h1>
+            <p className="text-base sm:text-lg text-white/90 max-w-xl mb-10 font-light leading-relaxed">
+              Discover a curated collection of elegant fashion and premium jewellery designed to express your unique personality from everyday essentials to statement pieces.
+            </p>
+            
+            <div className="flex flex-wrap items-center gap-8 mb-12">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                <span className="text-sm font-semibold tracking-wide">Premium Quality Materials</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                <span className="text-sm font-semibold tracking-wide">Affordable Luxury Collection</span>
+              </div>
+            </div>
 
-      {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Slider Background Images */}
-        {heroImages.map((img, index) => (
-          <div
-            key={img}
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            style={{ backgroundImage: `url("${img}")` }}
-          />
-        ))}
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/90 to-[#1a1a1a]/60 z-0" />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white flex flex-col items-center">
-
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold mb-6 leading-tight max-w-4xl">
-            Bring Heaven To Your Home
-          </h1>
-          <p className="text-lg sm:text-xl text-white/80 max-w-2xl mb-8 font-light leading-relaxed">
-            Crafted for elegance, designed for comfort. Explore our latest hand-picked collection of premium Kitchen Assentials.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/products">
-              <button className="px-8 py-4 bg-[var(--accent)] text-[#1a1a1a] font-bold text-xs uppercase tracking-widest hover:bg-white transition-all-200 rounded-full shadow-lg">
-                Shop Collection
-              </button>
-            </Link>
-            <Link href="/about">
-              <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-xs uppercase tracking-widest hover:bg-white hover:text-[var(--primary)] transition-all-200 rounded-full">
-                About Us
-              </button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-6 items-center">
+              <Link href="/products">
+                <button className="px-8 py-4 bg-transparent border border-white text-white font-semibold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all-200">
+                  Explore Collection
+                </button>
+              </Link>
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1 text-orange-400">
+                  {"★★★★★"}
+                </div>
+                <div className="text-sm font-bold">
+                  4.9/5 <span className="font-normal text-white/80">Review</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Slider Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-          {heroImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
-                ? 'bg-[var(--accent)] scale-125'
-                : 'bg-white/50 hover:bg-white/80'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
+      {/* 2. Top Selling Jewelry Collection */}
+      <section className="py-24 max-w-7xl mx-auto px-4 w-full">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+              <span className="text-[11px] font-bold tracking-widest text-gray-500 uppercase">Best Seller</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#222]">Top Selling Jewelry Collection</h2>
+          </div>
+          <Link href="/products">
+            <button className="px-6 py-3 border border-gray-300 text-xs font-semibold uppercase tracking-widest hover:border-black transition-colors">
+              View All Collection
+            </button>
+          </Link>
+        </div>
+
+        <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-8 justify-between">
+          {categories.map((cat, i) => (
+            <Link key={cat.name + i} href="/products" className="group flex flex-col items-center gap-6 min-w-[140px] md:min-w-[160px] cursor-pointer">
+              <div className="w-[140px] h-[140px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border border-gray-100 shadow-sm group-hover:shadow-md transition-all duration-500 p-2 bg-gray-50">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white relative">
+                  <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                </div>
+              </div>
+              <span className="text-lg font-serif text-[#333] group-hover:text-[var(--primary)] transition-colors">{cat.name}</span>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* 1. TOP CATEGORY Section */}
-      <section className="py-16">
-        <div className="max-w-[1400px] mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-[#333]">Categories</h2>
-
-          {loading ? (
-            <div className="text-center text-gray-500 py-10">Loading categories...</div>
-          ) : dbCategories.length === 0 ? (
-            <div className="text-center text-gray-500 py-10">No categories found in the database. Add some from the Admin Panel.</div>
-          ) : (
-            <div className="flex items-center justify-between">
-              {/* Left Arrow */}
-              <button onClick={() => scrollCategories('left')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-              </button>
-
-              {/* Categories Grid (Dynamically pick FIRST uploaded product image from Supabase) */}
-              <div ref={categoryScrollRef} className="flex-1 flex overflow-x-auto snap-x snap-mandatory gap-6 px-4 pb-4 hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                {dbCategories.map((cat, idx) => {
-                  const bg = bgColors[idx % bgColors.length];
-
-                  // Find first product in DB for this category
-                  const catProduct = rawProducts.find((p: any) =>
-                    p.category_id === cat.id ||
-                    p.categories?.name?.toLowerCase() === cat.name.toLowerCase()
-                  );
-
-                  let categoryImage = "";
-                  if (catProduct && catProduct.image_url) {
-                    try {
-                      if (catProduct.image_url.startsWith("[")) {
-                        const parsed = JSON.parse(catProduct.image_url);
-                        categoryImage = parsed[0];
-                      } else {
-                        categoryImage = catProduct.image_url;
-                      }
-                    } catch (e) {
-                      categoryImage = catProduct.image_url;
-                    }
-                  }
-
-                  // Fallback if no product uploaded yet
-                  if (!categoryImage) {
-                    categoryImage = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80";
-                  }
-
-                  return (
-                    <Link
-                      key={cat.id}
-                      href="/products"
-                      className={`min-w-[250px] sm:min-w-[280px] snap-center shrink-0 ${bg} p-8 flex flex-col items-center justify-center cursor-pointer hover:shadow-xl transition-all transform hover:-translate-y-1 rounded-2xl group border border-black/5`}
-                    >
-                      <div className="w-48 h-48 sm:w-52 sm:h-52 rounded-2xl overflow-hidden mb-5 bg-white shadow-md flex items-center justify-center">
-                        <img src={categoryImage} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      </div>
-                      <span className="font-bold text-[14px] tracking-wider text-[#333] uppercase group-hover:text-[var(--primary)] transition-colors">{cat.name}</span>
-                    </Link>
-                  );
-                })}
+      {/* 3. Promotional Banners */}
+      <section className="py-12 max-w-7xl mx-auto px-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {promoBanners.map((promo, idx) => (
+            <div key={idx} className="bg-[#f9f9f9] flex items-center p-6 md:p-8 overflow-hidden group border border-gray-100">
+              <div className="flex-1 flex flex-col z-10 relative">
+                <span className="text-[10px] font-bold tracking-widest text-gray-500 mb-4">{promo.discount}</span>
+                <h3 className="text-xl md:text-2xl font-serif leading-tight mb-8 max-w-[150px]">{promo.title}</h3>
+                <Link href="/products" className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 hover:text-[var(--primary)] transition-colors">
+                  View Collection <ArrowRight className="w-3 h-3" />
+                </Link>
               </div>
-
-              {/* Right Arrow */}
-              <button onClick={() => scrollCategories('right')} className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors hidden md:flex shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </button>
+              <div className="w-[150px] h-[150px] md:w-[200px] md:h-[200px] -mr-8 -my-8 z-0 relative flex-shrink-0 mix-blend-multiply">
+                <img src={promo.image} alt={promo.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+              </div>
             </div>
-          )}
-
-          <style dangerouslySetInnerHTML={{
-            __html: `
-            .hide-scrollbar::-webkit-scrollbar {
-              display: none;
-            }
-          `}} />
+          ))}
         </div>
       </section>
 
-      {/* 2. HOME DESIGN Info Section */}
-      <section className="py-16 border-t border-gray-100">
-        <div className="max-w-[1200px] mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <div className="flex-1">
-              <span className="text-[var(--primary)] font-bold text-sm tracking-wider uppercase block mb-4">
-                Heaven Jewels PREMIUM
-              </span>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#222] leading-tight">
-                HOME DESIGN <br />
-                COVERS THE REQUIRED <br />
-                FOR YOUR COMFORT.
-              </h2>
-            </div>
-            <div className="flex-1">
-              <p className="text-xl text-gray-500 font-light leading-relaxed mb-8">
-                Our experts cover the full spectrum of home and kitchen areas, ensuring your spaces are both beautiful and highly functional.
-              </p>
-              <Link href="/about">
-                <button className="px-8 py-3 border border-[var(--primary)] text-[var(--primary)] font-bold text-sm uppercase tracking-wider hover:bg-[var(--primary)] hover:text-white transition-colors rounded-lg shadow-sm">
-                  ABOUT STORY
+      {/* 4. Signature Jewellery Pieces (Products) */}
+      <section className="py-24 max-w-7xl mx-auto px-4 w-full">
+        <div className="flex flex-col items-center mb-16 text-center">
+          <div className="flex items-center justify-center gap-2 mb-4 border border-gray-200 rounded-full px-4 py-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+            <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Our Products</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#222]">Explore Our Signature Jewellery Pieces</h2>
+        </div>
+
+        {loading ? (
+          <div className="text-center text-gray-500 py-10">Loading products...</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+            {dbProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* 5. Discover Our Jewellery Collections (New Collections) */}
+      <section className="py-16 max-w-7xl mx-auto px-4 w-full border-t border-gray-100">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-serif text-[#222]">Discover Our Jewellery Collections</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Men's Collection */}
+          <div className="border border-gray-200 p-8 md:p-12 flex flex-col-reverse sm:flex-row items-center justify-between group">
+            <div className="max-w-[200px] flex flex-col gap-6 mt-8 sm:mt-0">
+              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">New Collection<br/>For Men</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Our latest men's jewellery collection, crafted to reflect strength, style, and individuality.</p>
+              <Link href="/products">
+                <button className="px-6 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
+                  Shop Now
                 </button>
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Promotional Banners */}
-      <section className="w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 min-h-[300px] md:h-[400px]">
-          {/* Banner 1: Timeless Jewellery */}
-          <div className="bg-[var(--primary)] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
-            <div className="absolute -left-20 bg-[#222] w-64 h-64 rounded-full opacity-20" />
-            <div className="relative z-10 text-white w-full flex items-center gap-4 sm:gap-6">
-              <img 
-                src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=400&q=80" 
-                alt="Timeless Jewellery" 
-                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
-              />
-              <div className="flex flex-col items-start">
-                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
-                  Timeless<br />Jewellery
-                </h3>
-                <Link href="/products">
-                  <button className="bg-[var(--accent)] text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity shadow-md">
-                    SHOP NOW
-                  </button>
-                </Link>
-              </div>
+            <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] overflow-hidden ml-0 sm:ml-4 flex-shrink-0 rounded-sm">
+              <img src="/new_coll_men_1787207940838.jpg" alt="Men's Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
-
-          {/* Banner 2: Premium Kitchen Essentials */}
-          <div className="bg-[#e6a15c] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
-            <div className="absolute -bottom-10 -left-10 bg-white w-48 h-48 rounded-full opacity-20" />
-            <div className="absolute top-10 right-10 bg-white w-20 h-20 rounded-full opacity-20" />
-            <div className="relative z-10 text-white flex items-center gap-4 sm:gap-6 w-full">
-              <img 
-                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80" 
-                alt="Premium Kitchen Essentials" 
-                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
-              />
-              <div className="flex flex-col items-start">
-                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight text-white">
-                  Premium Kitchen<br />Essentials
-                </h3>
-                <Link href="/products">
-                  <button className="bg-white text-[#1a1a1a] px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition-colors shadow-md">
-                    SHOP NOW
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Banner 3: Elegant Home Essentials */}
-          <div className="bg-[#2c3e2e] relative overflow-hidden flex items-center p-8 sm:p-10 lg:p-12">
-            <div className="absolute -top-10 -left-10 bg-[var(--accent)] w-48 h-48 rounded-full opacity-30" />
-            <div className="absolute top-10 right-10 border-4 border-white w-16 h-16 rounded-full opacity-20" />
-            <div className="relative z-10 text-white flex items-center gap-4 sm:gap-6 w-full">
-              <img 
-                src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=400&q=80" 
-                alt="Elegant Home Essentials" 
-                className="w-28 h-28 sm:w-36 sm:h-36 md:w-36 md:h-36 lg:w-44 lg:h-44 object-cover drop-shadow-2xl rounded-2xl flex-shrink-0" 
-              />
-              <div className="flex flex-col items-start">
-                <h3 className="text-2xl sm:text-3xl lg:text-3xl font-serif font-bold mb-4 leading-tight">
-                  Elegant Home<br />Essentials
-                </h3>
-                <Link href="/products">
-                  <button className="bg-white text-[var(--primary)] px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition-colors shadow-md">
-                    SHOP NOW
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. TRENDING PRODUCT Section */}
-      <section className="py-10 bg-white relative">
-        {/* <div className="max-w-[1400px] mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-6 text-[#333]">TRENDING PRODUCT</h2>
-
-          <div className="flex justify-center flex-wrap gap-4 md:gap-8 mb-12 border-b border-gray-200">
-            {dbCategories.map((cat) => {
-              const tab = cat.name.toUpperCase();
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-4 text-sm font-bold tracking-wide transition-colors ${activeTab === tab
-                    ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]'
-                    : 'text-gray-500 hover:text-gray-800'
-                    }`}
-                >
-                  {tab}
+          
+          {/* Women's Collection */}
+          <div className="border border-gray-200 p-8 md:p-12 flex flex-col-reverse sm:flex-row items-center justify-between group">
+            <div className="max-w-[200px] flex flex-col gap-6 mt-8 sm:mt-0">
+              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">New Collection<br/>For Women</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Our latest women's jewellery collection, crafted to reflect elegance, style, and individuality.</p>
+              <Link href="/products">
+                <button className="px-6 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
+                  Shop Now
                 </button>
-              );
-            })}
+              </Link>
+            </div>
+            <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] overflow-hidden ml-0 sm:ml-4 flex-shrink-0 rounded-sm">
+              <img src="/new_coll_women_1787207961263.jpg" alt="Women's Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {loading ? (
-              <div className="col-span-full text-center text-gray-500 py-10">Loading products...</div>
-            ) : filteredProducts.length === 0 ? (
-              <div className="col-span-full text-center text-gray-500 py-10">
-                {activeTab ? `No products found for ${activeTab}.` : 'Select a category to view products.'}
-              </div>
-            ) : (
-              filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            )}
-          </div>
-        </div> */}
-
-        {/* Floating action button (Scroll to top logic) */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="absolute right-8 bottom-8 w-12 h-12 bg-[var(--primary)] text-white flex items-center justify-center hover:bg-opacity-90 transition-colors shadow-lg"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-          </svg>
-        </button>
+        </div>
       </section>
 
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}} />
     </div>
   );
 }
