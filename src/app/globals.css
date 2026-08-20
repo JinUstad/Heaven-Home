@@ -16,21 +16,21 @@
 }
 
 :root {
-  /* Light Pink background */
-  --background: #fdf2f8;
-  --foreground: #4a044e;
+  /* White background as per new image */
+  --background: #ffffff;
+  --foreground: #333333;
   
-  /* Primary Pink */
-  --primary: #db2777;
+  /* Gold/Bronze Primary */
+  --primary: #c69c6d;
   --primary-foreground: #ffffff;
   
-  /* Secondary Pink */
-  --secondary: #f472b6;
-  --secondary-foreground: #ffffff;
+  /* Secondary */
+  --secondary: #f5f5f5;
+  --secondary-foreground: #333333;
   
-  /* Accent Pink */
-  --accent: #fbcfe8;
-  --accent-foreground: #831843;
+  /* Accent */
+  --accent: #e5e5e5;
+  --accent-foreground: #333333;
 }
 
 
