@@ -40,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
 
         {/* Vertical Actions (Wishlist, Compare, Quick View) */}
-        <div className="absolute top-4 right-4 flex flex-col gap-2 translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 z-20">
+        <div className="absolute top-4 right-4 flex flex-col gap-2 translate-x-0 opacity-100 lg:translate-x-12 lg:opacity-0 lg:group-hover:translate-x-0 lg:group-hover:opacity-100 transition-all duration-300 z-20">
           <button 
             onClick={(e) => {
               e.preventDefault();
@@ -55,13 +55,13 @@ export function ProductCard({ product }: ProductCardProps) {
             <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
           </button>
           <button 
-            className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-[#c69c6d] hover:text-white transition-colors text-gray-600 cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm hover:bg-[#c69c6d] hover:text-white transition-colors text-gray-600 cursor-pointer hidden sm:flex"
             title="Compare"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
           <button 
-            className="w-9 h-9 rounded-full bg-[#c69c6d] text-white flex items-center justify-center shadow-sm hover:bg-gray-800 transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-full bg-[#c69c6d] text-white items-center justify-center shadow-sm hover:bg-gray-800 transition-colors cursor-pointer hidden sm:flex"
             title="Quick View"
           >
             <Search className="w-4 h-4" />
@@ -74,12 +74,12 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-in-out" 
+            className="w-full h-full object-contain mix-blend-multiply lg:group-hover:scale-105 transition-transform duration-700 ease-in-out" 
           />
         )}
         
         {/* Add To Cart overlay */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-20">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-0 opacity-100 lg:translate-y-12 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100 transition-all duration-300 z-20">
            <button 
               onClick={handleQuickAdd}
               className="bg-white text-[#333] px-6 py-2.5 rounded-full text-xs font-semibold hover:bg-[#c69c6d] hover:text-white transition-colors shadow-md whitespace-nowrap cursor-pointer"

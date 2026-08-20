@@ -133,7 +133,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-8 justify-between">
+        <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-8 justify-start md:justify-between">
           {categories.map((cat, i) => (
             <Link key={cat.name + i} href="/products" className="group flex flex-col items-center gap-6 min-w-[140px] md:min-w-[160px] cursor-pointer">
               <div className="w-[140px] h-[140px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border border-gray-100 shadow-sm group-hover:shadow-md transition-all duration-500 p-2 bg-gray-50">
