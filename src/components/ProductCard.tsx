@@ -105,11 +105,11 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Pricing */}
         <div className="flex items-center gap-2 mt-1">
           <span className="text-[14px] font-semibold text-[#111]">
-            ${product.price.toFixed(2)}
+            ₹{product.price.toFixed(2)}
           </span>
           {product.oldPrice && (
             <span className="text-[12px] text-gray-400 line-through">
-              ${product.oldPrice.toFixed(2)}
+              ₹{product.oldPrice.toFixed(2)}
             </span>
           )}
         </div>

@@ -82,7 +82,7 @@ export default function ContactClient() {
               <div>
                 <h4 className="font-bold mb-1">Email Us</h4>
                 <p className="text-white/80 text-sm">
-                  heavenhome2316@gmail.com<br />
+                  heavenjewels2316@gmail.com<br />
                 </p>
               </div>
             </div>

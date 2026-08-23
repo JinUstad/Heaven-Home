@@ -6,15 +6,15 @@ import { ProductCard, ExtendedProduct } from '@/components/ProductCard';
 import { supabase } from '@/lib/supabase';
 import { ArrowRight, ArrowLeft, ThumbsUp, Search, Award, Shield, Gem, Plus, Minus } from 'lucide-react';
 
-const heroImage = "/hero_banner_1787207503393.jpg";
+
 
 const categories = [
   { name: 'Earrings', image: '/cat_earrings_1787207766448.jpg' },
   { name: 'Necklaces', image: '/cat_necklace_1787207779203.jpg' },
-  { name: 'Pendants', image: '/cat_necklace_1787207779203.jpg' }, 
+  { name: 'Pendants', image: '/cat_necklace_1787207779203.jpg' },
   { name: 'Bracelets', image: '/cat_bracelet_1787207794703.jpg' },
   { name: 'Rings', image: '/cat_ring_1787207915244.jpg' },
-  { name: 'Chains', image: '/cat_necklace_1787207779203.jpg' }, 
+  { name: 'Chains', image: '/cat_necklace_1787207779203.jpg' },
 ];
 
 const promoBanners = [
@@ -30,11 +30,11 @@ const testimonials = [
 ];
 
 const faqs = [
-  { question: "What types of materials and gemstones do you use?", answer: "We use premium-quality gold (22K/18K), silver, platinum & ethically sourced, certified gemstones. Each material is carefully selected to ensure durability, brilliance, and long-lasting beauty." },
-  { question: "Are your jewellery pieces certified and authentic?", answer: "Yes, all our jewellery pieces come with a certificate of authenticity and hallmark guaranteeing their purity and quality." },
-  { question: "Do you offer customization or personalized jewellery?", answer: "Absolutely! We offer bespoke jewellery design services. Our expert craftsmen will work with you to bring your unique vision to life." },
-  { question: "How do I choose the right jewellery for an occasion?", answer: "Consider the event's formality, your outfit's neckline, and your personal style. Our style consultants are always available to help you make the perfect choice." },
-  { question: "What is your return, exchange, and refund policy?", answer: "We offer a hassle-free 14-day return and exchange policy on all unworn items in their original condition and packaging." }
+  { question: "What type of jewellery does Heaven Jewels offer?", answer: "We offer a curated collection of stylish and elegant jewellery, including earrings, necklaces, pendants, bracelets, rings, and bangles." },
+  { question: "Is Heaven Jewels jewellery made of gold?", answer: "No. Heaven Jewels does not deal in gold jewellery. Our collection focuses on fashionable, elegant, and beautifully designed jewellery pieces." },
+  { question: "How do I place an order?", answer: "Simply choose your favourite product, add it to your cart, and complete the checkout process on our website." },
+  { question: "How long will my order take to arrive?", answer: "Delivery time depends on your location. Estimated delivery details will be provided during the checkout process." },
+  { question: "How should I care for my jewellery?", answer: "Keep your jewellery away from water, perfumes, cosmetics, sweat, and chemicals. Store it in a dry place or jewellery pouch when not in use to maintain its appearance." }
 ];
 
 const latestBlogs = [
@@ -92,55 +92,12 @@ export default function HomePage() {
   return (
     <div className="flex flex-col w-full bg-white font-sans text-[#333]">
       {/* 1. Hero Section */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url("${heroImage}")` }}
+      <section className="relative w-full bg-[#f4ebd9] overflow-hidden">
+        <img
+          src="/hero-banner.png"
+          alt="Heaven Jewels - Shine Beyond the Ordinary"
+          className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.01]"
         />
-        <div className="absolute inset-0 bg-black/40 z-0" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left text-white w-full">
-          <div className="max-w-2xl">
-            <div className="inline-block border border-white/30 rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
-              <span className="text-[11px] font-semibold tracking-widest uppercase flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
-                Where Fashion Meets Elegance
-              </span>
-            </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif mb-6 leading-[1.1]">
-              Elevate Your Style With<br />Timeless Fashion
-            </h1>
-            <p className="text-base sm:text-lg text-white/90 max-w-xl mb-10 font-light leading-relaxed">
-              Discover a curated collection of elegant fashion and premium jewellery designed to express your unique personality from everyday essentials to statement pieces.
-            </p>
-            
-            <div className="flex flex-wrap items-center gap-8 mb-12">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">✨</span>
-                <span className="text-sm font-semibold tracking-wide">Premium Quality Materials</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xl">✨</span>
-                <span className="text-sm font-semibold tracking-wide">Affordable Luxury Collection</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-6 items-center">
-              <Link href="/products">
-                <button className="px-8 py-4 bg-transparent border border-white text-white font-semibold text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all-200">
-                  Explore Collection
-                </button>
-              </Link>
-              <div className="flex items-center gap-3">
-                <div className="flex gap-1 text-orange-400">
-                  {"★★★★★"}
-                </div>
-                <div className="text-sm font-bold">
-                  4.9/5 <span className="font-normal text-white/80">Review</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* 1.5. The Promise of Perfection (Features) */}
@@ -151,40 +108,40 @@ export default function HomePage() {
               <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Our Promise</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#222]">The Promise of Perfection</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#222]">The Promise of Elegance & Trust</h2>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-b border-gray-100 py-12">
             <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
               <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
                 <ThumbsUp className="w-8 h-8 text-gray-700 stroke-[1.5]" />
               </div>
-              <p className="font-serif text-lg text-gray-800 leading-tight">Assured Fair Price<br/>Policy</p>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Assured Fair <br />Price</p>
             </div>
             <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
               <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
                 <Search className="w-8 h-8 text-gray-700 stroke-[1.5]" />
               </div>
-              <p className="font-serif text-lg text-gray-800 leading-tight">Absolute<br/>Transparency</p>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Complete <br />Transparency</p>
             </div>
             <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0 relative">
               <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
                 <Award className="w-8 h-8 text-gray-700 stroke-[1.5]" />
               </div>
-              <p className="font-serif text-lg text-gray-800 leading-tight">Certified 916 Gold<br/>Purity</p>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Quality <br />Craftsmanship</p>
               <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-gray-800 hidden md:block"></div>
             </div>
             <div className="flex flex-col items-center text-center gap-6 px-4 border-r border-gray-100 last:border-r-0 md:last:border-r-0 max-md:[&:nth-child(2n)]:border-r-0">
               <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
                 <Shield className="w-8 h-8 text-gray-700 stroke-[1.5]" />
               </div>
-              <p className="font-serif text-lg text-gray-800 leading-tight">Safe Jewellery<br/>Purchase Scheme</p>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Safe & Secure <br />Purchase</p>
             </div>
             <div className="flex flex-col items-center text-center gap-6 px-4">
               <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm">
                 <Gem className="w-8 h-8 text-gray-700 stroke-[1.5]" />
               </div>
-              <p className="font-serif text-lg text-gray-800 leading-tight">Karat Purity<br/>Analyser</p>
+              <p className="font-serif text-lg text-gray-800 leading-tight">Jewellery You’ll <br />Love</p>
             </div>
           </div>
         </div>
@@ -226,9 +183,9 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Flat 30% Off Banner */}
           <div className="relative h-[350px] md:h-[450px] w-full overflow-hidden group">
-            <img 
-              src="https://images.unsplash.com/photo-1599643478524-fb66f456c1f1?auto=format&fit=crop&w=800&q=80" 
-              alt="Flat 30% Off On Premium Collection" 
+            <img
+              src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80"
+              alt="Flat 30% Off On Premium Collection"
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
@@ -245,9 +202,9 @@ export default function HomePage() {
 
           {/* 40% Off Banner */}
           <div className="relative h-[350px] md:h-[450px] w-full overflow-hidden group">
-            <img 
-              src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80" 
-              alt="Celebrate With 40% Off Collection" 
+            <img
+              src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80"
+              alt="Celebrate With 40% Off Collection"
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500"></div>
@@ -289,7 +246,7 @@ export default function HomePage() {
       <section className="relative py-24 w-full flex items-center overflow-hidden bg-fixed bg-center bg-cover" style={{ backgroundImage: 'url("/testimonial_bg.jpg")' }}>
         <div className="absolute inset-0 bg-black/60 z-0" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col md:flex-row items-center justify-between gap-12">
-          
+
           <div className="w-full md:w-1/2 text-white text-left">
             <div className="flex items-center gap-2 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-[#c69c6d]"></span>
@@ -298,7 +255,7 @@ export default function HomePage() {
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif mb-12 leading-tight">
               Trusted Reviews From Jewellery<br className="hidden lg:block" /> Style Enthusiasts
             </h2>
-            
+
             {/* Slider Content */}
             <div className="min-h-[220px] flex flex-col justify-between">
               <div>
@@ -329,7 +286,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          
+
           <div className="hidden md:block md:w-1/2"></div>
         </div>
       </section>
@@ -341,11 +298,11 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Men's Collection */}
+          {/* Bridal Collection */}
           <div className="border border-gray-200 p-8 md:p-12 flex flex-col-reverse sm:flex-row items-center justify-between group">
             <div className="max-w-[200px] flex flex-col gap-6 mt-8 sm:mt-0">
-              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">New Collection<br/>For Men</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Our latest men's jewellery collection, crafted to reflect strength, style, and individuality.</p>
+              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">Bridal<br />Collection</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Discover our exquisite bridal jewellery, meticulously crafted to make your special day even more unforgettable and truly elegant.</p>
               <Link href="/products">
                 <button className="px-6 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
                   Shop Now
@@ -353,15 +310,15 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] overflow-hidden ml-0 sm:ml-4 flex-shrink-0 rounded-sm">
-              <img src="/new_coll_men_1787207940838.jpg" alt="Men's Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=80" alt="Bridal Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
-          
+
           {/* Women's Collection */}
           <div className="border border-gray-200 p-8 md:p-12 flex flex-col-reverse sm:flex-row items-center justify-between group">
             <div className="max-w-[200px] flex flex-col gap-6 mt-8 sm:mt-0">
-              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">New Collection<br/>For Women</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Our latest women's jewellery collection, crafted to reflect elegance, style, and individuality.</p>
+              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">New Collection<br />For Women</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Explore our latest collection of elegant jewellery, thoughtfully selected to complement your style and add a touch of sophistication to every occasion.</p>
               <Link href="/products">
                 <button className="px-6 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
                   Shop Now
@@ -391,11 +348,11 @@ export default function HomePage() {
               </button>
             </Link>
           </div>
-          
+
           <div className="w-full md:w-2/3 flex flex-col">
             {faqs.map((faq, idx) => (
               <div key={idx} className="border-b border-gray-200 py-6 first:pt-0">
-                <button 
+                <button
                   onClick={() => toggleFaq(idx)}
                   className="w-full flex justify-between items-center text-left focus:outline-none group"
                 >
@@ -410,10 +367,9 @@ export default function HomePage() {
                     )}
                   </div>
                 </button>
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    openFaq === idx ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"
-                  }`}
+                <div
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaq === idx ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"
+                    }`}
                 >
                   <p className="text-sm text-gray-500 leading-relaxed max-w-2xl">{faq.answer}</p>
                 </div>
@@ -437,10 +393,10 @@ export default function HomePage() {
           {latestBlogs.map((blog, idx) => (
             <div key={idx} className="group cursor-pointer flex flex-col gap-6">
               <div className="w-full h-[300px] sm:h-[400px] overflow-hidden rounded-sm relative">
-                <img 
-                  src={blog.image} 
-                  alt={blog.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div>

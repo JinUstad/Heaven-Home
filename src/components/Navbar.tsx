@@ -93,8 +93,9 @@ export function Navbar() {
             </button>
 
             <Link href="/" className="flex items-center gap-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/heavenjewels.PNG" alt="Heaven Jewels Logo" className="h-14 sm:h-16 w-auto object-contain transition-all" />
+              <span className="text-xl sm:text-2xl font-serif font-bold text-[#333] tracking-widest uppercase">
+                Heaven Jewels
+              </span>
             </Link>
           </div>
 
