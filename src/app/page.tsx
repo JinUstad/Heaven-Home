@@ -8,14 +8,6 @@ import { ArrowRight, ArrowLeft, ThumbsUp, Search, Award, Shield, Gem, Plus, Minu
 
 
 
-const categories = [
-  { name: 'Earrings', image: '/cat_earrings_1787207766448.jpg' },
-  { name: 'Necklaces', image: '/cat_necklace_1787207779203.jpg' },
-  { name: 'Pendants', image: '/cat_necklace_1787207779203.jpg' },
-  { name: 'Bracelets', image: '/cat_bracelet_1787207794703.jpg' },
-  { name: 'Rings', image: '/cat_ring_1787207915244.jpg' },
-  { name: 'Chains', image: '/cat_necklace_1787207779203.jpg' },
-];
 
 const promoBanners = [
   { title: "Brilliant Gold Ring Collection", discount: "FLAT 15% OFF", image: "/promo_ring_1787207518511.jpg" },
@@ -41,6 +33,7 @@ const faqs = [
 export default function HomePage() {
   const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
   const [dbBlogs, setDbBlogs] = useState<any[]>([]);
+  const [dbCategories, setDbCategories] = useState<{name: string, image: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -58,6 +51,21 @@ export default function HomePage() {
       const blogsRes = await supabase.from('blogs').select('*').order('published_at', { ascending: false }).limit(3);
       if (blogsRes.data) {
         setDbBlogs(blogsRes.data);
+      }
+
+      const catsRes = await supabase.from('categories').select('*').order('name');
+      if (catsRes.data) {
+        const mappedCats = catsRes.data.map((c: any) => {
+          let image = '/cat_necklace_1787207779203.jpg';
+          const nameLower = c.name.toLowerCase();
+          if (nameLower.includes('earring')) image = '/cat_earrings_1787207766448.jpg';
+          else if (nameLower.includes('necklace') || nameLower.includes('chain') || nameLower.includes('pendant')) image = '/cat_necklace_1787207779203.jpg';
+          else if (nameLower.includes('bracelet')) image = '/cat_bracelet_1787207794703.jpg';
+          else if (nameLower.includes('ring')) image = '/cat_ring_1787207915244.jpg';
+          else if (nameLower.includes('bangle')) image = '/cat_bracelet_1787207794703.jpg';
+          return { name: c.name, image };
+        });
+        setDbCategories(mappedCats);
       }
 
       if (prodsRes.data) {
@@ -165,15 +173,15 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-8 justify-start md:justify-between">
-          {categories.map((cat, i) => (
-            <Link key={cat.name + i} href="/products" className="group flex flex-col items-center gap-6 min-w-[140px] md:min-w-[160px] cursor-pointer">
+        <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-8 snap-x snap-mandatory">
+          {dbCategories.map((cat, i) => (
+            <Link key={cat.name + i} href={`/products?category=${encodeURIComponent(cat.name)}`} className="group flex flex-col items-center gap-6 min-w-[140px] md:min-w-[160px] cursor-pointer snap-start">
               <div className="w-[140px] h-[140px] md:w-[180px] md:h-[180px] rounded-full overflow-hidden border border-gray-100 shadow-sm group-hover:shadow-md transition-all duration-500 p-2 bg-gray-50">
                 <div className="w-full h-full rounded-full overflow-hidden bg-white relative">
                   <img src={cat.image} alt={cat.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
               </div>
-              <span className="text-lg font-serif text-[#333] group-hover:text-[var(--primary)] transition-colors">{cat.name}</span>
+              <span className="text-lg font-serif text-[#333] group-hover:text-[var(--primary)] transition-colors text-center truncate w-full px-2">{cat.name}</span>
             </Link>
           ))}
         </div>
