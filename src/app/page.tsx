@@ -16,9 +16,9 @@ const promoBanners = [
 ];
 
 const testimonials = [
-  { text: "Absolutely loved the quality and design! The jewellery looks even more stunning in real life. I've received so many compliments. Premium quality at a great price. I keep coming back for more because the collection is always fresh and stylish!", name: "Kavya Shah", role: "Working Professional", image: "/testimonial_avatar.jpg" },
-  { text: "The craftsmanship is unparalleled. Each piece tells a story of elegance. I am truly mesmerized by the intricate details and the exceptional customer service. Heaven Jewels is my go-to for all special occasions.", name: "Aisha Patel", role: "Fashion Blogger", image: "/testimonial_avatar.jpg" },
-  { text: "Finding authentic and beautiful jewelry online can be daunting, but Heaven Jewels exceeded all my expectations. Fast shipping, beautiful packaging, and absolutely stunning pieces. Highly recommended!", name: "Riya Sharma", role: "Entrepreneur", image: "/testimonial_avatar.jpg" }
+  { text: "Absolutely loved the quality and design! The jewellery looks even more stunning in real life. I've received so many compliments. Premium quality at a great price. I keep coming back for more because the collection is always fresh and stylish!", name: "Kavya Shah", role: "Working Professional", image: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { text: "The craftsmanship is unparalleled. Each piece tells a story of elegance. I am truly mesmerized by the intricate details and the exceptional customer service. Heaven Jewels is my go-to for all special occasions.", name: "Aisha Patel", role: "Fashion Blogger", image: "https://randomuser.me/api/portraits/women/68.jpg" },
+  { text: "Finding authentic and beautiful jewelry online can be daunting, but Heaven Jewels exceeded all my expectations. Fast shipping, beautiful packaging, and absolutely stunning pieces. Highly recommended!", name: "Riya Sharma", role: "Entrepreneur", image: "https://randomuser.me/api/portraits/women/32.jpg" }
 ];
 
 const faqs = [
@@ -307,11 +307,11 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Bridal Collection */}
+          {/* Feature Collection */}
           <div className="border border-gray-200 p-8 md:p-12 flex flex-col-reverse sm:flex-row items-center justify-between group">
             <div className="max-w-[200px] flex flex-col gap-6 mt-8 sm:mt-0">
-              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">Bridal<br />Collection</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Discover our exquisite bridal jewellery, meticulously crafted to make your special day even more unforgettable and truly elegant.</p>
+              <h3 className="text-2xl md:text-3xl font-serif text-[#222]">Feature<br />Collection</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4 md:mb-6">Discover our exquisite feature jewellery, meticulously crafted to make your special day even more unforgettable and truly elegant.</p>
               <Link href="/products">
                 <button className="px-6 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
                   Shop Now
@@ -319,7 +319,7 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="w-[200px] h-[200px] md:w-[250px] md:h-[250px] overflow-hidden ml-0 sm:ml-4 flex-shrink-0 rounded-sm">
-              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=80" alt="Bridal Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=500&q=80" alt="Feature Collection" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             </div>
           </div>
 
