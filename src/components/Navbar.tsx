@@ -93,9 +93,7 @@ export function Navbar() {
             </button>
 
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-serif font-bold text-[#333] tracking-widest uppercase">
-                Heaven Jewels
-              </span>
+              <img src="/logo.png" alt="Heaven Jewels Logo" className="h-10 w-auto" />
             </Link>
           </div>
 
@@ -140,7 +138,7 @@ export function Navbar() {
                       {categories.map((cat) => (
                         <Link
                           key={cat.id}
-                          href="/products"
+                          href={`/products?category=${encodeURIComponent(cat.name)}`}
                           className="flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-700 hover:bg-[#4A5D23]/10 hover:text-[#4A5D23] rounded-xl transition-colors group/item"
                         >
                           <span className="truncate">{cat.name}</span>
@@ -265,7 +263,7 @@ export function Navbar() {
             {categories.map((cat) => (
               <Link
                 key={cat.id}
-                href="/products"
+                href={`/products?category=${encodeURIComponent(cat.name)}`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-sm font-medium text-gray-700 hover:text-[#4A5D23] pl-4 py-1"
               >

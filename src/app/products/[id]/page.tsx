@@ -350,7 +350,7 @@ export default function ProductDetailsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
             <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">
               <Truck className="w-5 h-5 text-[var(--primary)] mb-1.5" />
-              <span className="text-[11px] font-bold text-gray-800">Free Delivery</span>
+              <span className="text-[11px] font-bold text-gray-800">Fast Delivery</span>
               <span className="text-[10px] text-gray-500">All India</span>
             </div>
             <div className="flex flex-col items-center text-center p-3 bg-white rounded-xl border border-gray-100 shadow-xs">

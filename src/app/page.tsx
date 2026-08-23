@@ -37,14 +37,10 @@ const faqs = [
   { question: "How should I care for my jewellery?", answer: "Keep your jewellery away from water, perfumes, cosmetics, sweat, and chemicals. Store it in a dry place or jewellery pouch when not in use to maintain its appearance." }
 ];
 
-const latestBlogs = [
-  { title: "Bridal Jewellery Guide Complete Your Wedding Look", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80", link: "/blogs/1" },
-  { title: "How to Choose the Perfect Diamond Engagement Ring", image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80", link: "/blogs/2" },
-  { title: "Caring for Your Jewellery Tips to Keep It Shining", image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=600&q=80", link: "/blogs/3" }
-];
 
 export default function HomePage() {
   const [dbProducts, setDbProducts] = useState<ExtendedProduct[]>([]);
+  const [dbBlogs, setDbBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -58,6 +54,11 @@ export default function HomePage() {
     const fetchData = async () => {
       setLoading(true);
       const prodsRes = await supabase.from('products').select('*, categories(name)').order('created_at', { ascending: false }).limit(8);
+      
+      const blogsRes = await supabase.from('blogs').select('*').order('published_at', { ascending: false }).limit(3);
+      if (blogsRes.data) {
+        setDbBlogs(blogsRes.data);
+      }
 
       if (prodsRes.data) {
         const mappedProducts: ExtendedProduct[] = prodsRes.data.map(p => {
@@ -390,25 +391,35 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {latestBlogs.map((blog, idx) => (
+          {dbBlogs.map((blog, idx) => (
             <div key={idx} className="group cursor-pointer flex flex-col gap-6">
               <div className="w-full h-[300px] sm:h-[400px] overflow-hidden rounded-sm relative">
-                <img
-                  src={blog.image}
-                  alt={blog.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+                <Link href={`/blogs/${blog.id}`}>
+                  <img
+                    src={blog.image_url || "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80"}
+                    alt={blog.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 absolute inset-0"
+                  />
+                </Link>
               </div>
               <div>
                 <h3 className="font-serif text-xl text-[#222] mb-4 group-hover:text-[var(--primary)] transition-colors line-clamp-2">
-                  {blog.title}
+                  <Link href={`/blogs/${blog.id}`}>{blog.title}</Link>
                 </h3>
-                <Link href={blog.link} className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors flex items-center gap-2">
+                <Link href={`/blogs/${blog.id}`} className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors flex items-center gap-2">
                   Read More <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
             </div>
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <Link href="/blogs">
+            <button className="px-8 py-3 border border-gray-300 text-xs font-semibold tracking-widest hover:border-black transition-colors uppercase">
+              View All Blogs
+            </button>
+          </Link>
         </div>
       </section>
 
