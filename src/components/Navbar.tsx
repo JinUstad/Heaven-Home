@@ -93,7 +93,7 @@ export function Navbar() {
             </button>
 
             <Link href="/" className="flex items-center gap-2">
-              <img src="/logo.png" alt="Heaven Jewels Logo" className="h-10 w-auto" />
+              <img src="/heavenjewels.PNG" alt="Heaven Jewels Logo" className="h-10 w-auto" />
             </Link>
           </div>
 
